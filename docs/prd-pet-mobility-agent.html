@@ -2275,51 +2275,37 @@ font-weight: 600;
 background: var(--accent-light);
 }
 .quarto-title-meta {
+display: none !important;
+}
+.prd-title-meta {
 --meta-label-size: 0.95rem;
---meta-value-size: 1.08rem;
---meta-label-line-height: 1.2;
---meta-value-line-height: 1.25;
---meta-row-gap: 0.35rem;
-display: block !important;
-position: relative;
-padding-right: 9rem;
+--meta-value-size: 1rem;
+display: grid;
+grid-template-columns: minmax(0, 1fr) auto;
+grid-template-rows: auto auto;
+column-gap: 2rem;
+row-gap: 0.28rem;
+align-items: start;
+margin: 0.9rem 0 2rem;
 }
-.quarto-title-meta > div {
+.prd-title-meta-label,
+.prd-title-meta-value {
 margin: 0;
+padding: 0;
+letter-spacing: 0;
 }
-.quarto-title-meta-heading,
-.quarto-title-meta::before {
+.prd-title-meta-label {
 color: var(--text-muted);
 font-size: var(--meta-label-size);
-line-height: var(--meta-label-line-height);
+line-height: 1.2;
 }
-.quarto-title-meta-heading {
-margin: 0 0 var(--meta-row-gap);
-}
-.quarto-title-meta-contents {
-margin: 0;
-}
-.quarto-title-meta-contents p,
-.quarto-title-meta::after {
+.prd-title-meta-value {
 color: var(--text-main);
 font-size: var(--meta-value-size);
-line-height: var(--meta-value-line-height);
-margin: 0;
+line-height: 1.25;
 }
-.quarto-title-meta::before {
-content: "版本";
-position: absolute;
-top: 0;
-right: 0;
-}
-.quarto-title-meta::after {
-content: "第 1 版";
-position: absolute;
-top: calc(
-var(--meta-label-size) * var(--meta-label-line-height) +
-var(--meta-row-gap)
-);
-right: 0;
+.prd-title-meta-right {
+justify-self: end;
 text-align: right;
 }
 .callout {
@@ -2555,6 +2541,20 @@ stroke: transparent !important;
 正文内容由同目录的 Markdown 源文件同步引入。
 请编辑 docs/prd-pet-mobility-agent.md，不要在本文件复制或改写正文。
 -->
+<div class="prd-title-meta" aria-label="文档元信息">
+<div class="prd-title-meta-label">
+发布于
+</div>
+<div class="prd-title-meta-label prd-title-meta-right">
+版本
+</div>
+<div class="prd-title-meta-value">
+2026-06-13 09:33:12
+</div>
+<div class="prd-title-meta-value prd-title-meta-right">
+第 1 版
+</div>
+</div>
 <section id="prdpet-mobility-agent-带宠出行决策系统" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> PRD：Pet Mobility Agent / 带宠出行决策系统</h1>
 <p>状态：草案<br>

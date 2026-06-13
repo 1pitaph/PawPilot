@@ -29,4 +29,11 @@ execute:
 请编辑 docs/prd-pet-mobility-agent.md，不要在本文件复制或改写正文。
 -->
 
+<div class="prd-title-meta" aria-label="文档元信息">
+  <div class="prd-title-meta-label">发布于</div>
+  <div class="prd-title-meta-label prd-title-meta-right">版本</div>
+  <div class="prd-title-meta-value">2026-06-13 09:33:12</div>
+  <div class="prd-title-meta-value prd-title-meta-right">第 1 版</div>
+</div>
+
 {{< include prd-pet-mobility-agent.md >}}
