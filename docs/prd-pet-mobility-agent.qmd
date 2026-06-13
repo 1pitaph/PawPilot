@@ -1,0 +1,31 @@
+---
+title: "Pet Mobility Agent / 带宠出行决策系统"
+subtitle: "狗狗需求完成图谱与带宠出行决策 PRD"
+date: today
+date-format: "YYYY-MM-DD"
+lang: zh-CN
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    toc-title: 目录
+    number-sections: true
+    number-depth: 3
+    theme: cosmo
+    css: styles.css
+    embed-resources: true
+    fontsize: 1.05em
+    linestretch: 1.6
+    code-fold: false
+    link-external-newwindow: true
+execute:
+  echo: false
+---
+
+<!--
+正文内容由同目录的 Markdown 源文件同步引入。
+请编辑 docs/prd-pet-mobility-agent.md，不要在本文件复制或改写正文。
+-->
+
+{{< include prd-pet-mobility-agent.md >}}

@@ -1,0 +1,59 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Editor and IDE settings
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Environment and local config
+.env
+.env.*
+!.env.example
+
+# Dependencies and package-manager caches
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/
+!.yarn/releases/
+!.yarn/plugins/
+!.yarn/sdks/
+!.yarn/versions/
+
+# Quarto and document build artifacts
+.quarto/
+*_cache/
+*_files/
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.tex
+*.toc
+
+# Python cache files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Temporary files
+tmp/
+temp/
+.cache/
