@@ -33,6 +33,7 @@ node_modules/
 
 # Quarto and document build artifacts
 .quarto/
+_site/
 *_cache/
 *_files/
 *.aux
