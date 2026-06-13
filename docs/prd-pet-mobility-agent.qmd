@@ -12,7 +12,7 @@ format:
     toc-location: left
     toc-title: 目录
     number-sections: true
-    number-depth: 3
+    number-depth: 1
     theme: cosmo
     css: styles.css
     embed-resources: true
