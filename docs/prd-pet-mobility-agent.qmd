@@ -1,8 +1,9 @@
 ---
 title: "Pet Mobility Agent / 带宠出行决策系统"
 subtitle: "狗狗需求完成图谱与带宠出行决策 PRD"
-date: today
-date-format: "YYYY-MM-DD"
+date: "2026-06-13T09:33:12+08:00"
+date-format: "YYYY-MM-DD HH:mm:ss [UTC+08:00]"
+version: "第 1 版"
 lang: zh-CN
 format:
   html:

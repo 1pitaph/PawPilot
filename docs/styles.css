@@ -133,6 +133,22 @@ tbody tr:hover td {
   background: var(--accent-light);
 }
 
+.quarto-title-meta {
+  display: flex !important;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.quarto-title-meta::after {
+  content: "版本\A第 1 版";
+  white-space: pre-line;
+  text-align: right;
+  color: var(--text-main);
+  font-size: 1.25rem;
+  line-height: 1.45;
+}
+
 .callout {
   border-top: none !important;
   border-right: none !important;
