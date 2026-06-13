@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Pet Mobility Agent / 带宠出行决策系统</title>
+<title>Pet Mobility Agent / 宠物友好地图 Agent</title>
 <style>
 
 code{white-space: pre-wrap;}
@@ -5542,10 +5542,21 @@ stroke: transparent !important;
   <ul>
   <li><a href="#产品介绍" id="toc-产品介绍" class="nav-link active" data-scroll-target="#产品介绍"><span class="header-section-number">1</span> 产品介绍</a></li>
   <li><a href="#背景" id="toc-背景" class="nav-link" data-scroll-target="#背景"><span class="header-section-number">2</span> 背景</a></li>
-  <li><a href="#目标用户与使用场景" id="toc-目标用户与使用场景" class="nav-link" data-scroll-target="#目标用户与使用场景"><span class="header-section-number">3</span> 目标用户与使用场景</a></li>
-  <li><a href="#技术范围与优先级" id="toc-技术范围与优先级" class="nav-link" data-scroll-target="#技术范围与优先级"><span class="header-section-number">4</span> 技术范围与优先级</a></li>
-  <li><a href="#核心用户流程" id="toc-核心用户流程" class="nav-link" data-scroll-target="#核心用户流程"><span class="header-section-number">5</span> 核心用户流程</a></li>
-  <li><a href="#agent-架构" id="toc-agent-架构" class="nav-link" data-scroll-target="#agent-架构"><span class="header-section-number">6</span> Agent 架构</a></li>
+  <li><a href="#产品原则" id="toc-产品原则" class="nav-link" data-scroll-target="#产品原则"><span class="header-section-number">3</span> 产品原则</a></li>
+  <li><a href="#目标用户与使用场景" id="toc-目标用户与使用场景" class="nav-link" data-scroll-target="#目标用户与使用场景"><span class="header-section-number">4</span> 目标用户与使用场景</a></li>
+  <li><a href="#功能优先级与范围" id="toc-功能优先级与范围" class="nav-link" data-scroll-target="#功能优先级与范围"><span class="header-section-number">5</span> 功能优先级与范围</a></li>
+  <li><a href="#核心产品模块" id="toc-核心产品模块" class="nav-link" data-scroll-target="#核心产品模块"><span class="header-section-number">6</span> 核心产品模块</a></li>
+  <li><a href="#核心用户流程" id="toc-核心用户流程" class="nav-link" data-scroll-target="#核心用户流程"><span class="header-section-number">7</span> 核心用户流程</a></li>
+  <li><a href="#agent-架构" id="toc-agent-架构" class="nav-link" data-scroll-target="#agent-架构"><span class="header-section-number">8</span> Agent 架构</a></li>
+  <li><a href="#数据模型" id="toc-数据模型" class="nav-link" data-scroll-target="#数据模型"><span class="header-section-number">9</span> 数据模型</a></li>
+  <li><a href="#隐私与安全" id="toc-隐私与安全" class="nav-link" data-scroll-target="#隐私与安全"><span class="header-section-number">10</span> 隐私与安全</a></li>
+  <li><a href="#非功能需求" id="toc-非功能需求" class="nav-link" data-scroll-target="#非功能需求"><span class="header-section-number">11</span> 非功能需求</a></li>
+  <li><a href="#黑客松-mvp-演示流程" id="toc-黑客松-mvp-演示流程" class="nav-link" data-scroll-target="#黑客松-mvp-演示流程"><span class="header-section-number">12</span> 黑客松 / MVP 演示流程</a></li>
+  <li><a href="#成功指标" id="toc-成功指标" class="nav-link" data-scroll-target="#成功指标"><span class="header-section-number">13</span> 成功指标</a></li>
+  <li><a href="#风险与应对" id="toc-风险与应对" class="nav-link" data-scroll-target="#风险与应对"><span class="header-section-number">14</span> 风险与应对</a></li>
+  <li><a href="#里程碑" id="toc-里程碑" class="nav-link" data-scroll-target="#里程碑"><span class="header-section-number">15</span> 里程碑</a></li>
+  <li><a href="#开放问题" id="toc-开放问题" class="nav-link" data-scroll-target="#开放问题"><span class="header-section-number">16</span> 开放问题</a></li>
+  <li><a href="#参考链接" id="toc-参考链接" class="nav-link" data-scroll-target="#参考链接"><span class="header-section-number">17</span> 参考链接</a></li>
   </ul>
 </nav>
 </div>
@@ -5555,8 +5566,8 @@ stroke: transparent !important;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Pet Mobility Agent / 带宠出行决策系统</h1>
-<p class="subtitle lead">狗狗需求完成图谱与带宠出行决策 PRD</p>
+<h1 class="title">Pet Mobility Agent / 宠物友好地图 Agent</h1>
+<p class="subtitle lead">宠物友好地图、常走路线、社区热力与宠物分身 PRD</p>
 </div>
 
 
@@ -5567,7 +5578,7 @@ stroke: transparent !important;
     <div>
     <div class="quarto-title-meta-heading">发布于</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-06-13 10:29:42</p>
+      <p class="date">2026-06-13 13:55:57</p>
     </div>
   </div>
   
@@ -5591,872 +5602,653 @@ stroke: transparent !important;
 版本
 </div>
 <div class="prd-title-meta-value">
-2026-06-13 10:29:42
+2026-06-13 13:55:57
 </div>
 <div class="prd-title-meta-value prd-title-meta-right">
-第 2 版
+第 3 版
 </div>
 </div>
 <section id="产品介绍" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> 产品介绍</h1>
 <section id="产品定位" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="产品定位"><span class="header-section-number">1.1</span> 产品定位</h2>
-<p>Pet Mobility Agent 是一个面向中国大陆城市养狗人的带宠出行决策系统。它不把“遛狗”默认理解为一条步行路线，而是根据狗狗档案、出行意图、天气、城市微环境、交通压力、宠物服务供给和历史观察，判断今天这只狗应该如何安全完成排便、嗅闻、放电、降压、社交或避社交。</p>
-<p>这个产品的核心不是“附近有什么宠物友好地点”，而是“在今天这个时间、这个天气、这个片区、这只狗的状态下，哪些空间、路径、交通方式和服务组合可以完成它的需求”。因此，Pet Mobility Agent 更像一个带宠出行任务规划器，而不是一个宠物 POI 目录。</p>
-<p>本次 MVP 的核心场景是：用户在步行环境不友好的中国城市片区提出“30-40 分钟遛狗”请求，系统识别高温、主干路、电动车、绿地不足、小区出入口限制等风险后，拒绝盲目生成纯步行路线，并给出三类可执行替代方案：</p>
+<p>Pet Mobility Agent 是一个面向城市养宠人的宠物友好地图 Agent。它不是通用地图的宠物皮肤，也不是单纯的遛狗路线规划器，而是基于宠物档案、常走路线、天气环境、社区热力、UGC POI 和宠物分身，帮助主人判断今天该不该出门、走哪条熟悉路线、是否适合探索新地点、路上可能遇到什么，以及哪些宠物友好地点在这一次真实可用。</p>
+<p>一句话定位：</p>
+<blockquote class="blockquote">
+<p>普通地图给路线，Pet Mobility Agent 给适合这只宠物的附近判断。</p>
+</blockquote>
+<p>本产品的核心不是“附近有什么宠物友好地点”，也不是“生成一条最短路线”，而是回答：</p>
+<ul>
+<li>今天这只宠物适合出门吗？</li>
+<li>如果只是日常遛狗，常走路线里哪条今天更合适？</li>
+<li>如果有明确目标，哪条路线和哪个 POI 更适合这只宠物？</li>
+<li>路上会不会更容易遇到其他狗、人流、电动车、高温、施工或禁入点？</li>
+<li>地图上的宠物友好信息是否可信、是否过期、是否适合本次出行？</li>
+<li>用户和社区的反馈如何沉淀为下一次推荐的依据？</li>
+</ul>
+<p>因此，Pet Mobility Agent 更像一个“宠物附近决策层”：</p>
+<pre class="text"><code>宠物友好地图 Agent
+├─ 宠物档案与宠物分身
+├─ 常走路线记忆
+├─ 有目标推荐
+├─ 无目标出门建议
+├─ UGC 宠物友好 POI
+├─ 社区路线热力
+├─ Agent 推荐解释
+└─ 隐私与可信度机制</code></pre>
+<p>本 PRD 第 3 版将产品主线从“带宠出行任务规划器”升级为“宠物友好地图 Agent”。路线规划仍然重要，但它被降级为功能输出；真正的产品核心是把宠物画像、个人路线习惯、附近 POI、社区趋势和 Agent 判断组织成一个可持续学习的出门决策系统。</p>
+</section>
+<section id="产品命名口径" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="产品命名口径"><span class="header-section-number">1.2</span> 产品命名口径</h2>
+<p>PRD 内部继续使用 <code>Pet Mobility Agent</code> 作为项目名。对外可考虑以下表达：</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>方案类型</th>
+<th>名称</th>
+<th>适用场景</th>
 <th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>附近微出门</td>
-<td>在小区内或楼下短时间完成排便、嗅闻、低强度放松。</td>
+<td>宠物友好地图 Agent</td>
+<td>PRD、路演、投资人沟通</td>
+<td>凸显地图与 Agent 的结合。</td>
 </tr>
 <tr class="even">
-<td>多方式接驳出行</td>
-<td>通过打车、自驾或短距离接驳前往更适合狗狗完成需求的空间。</td>
+<td>懂你家宠物的附近地图</td>
+<td>用户侧介绍</td>
+<td>更像一句产品利益点。</td>
 </tr>
 <tr class="odd">
-<td>服务或空间预约</td>
-<td>预约室内宠物跑场、训练师、洗护、宠物友好空间或低刺激服务。</td>
+<td>宠物附近决策层</td>
+<td>内部架构讨论</td>
+<td>强调产品不是 POI 列表。</td>
+</tr>
+<tr class="even">
+<td>宠物分身 Agent</td>
+<td>虚拟宠物模块</td>
+<td>强调 Q 版/3D 宠物不是装饰，而是宠物画像的可视化身体。</td>
 </tr>
 </tbody>
 </table>
-<p>核心地图层是 Dog Need Fulfillment Graph / 狗狗需求完成图谱。它不是通用 POI 地图，也不是宠物友好地点列表，而是记录“哪些空间、时间、入口、边界、交通方式和服务能够帮助这只狗完成具体需求”的语义图谱。</p>
-<p>一句话定位：</p>
-<blockquote class="blockquote">
-<p>高德和百度解决人和车怎么走；Pet Mobility Agent 解决狗和主人今天能不能出门、怎么出门、在哪里完成需求。</p>
-</blockquote>
 </section>
-<section id="发布与版本规则" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="发布与版本规则"><span class="header-section-number">1.2</span> 发布与版本规则</h2>
+<section id="发布与版本规则" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="发布与版本规则"><span class="header-section-number">1.3</span> 发布与版本规则</h2>
 <p>PRD 使用 Quarto 渲染为 Pages 页面。每次提交 Issue 并触发 Pages 部署时，PRD 版本号必须递增一个整数版本，并保持以下位置一致：</p>
 <ul>
 <li><code>.qmd</code> 元信息中的 <code>version</code>。</li>
 <li>页面顶部展示的版本号。</li>
-<li>Markdown 正文中的版本号。</li>
+<li>PRD 正文中的发布与版本规则。</li>
 <li>本次部署生成的 HTML 页面。</li>
 </ul>
-<p>当前版本为第 2 版。后续发布按“第 3 版、第 4 版、第 5 版”递增，不使用同一版本覆盖已部署页面。若部署只修复渲染、错别字或格式问题，也应递增版本号，便于 Issue 记录、Pages 页面和团队讨论对齐。</p>
+<p>当前版本为第 3 版。后续发布按“第 4 版、第 5 版、第 6 版”递增，不使用同一版本覆盖已部署页面。若部署只修复渲染、错别字或格式问题，也应递增版本号，便于 Issue 记录、Pages 页面和团队讨论对齐。</p>
 </section>
 </section>
 <section id="背景" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> 背景</h1>
-<section id="宠物市场背景" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="宠物市场背景"><span class="header-section-number">2.1</span> 宠物市场背景</h2>
-<p>中国宠物市场正在从“养宠消费”进入“养宠生活方式基础设施”阶段。过去几年，宠物食品、医疗、洗护、美容、用品和保险等品类逐渐成熟，用户愿意为宠物健康、体验和便利性支付更多费用。对于城市养狗人来说，宠物已经不只是家庭里的消费对象，而是日常时间安排、居住选择、周末活动和城市出行决策的一部分。</p>
+<section id="市场与用户背景" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="市场与用户背景"><span class="header-section-number">2.1</span> 市场与用户背景</h2>
+<p>中国宠物市场正在从“养宠消费”进入“养宠生活方式基础设施”阶段。宠物食品、医疗、洗护、美容、用品、保险和智能硬件等供给逐渐成熟，城市养宠人愿意为宠物健康、体验、便利性和情绪价值支付更多费用。</p>
+<p>对于城市养狗人来说，宠物已经不只是家庭里的消费对象，而是日常时间安排、居住选择、周末活动、本地服务和城市空间使用方式的一部分。用户不是偶尔需要一个“宠物友好地点”，而是每天都要做一系列小判断：</p>
+<ul>
+<li>今天热不热，能不能走远？</li>
+<li>常走的那条线现在会不会狗很多？</li>
+<li>这家店到底能不能带狗进去，还是只能坐户外？</li>
+<li>路上有没有水碗、草地、阴影、施工、禁入或风险点？</li>
+<li>如果今天狗状态紧张，是不是应该换一条更安静的路线？</li>
+<li>如果想顺路买粮、去医院或找咖啡店，哪条路线最稳？</li>
+</ul>
 <p>当前市场上已经出现了几类相关供给：</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>供给类型</th>
 <th>示例</th>
+<th>当前不足</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>宠物服务</td>
-<td>洗护、美容、寄养、训练、上门喂养、上门遛狗。</td>
+<td>通用地图</td>
+<td>高德、百度、Google、Apple Maps</td>
+<td>理解道路和交通，但不理解宠物需求。</td>
 </tr>
 <tr class="even">
-<td>宠物空间</td>
-<td>宠物友好商场、宠物餐厅、室内跑场、私家草坪、宠物乐园、营地。</td>
+<td>本地生活平台</td>
+<td>大众点评、小红书、团购平台</td>
+<td>有宠物友好信息，但多为非结构化评论，可信度和时效性弱。</td>
 </tr>
 <tr class="odd">
-<td>宠物内容社区</td>
-<td>地点推荐、经验分享、犬种知识、训练内容。</td>
+<td>宠物服务平台</td>
+<td>洗护、寄养、训练、上门喂养</td>
+<td>解决单点服务，不解决日常出门判断。</td>
 </tr>
 <tr class="even">
-<td>宠物硬件</td>
-<td>定位器、智能喂食器、饮水机、摄像头、活动记录设备。</td>
+<td>宠物社区</td>
+<td>晒宠、经验分享、地点推荐</td>
+<td>内容丰富但难以进入地图和推荐系统。</td>
 </tr>
 <tr class="odd">
-<td>本地生活入口</td>
-<td>地图、点评、团购、打车、社区团购和服务预约。</td>
+<td>运动记录工具</td>
+<td>Strava、Keep 等</td>
+<td>记录人的运动，不理解宠物约束和附近宠物友好信息。</td>
+</tr>
+<tr class="even">
+<td>智能硬件</td>
+<td>GPS、项圈、摄像头、喂食器</td>
+<td>记录位置或健康数据，但不判断出门路线是否合适。</td>
 </tr>
 </tbody>
 </table>
-<p>但这些供给大多仍然围绕“单点服务”或“单点地点”展开。用户可以找到一家洗护店、一个宠物友好餐厅，或者一个私家草坪，但很难把这些资源和当天真实出行约束串成一个完整方案。</p>
-<p>宠物市场的下一层机会，不是再做一个更全的宠物地点目录，而是把宠物需求、城市空间、交通方式、本地服务和 Agent 决策连接起来，让系统真正回答：</p>
-<ul>
-<li>今天适不适合带狗出门？</li>
-<li>这只狗适合走、坐车、去室内空间，还是只做楼下短出门？</li>
-<li>哪些需求必须现在完成，哪些需求可以延期或替代？</li>
-<li>哪个地点不是“宠物友好”而已，而是真能完成排便、放电、降压或避刺激？</li>
-<li>宠物服务如何出现在用户有明确任务的时候，而不是只作为广告或搜索结果出现？</li>
-</ul>
+<p>Pet Mobility Agent 的机会是把这些分散能力连接起来，让用户每天打开产品时不只是“找地方”，而是获得一句有依据的附近判断：</p>
+<blockquote class="blockquote">
+<p>现在这只宠物，更适合走哪条熟悉路线，或者去哪个宠物友好地点。</p>
+</blockquote>
 </section>
-<section id="背景与问题" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="背景与问题"><span class="header-section-number">2.2</span> 背景与问题</h2>
-<p>中国大陆大量城市片区并不天然适合步行遛狗。尤其在高密度社区、车行优先新区、主干路切割片区、夏季高温城市和小区封闭管理环境里，“从家门口开始走 30 分钟”并不总是安全或有效。</p>
-<p>用户面对的真实问题通常不是“不知道附近哪里宠物友好”，而是：</p>
+<section id="核心问题" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="核心问题"><span class="header-section-number">2.2</span> 核心问题</h2>
+<p>城市养宠人的真实问题不是“不知道怎么走”，而是：</p>
 <ul>
-<li>不知道今天是否适合出门。</li>
-<li>不知道这只狗应该短走、长走、打车、自驾、预约空间，还是只在小区内完成最低需求。</li>
-<li>不知道哪段路有电动车、主干路、无遮阴、狗群、复杂过街、施工围挡或地表高温风险。</li>
-<li>不知道如何把排便、嗅闻、放电、洗护、就医、取快递等任务合并成一次可执行出行。</li>
-<li>不知道地图上的“近”是否等于真实可用，尤其是小区门、地库口、入口、电梯、上下车点、停车点这些最后 100 米信息。</li>
-<li>不知道“宠物友好”是不是只允许进入，还是能真正停留、活动、排便、避热、避狗、喝水或获得服务。</li>
+<li>熟悉几条路线，但不知道今天哪条更合适。</li>
+<li>想避开高温、暴雨、施工、车流、电动车、流浪狗、狗多区域、禁入区域。</li>
+<li>想知道附近哪些地方真的宠物友好，而不是点评里模糊写一句“可带宠”。</li>
+<li>希望系统记住自家宠物的习惯，例如怕大狗、不能走太久、喜欢草地、不爱人多、需要顺路买粮。</li>
+<li>愿意贡献 POI 或路线反馈，但前提是隐私安全、有反馈、有价值。</li>
+<li>想要一个有情感连接的宠物入口，而不是冷冰冰的数据面板。</li>
 </ul>
 <p>现有方案的断点在于：</p>
 <ul>
-<li>普通地图理解人和车的路线，但不理解狗狗需求。</li>
-<li>宠物友好地图理解地点标签，但不理解当天是否适合到达和停留。</li>
-<li>遛狗服务解决找人代遛，但不解决主人自己带狗出行的决策。</li>
-<li>宠物 GPS 硬件记录位置和活动，但不判断城市空间是否可用。</li>
-<li>私人狗狗空间解决预约场地，但没有把小区、天气、交通、狗狗档案和服务串成完整方案。</li>
-</ul>
-<p>因此，Pet Mobility Agent 的机会是把“狗狗需求”作为规划中心，而不是把“路线最短”或“地点最近”作为规划中心。</p>
-</section>
-</section>
-<section id="目标用户与使用场景" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> 目标用户与使用场景</h1>
-<section id="主要用户" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="主要用户"><span class="header-section-number">3.1</span> 主要用户</h2>
-<p>主要用户是居住在中国大陆城市中的养狗人，尤其是以下几类：</p>
-<ul>
-<li>居住在低步行友好片区的用户，例如主干路密集、新区尺度过大、绿地入口少、小区封闭管理严格。</li>
-<li>养高能量犬的用户，例如边牧、柴犬、拉布拉多、金毛、杜宾等，需要更稳定的放电方案。</li>
-<li>养短鼻犬、老年犬、幼犬、术后犬或慢病犬的用户，需要保守的温度、强度和距离控制。</li>
-<li>养反应犬或敏感犬的用户，需要避开狗群、电动车、人流、儿童、噪声和复杂路口。</li>
-<li>新手养狗人，不确定什么样的出门计划才算安全、足够和可执行。</li>
+<li>普通地图理解人和车的路线，但不理解宠物的体力、情绪、社交偏好和天气风险。</li>
+<li>宠物友好地图如果只是 POI 列表，会很快变薄，因为“宠物友好”不是一个稳定的 yes/no 标签。</li>
+<li>用户常走路线非常重要，但大多数地图不会把“熟悉路线今天是否适合这只宠物”作为核心问题。</li>
+<li>社区里有大量附近经验，但没有结构化沉淀为可计算的路线热力、POI 可信度和风险图层。</li>
+<li>虚拟宠物如果只是装饰，会成为一次性玩具；如果承载宠物画像和路线反馈，则可以成为产品的情感入口和解释界面。</li>
 </ul>
 </section>
-<section id="次要用户" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="次要用户"><span class="header-section-number">3.2</span> 次要用户</h2>
-<p>次要用户包括宠物服务和城市空间供给方：</p>
-<ul>
-<li>宠物洗护店、训练师、室内宠物空间、私人草坪、宠物营地。</li>
-<li>宠物友好商圈、社区商业、社区物业。</li>
-<li>宠物友好车服务、宠物医院、宠物用品零售。</li>
-<li>需要理解产品差异化的黑客松评委、投资人或合作伙伴。</li>
-</ul>
-</section>
-<section id="核心使用场景" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="核心使用场景"><span class="header-section-number">3.3</span> 核心使用场景</h2>
-<p>本 PRD 优先覆盖三个高频场景：</p>
+<section id="类比产品启发" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="类比产品启发"><span class="header-section-number">2.3</span> 类比产品启发</h2>
+<p>本产品可以借鉴几个成熟产品的机制，但不能照搬。</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>类比产品</th>
+<th>可借鉴点</th>
+<th>不应照搬</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Strava</td>
+<td>路线记录、热力图、个人历史、社区数据聚合。</td>
+<td>竞技化排行榜、速度里程优先、暴露敏感路线。</td>
+</tr>
+<tr class="even">
+<td>Waze</td>
+<td>用户上报、风险点、社区共建地图、动态提醒。</td>
+<td>强实时导航和看见他人位置，宠物场景早期应做趋势和概率。</td>
+</tr>
+<tr class="odd">
+<td>AllTrails</td>
+<td>路线详情、难度、环境标签、用户评价、适合人群。</td>
+<td>户外徒步的长路线范式，日常遛狗更多是 routine 和附近微判断。</td>
+</tr>
+<tr class="even">
+<td>大众点评 / Yelp</td>
+<td>POI 评价、图文、标签、最近验证、商户信息。</td>
+<td>非结构化评论搜索，宠物友好规则必须结构化。</td>
+</tr>
+<tr class="odd">
+<td>宠物社区</td>
+<td>宠物身份、经验分享、附近同好。</td>
+<td>泛社区信息流，早期社区应围绕地图贡献和路线反馈。</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="机会判断" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="机会判断"><span class="header-section-number">2.4</span> 机会判断</h2>
+<p>Pet Mobility Agent 的真正机会不在“路线规划”，而在“附近可信判断”：</p>
+<pre class="text"><code>用户熟悉路线
+  + 宠物有个体差异
+  + 附近信息会变化
+  + 社区反馈可以聚合
+  + Agent 能做解释和推荐
+  + 宠物分身提供情感入口
+= 懂这只宠物的附近地图</code></pre>
+</section>
+</section>
+<section id="产品原则" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> 产品原则</h1>
+<section id="原则一先判断适不适合再生成路线" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="原则一先判断适不适合再生成路线"><span class="header-section-number">3.1</span> 原则一：先判断适不适合，再生成路线</h2>
+<p>系统不能默认给出路线。面对高温、狗群密度高、禁入、交通刺激、宠物状态不适合等情况时，Agent 应先做风险门控，再推荐路线或替代方案。</p>
+</section>
+<section id="原则二优先理解常走路线而不是强推探索" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="原则二优先理解常走路线而不是强推探索"><span class="header-section-number">3.2</span> 原则二：优先理解常走路线，而不是强推探索</h2>
+<p>大多数用户日常遛狗会走熟悉路线。产品应先记住并理解常走路线，再在天气、时间、社区热力和宠物状态变化时给出调整建议。</p>
+</section>
+<section id="原则三宠物友好不是标签而是结构化规则" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="原则三宠物友好不是标签而是结构化规则"><span class="header-section-number">3.3</span> 原则三：宠物友好不是标签，而是结构化规则</h2>
+<p>一个 POI 不能只写“宠物友好”。至少应描述可进入范围、体型限制、牵引要求、是否有水、是否有户外位、最近验证时间、争议和置信度。</p>
+</section>
+<section id="原则四社区数据必须先保护隐私再产生价值" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="原则四社区数据必须先保护隐私再产生价值"><span class="header-section-number">3.4</span> 原则四：社区数据必须先保护隐私，再产生价值</h2>
+<p>热力图只能表达趋势和概率，不能展示实时个人位置、单条原始路线或可推断家庭地址的起终点。</p>
+</section>
+<section id="原则五宠物分身必须服务决策" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="原则五宠物分身必须服务决策"><span class="header-section-number">3.5</span> 原则五：宠物分身必须服务决策</h2>
+<p>Q 版/3D 宠物形象不是装饰。它应承载宠物画像、路线偏好、天气风险、遇狗概率和反馈引导，让用户更直觉地理解推荐。</p>
+</section>
+<section id="原则六agent-输出必须可解释可执行可反馈" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="原则六agent-输出必须可解释可执行可反馈"><span class="header-section-number">3.6</span> 原则六：Agent 输出必须可解释、可执行、可反馈</h2>
+<p>每次推荐都要说明为什么推荐、为什么不推荐、风险是什么、备选是什么、用户执行后如何反馈。</p>
+</section>
+</section>
+<section id="目标用户与使用场景" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> 目标用户与使用场景</h1>
+<section id="主要用户" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="主要用户"><span class="header-section-number">4.1</span> 主要用户</h2>
+<p>主要用户是居住在中国大陆城市中的养狗人，尤其是以下几类：</p>
+<ul>
+<li>城市日常遛狗人：每天走熟悉路线，希望知道今天哪条更合适。</li>
+<li>敏感犬或反应犬主人：需要避开狗、人流、电动车、儿童、噪声和复杂路口。</li>
+<li>老年犬、幼犬、短鼻犬或慢病犬主人：需要更保守的天气、距离和强度控制。</li>
+<li>新手养狗人：不知道什么样的路线、地点和时段更安全。</li>
+<li>新搬家宠物家庭：对附近宠物友好地点、风险点和狗友路线缺少认知。</li>
+<li>喜欢探索宠物友好地点的用户：想去咖啡店、公园、草地、宠物店、医院或服务点，但需要更可信的宠物规则。</li>
+<li>愿意贡献地图数据的核心狗友：愿意上传 POI、纠错、标记狗多和风险点。</li>
+</ul>
+</section>
+<section id="次要用户" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="次要用户"><span class="header-section-number">4.2</span> 次要用户</h2>
+<p>次要用户包括宠物服务和本地空间供给方：</p>
+<ul>
+<li>宠物友好餐饮、商圈、社区商业。</li>
+<li>宠物医院、宠物店、洗护店、训练师、寄养机构。</li>
+<li>社区物业、园区、商场和公园管理方。</li>
+<li>宠物智能硬件和保险服务方。</li>
+</ul>
+</section>
+<section id="核心使用场景" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="核心使用场景"><span class="header-section-number">4.3</span> 核心使用场景</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>场景</th>
-<th>说明</th>
+<th>用户问题</th>
+<th>产品回答</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>工作日短时间出门</td>
-<td>用户只有 10-40 分钟，需要解决排便、嗅闻、短暂活动。</td>
+<td>无目标日常出门</td>
+<td>准备带狗下楼，今天走哪条常走路线？</td>
+<td>结合宠物档案、天气、社区热力和历史反馈，推荐熟悉路线或降级路线。</td>
 </tr>
 <tr class="even">
+<td>有目标附近出行</td>
+<td>想去咖啡店、宠物店、医院、公园或草地。</td>
+<td>召回 POI 和路线，判断宠物适配度、路线风险和 POI 可信度。</td>
+</tr>
+<tr class="odd">
 <td>高风险天气出门</td>
-<td>高温、高湿、雨后、地表温度高，普通步行路线不适合作为首选。</td>
+<td>高温、降雨、湿度高、地面烫、空气质量差。</td>
+<td>判断是否适合出门，建议缩短、改时段、换路线或去室内。</td>
+</tr>
+<tr class="even">
+<td>避狗或社交</td>
+<td>用户想避开狗，或想让宠物适度社交。</td>
+<td>根据社区热力和宠物画像推荐安静路线或社交路线。</td>
 </tr>
 <tr class="odd">
-<td>低步行友好片区出门</td>
-<td>附近路网、交通和空间条件不适合狗持续步行，需要接驳或预约替代方案。</td>
+<td>地图贡献</td>
+<td>用户发现水碗、草地、禁入、狗多或宠物友好店。</td>
+<td>结构化上传 POI 或风险点，进入待验证和推荐系统。</td>
+</tr>
+<tr class="even">
+<td>宠物分身生成</td>
+<td>用户上传宠物照片，希望生成 Q 版/3D 形象。</td>
+<td>生成宠物分身，并让它参与路线解释、反馈和社区身份。</td>
 </tr>
 </tbody>
 </table>
 </section>
 </section>
-<section id="技术范围与优先级" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> 技术范围与优先级</h1>
-<p>本节从工程实现角度定义 MVP 到平台化的范围。优先级不是商业路线图，而是技术能力的分层：先做可演示、可验证的闭环，再扩展真实数据、持久化和外部服务。</p>
-<section id="p0黑客松-mvp-必须完成" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="p0黑客松-mvp-必须完成"><span class="header-section-number">4.1</span> P0：黑客松 MVP 必须完成</h2>
-<p>P0 的目标是完成一个端到端可演示的出行决策闭环。可以使用样例片区、模拟数据和本地状态，但 Agent 的判断逻辑、方案结构和地图节点关系必须清晰。</p>
-<p>必需能力：</p>
+<section id="功能优先级与范围" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> 功能优先级与范围</h1>
+<section id="判断口径" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="判断口径"><span class="header-section-number">5.1</span> 判断口径</h2>
+<p>本 PRD 不以“功能是否酷”判断优先级，而以它是否能支撑以下闭环判断：</p>
+<pre class="text"><code>宠物画像 -&gt; 常走路线/目标输入 -&gt; 天气和地图上下文 -&gt; 社区趋势与 POI 可信度 -&gt; Agent 推荐解释 -&gt; 用户执行 -&gt; 反馈沉淀</code></pre>
+<p>优先级定义：</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>能力</th>
-<th>说明</th>
+<th>优先级</th>
+<th>定义</th>
+<th>判断问题</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>狗狗档案输入</td>
-<td>名字、品种或体型特征、年龄、精力等级、怕热程度、反应性等级、特殊备注。</td>
+<td>P0 必须闭环</td>
+<td>没有它，产品无法证明“懂我家宠物的附近地图”成立。</td>
+<td>是否直接支撑出门前推荐、路线记忆、POI 反馈和隐私控制？</td>
 </tr>
 <tr class="even">
-<td>出行意图输入</td>
-<td>时间预算、主要需求、次要需求、避免偏好、交通偏好。</td>
+<td>P1 产品化</td>
+<td>让真实用户可以反复使用并形成社区数据飞轮。</td>
+<td>是否提升热力图、可信度、互动、主动提醒和留存？</td>
 </tr>
 <tr class="odd">
-<td>场景上下文读取</td>
-<td>当前时间、天气、湿度、温度、样例片区、用户当前位置。</td>
+<td>P2 平台化</td>
+<td>面向多城市、多服务方、商业化和复杂协作。</td>
+<td>是否依赖规模数据、商家供给、硬件或复杂治理？</td>
 </tr>
 <tr class="even">
-<td>Dog Need Fulfillment Graph 样例数据</td>
-<td>小区门、地库口、阴影路、草地、冲突路口、上车点、室内宠物空间、洗护点、训练点。</td>
-</tr>
-<tr class="odd">
-<td>风险判断能力</td>
-<td>热风险、地表风险、交通刺激、狗群刺激、步行适配度、时间可行性。</td>
-</tr>
-<tr class="even">
-<td>不安全路线拒绝</td>
-<td>在高风险场景下明确拒绝纯步行作为首选方案，并给出原因。</td>
-</tr>
-<tr class="odd">
-<td>三类方案生成</td>
-<td>附近微出门、多方式接驳出行、服务或空间预约。</td>
-</tr>
-<tr class="even">
-<td>方案对比卡</td>
-<td>展示需求完成度、安全风险、热/地表风险、交通刺激、时间匹配、成本、预约需求。</td>
-</tr>
-<tr class="odd">
-<td>地图节点联动</td>
-<td>用户选择方案时，高亮对应节点、风险点和服务点。</td>
-</tr>
-<tr class="even">
-<td>结构化微观察原型</td>
-<td>允许用户提交“这里有阴影”“狗很多”“电动车压力大”“草地不可用”等观察，并在当前会话中影响后续推荐。</td>
+<td>暂不进入范围</td>
+<td>会稀释 MVP 或引入高风险履约/合规复杂度。</td>
+<td>是否会让产品偏离宠物附近决策主线？</td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="p1第一版产品化能力" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="p1第一版产品化能力"><span class="header-section-number">4.2</span> P1：第一版产品化能力</h2>
-<p>P1 的目标是让 MVP 从演示系统变成可被真实用户反复使用的早期产品。重点是持久化、真实服务接入和更细分的狗狗模式。</p>
-<p>建议能力：</p>
+<section id="p0必须跑通的产品闭环" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="p0必须跑通的产品闭环"><span class="header-section-number">5.2</span> P0：必须跑通的产品闭环</h2>
+<p>P0 目标是证明：用户愿意在出门前打开产品，让它基于宠物档案、常走路线、天气和 POI 判断“现在走哪条更合适”。</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>能力</th>
-<th>说明</th>
+<th>功能组</th>
+<th>P0 范围</th>
+<th>验收信号</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>账号与常用狗狗档案</td>
-<td>支持多只狗、多家庭成员、常用偏好。</td>
+<td>宠物档案</td>
+<td>体型、年龄、精力、怕热、怕狗、怕车、可走时长、社交偏好。</td>
+<td>推荐结果能体现宠物差异。</td>
 </tr>
 <tr class="even">
-<td>常用地点与常用路线</td>
-<td>家、小区门、常去草地、常用上车点、常去宠物空间。</td>
+<td>宠物分身基础版</td>
+<td>Q 版 2D 头像；展示版可异步生成静态或轻 idle 3D。</td>
+<td>宠物分身能表达天气、路线强度、遇狗概率等状态。</td>
 </tr>
 <tr class="odd">
-<td>反应犬模式</td>
-<td>低刺激路线、撤离点、狗群密度、可视距离、时间段建议。</td>
+<td>常走路线</td>
+<td>用户手动保存或系统自动识别 2-5 条 routine。</td>
+<td>用户打开产品时能看到“今天常走路线是否适合”。</td>
 </tr>
 <tr class="even">
-<td>短鼻犬和老年犬模式</td>
-<td>更保守的温度阈值、运动强度和出行时长。</td>
+<td>出门 Agent</td>
+<td>支持有目标推荐和无目标常走路线判断。</td>
+<td>Agent 能输出推荐理由、风险和备选。</td>
 </tr>
 <tr class="odd">
-<td>服务行动入口</td>
-<td>室内跑场、训练师、洗护、宠物友好车、宠物医院。</td>
+<td>宠物友好地图</td>
+<td>基础 POI、风险点、水源、草地、公园、医院、宠物店。</td>
+<td>POI 能进入推荐，而不是只展示在地图上。</td>
 </tr>
 <tr class="even">
-<td>真实天气和地图服务接入</td>
-<td>读取实时天气、路网、POI、行程时间。</td>
+<td>UGC POI</td>
+<td>上传、纠错、待验证、最近验证时间。</td>
+<td>新 POI 进入待验证状态，并可被低置信引用。</td>
 </tr>
 <tr class="odd">
-<td>用户反馈持久化</td>
-<td>把结构化观察沉淀到图谱信号中，支持审核和可信度。</td>
+<td>路线反馈</td>
+<td>走完后 1-2 个轻量问题，例如狗多吗、是否顺利、是否有风险。</td>
+<td>反馈能影响下一次推荐或 POI 可信度。</td>
 </tr>
 <tr class="even">
-<td>方案收藏</td>
-<td>常用排便方案、工作日短出门方案、周末放电方案。</td>
+<td>天气与风险</td>
+<td>温度、降雨、时间段、连续暴露、狗密度等基础风险。</td>
+<td>高风险时能拒绝或降级路线。</td>
+</tr>
+<tr class="odd">
+<td>隐私控制</td>
+<td>路线记录开关、社区贡献 opt-in、起终点隐藏。</td>
+<td>用户能明确控制是否贡献社区热力。</td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="p2平台化与生态能力" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="p2平台化与生态能力"><span class="header-section-number">4.3</span> P2：平台化与生态能力</h2>
-<p>P2 的目标是扩展到多城市、多服务方和更复杂的城市带宠生态。</p>
-<p>长期能力：</p>
+<section id="p1产品化与社区数据飞轮" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="p1产品化与社区数据飞轮"><span class="header-section-number">5.3</span> P1：产品化与社区数据飞轮</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>能力</th>
-<th>说明</th>
+<th>功能组</th>
+<th>P1 范围</th>
+<th>目标</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>多城市 Dog Need Fulfillment Graph</td>
-<td>扩展到多个城市和片区的狗狗需求完成图谱。</td>
+<td>社区热力图</td>
+<td>基于 opt-in 的脱敏聚合热力。</td>
+<td>展示狗友常走区域、狗多时段、安静路线、风险趋势。</td>
 </tr>
 <tr class="even">
-<td>商家后台</td>
-<td>服务可用性、可预约时间、宠物限制、空间容量。</td>
+<td>个人路线交叉分析</td>
+<td>常走路线与社区狗密度、安静程度、风险点交叉。</td>
+<td>提醒“这条路线 18:00-19:00 狗多”。</td>
 </tr>
 <tr class="odd">
-<td>物业和商圈后台</td>
-<td>入口规则、禁入区域、带宠动线、冲突点分析。</td>
+<td>POI 可信度体系</td>
+<td>多人确认、过期降权、争议标记、商家规则变化。</td>
+<td>提升宠物友好信息可信度。</td>
 </tr>
 <tr class="even">
-<td>真实交易闭环</td>
-<td>真实预约、支付、订单、评价和售后。</td>
+<td>宠物分身互动版</td>
+<td>低面数 3D、idle/walk/sit/sniff、地图状态反馈。</td>
+<td>成为可互动 route companion。</td>
 </tr>
 <tr class="odd">
-<td>宠物硬件数据接入</td>
-<td>活动量、定位、健康趋势、异常提醒。</td>
+<td>主动提醒</td>
+<td>高温、降雨、空气质量、狗多时段、常走路线异常。</td>
+<td>让用户形成出门前打开习惯。</td>
 </tr>
 <tr class="even">
-<td>可信社区贡献体系</td>
-<td>观察审核、贡献者信誉、异常数据回滚。</td>
+<td>弱社交</td>
+<td>同路线狗友、附近搭子、但不暴露实时位置。</td>
+<td>提升附近感和贡献动力。</td>
 </tr>
 <tr class="odd">
-<td>多 Agent 协作架构</td>
-<td>在数据量、服务种类和决策复杂度上升后，引入更明确的专业 Agent 分工。</td>
+<td>路线标签</td>
+<td>安静路线、嗅闻路线、短程路线、避狗路线、社交路线。</td>
+<td>让路线更符合宠物需求语言。</td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="暂不进入范围" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="暂不进入范围"><span class="header-section-number">4.4</span> 暂不进入范围</h2>
-<p>以下内容不进入本次 MVP：</p>
-<ul>
-<li>全国真实地图数据采集。</li>
-<li>真实支付、订单和履约。</li>
-<li>商家后台与运营后台。</li>
-<li>医疗诊断和医疗建议。</li>
-<li>宠物行为训练的专业诊断。</li>
-<li>硬件设备绑定。</li>
-<li>社交社区和内容流。</li>
-<li>完整的用户增长、会员、积分和营销体系。</li>
-</ul>
-</section>
-<section id="功能需求拆分" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="功能需求拆分"><span class="header-section-number">4.5</span> 功能需求拆分</h2>
-<p>本节主要列出功能需求。需求编号用于后续拆任务和验收。</p>
-<section id="狗狗档案与出行意图" class="level3" data-number="4.5.1">
-<h3 data-number="4.5.1" class="anchored" data-anchor-id="狗狗档案与出行意图"><span class="header-section-number">4.5.1</span> 狗狗档案与出行意图</h3>
-<ul>
-<li>REQ-001：系统必须支持创建或编辑一个狗狗档案。</li>
-<li>REQ-002：狗狗档案必须包含名字、品种或体型、年龄、精力等级、怕热等级、反应性等级。</li>
-<li>REQ-003：系统必须支持输入或选择出行需求，包括排便、嗅闻、放电、降压、社交、避社交、洗护、就医。</li>
-<li>REQ-004：系统必须支持输入时间预算。</li>
-<li>REQ-005：系统必须支持输入避免偏好，例如避免大马路、避免狗群、避免高温硬质路面。</li>
-<li>REQ-006：系统必须允许用户补充交通偏好，例如只步行、可打车、可自驾、可预约。</li>
-</ul>
-<p>优先级：P0。</p>
-</section>
-<section id="风险判断与拒绝机制" class="level3" data-number="4.5.2">
-<h3 data-number="4.5.2" class="anchored" data-anchor-id="风险判断与拒绝机制"><span class="header-section-number">4.5.2</span> 风险判断与拒绝机制</h3>
-<ul>
-<li>REQ-007：系统必须评估热/地表风险。</li>
-<li>REQ-008：系统必须评估交通刺激风险。</li>
-<li>REQ-009：系统必须评估步行适配度。</li>
-<li>REQ-010：系统必须评估需求完成度，而不是只评估路线可达性。</li>
-<li>REQ-011：当风险超过阈值时，系统必须拒绝纯步行作为首选方案。</li>
-<li>REQ-012：拒绝时必须说明至少两个主要原因。</li>
-<li>REQ-013：拒绝后必须给出替代方案，而不是只展示警告。</li>
-</ul>
-<p>优先级：P0。</p>
-</section>
-<section id="方案生成" class="level3" data-number="4.5.3">
-<h3 data-number="4.5.3" class="anchored" data-anchor-id="方案生成"><span class="header-section-number">4.5.3</span> 方案生成</h3>
-<ul>
-<li>REQ-014：系统必须生成附近微出门方案。</li>
-<li>REQ-015：系统必须生成多方式接驳出行方案。</li>
-<li>REQ-016：系统必须生成服务或空间预约方案。</li>
-<li>REQ-017：每个方案必须包含标题、适合原因、步骤、总耗时、估算花费、预约需求和主要风险。</li>
-<li>REQ-018：每个方案必须说明哪些狗狗需求可以完成，哪些只能部分完成或不能完成。</li>
-<li>REQ-019：系统必须给方案排序，并说明推荐理由。</li>
-</ul>
-<p>优先级：P0。</p>
-</section>
-<section id="dog-need-fulfillment-graph" class="level3" data-number="4.5.4">
-<h3 data-number="4.5.4" class="anchored" data-anchor-id="dog-need-fulfillment-graph"><span class="header-section-number">4.5.4</span> Dog Need Fulfillment Graph</h3>
-<ul>
-<li>REQ-020：地图必须展示样例片区的宠物相关微节点。</li>
-<li>REQ-021：节点必须区分需求完成节点、风险节点、交通节点和服务节点。</li>
-<li>REQ-022：每个方案必须关联一个或多个地图节点。</li>
-<li>REQ-023：用户选择方案时，地图必须高亮该方案相关节点。</li>
-<li>REQ-024：图谱节点必须记录数据来源或最近验证时间。</li>
-<li>REQ-025：图谱信号必须能被风险判断和方案排序使用。</li>
-</ul>
-<p>优先级：P0。</p>
-</section>
-<section id="结构化微观察" class="level3" data-number="4.5.5">
-<h3 data-number="4.5.5" class="anchored" data-anchor-id="结构化微观察"><span class="header-section-number">4.5.5</span> 结构化微观察</h3>
-<ul>
-<li>REQ-026：系统必须支持提交结构化观察。</li>
-<li>REQ-027：观察必须包含位置、观察类型、强度、时间和来源。</li>
-<li>REQ-028：观察类型至少包括遮阴、狗密度、电动车压力、草地可用性、照明、被拒或不可进入。</li>
-<li>REQ-029：提交观察后，系统必须展示该观察已进入图谱信号。</li>
-<li>REQ-030：MVP 可以只在当前会话中模拟观察对推荐的影响。</li>
-</ul>
-<p>优先级：P0；若时间不足，REQ-030 可降为 P1。</p>
-</section>
-<section id="服务入口" class="level3" data-number="4.5.6">
-<h3 data-number="4.5.6" class="anchored" data-anchor-id="服务入口"><span class="header-section-number">4.5.6</span> 服务入口</h3>
-<ul>
-<li>REQ-031：方案中可以展示服务行动入口，例如预约室内跑场、叫宠物友好车、预约训练师、预约洗护。</li>
-<li>REQ-032：MVP 中服务入口只作为演示入口，不要求真实下单。</li>
-<li>REQ-033：服务节点必须说明适合的狗狗类型、可完成的需求和限制条件。</li>
-</ul>
-<p>优先级：P1。</p>
-</section>
-</section>
-<section id="数据与页面结构建议" class="level2" data-number="4.6">
-<h2 data-number="4.6" class="anchored" data-anchor-id="数据与页面结构建议"><span class="header-section-number">4.6</span> 数据与页面结构建议</h2>
-<section id="主要页面" class="level3" data-number="4.6.1">
-<h3 data-number="4.6.1" class="anchored" data-anchor-id="主要页面"><span class="header-section-number">4.6.1</span> 主要页面</h3>
-<p>MVP 可以采用三屏结构：</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>页面</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>输入屏</td>
-<td>狗狗档案、出行意图、时间预算、避免偏好。</td>
-</tr>
-<tr class="even">
-<td>推荐屏</td>
-<td>拒绝提示、三类方案、评分卡、地图节点。</td>
-</tr>
-<tr class="odd">
-<td>反馈屏</td>
-<td>结构化观察、需求完成情况、下一次推荐影响。</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="关键数据对象" class="level3" data-number="4.6.2">
-<h3 data-number="4.6.2" class="anchored" data-anchor-id="关键数据对象"><span class="header-section-number">4.6.2</span> 关键数据对象</h3>
-<p>PRD 层面只定义概念对象，不定义具体代码结构。</p>
-<p>关键对象包括：</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>对象</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>狗狗档案</td>
-<td>描述狗狗的身体、行为和偏好特征。</td>
-</tr>
-<tr class="even">
-<td>出行意图</td>
-<td>描述用户当前想完成的任务和约束。</td>
-</tr>
-<tr class="odd">
-<td>图谱节点</td>
-<td>描述城市中可停留、可通行、可服务或有风险的位置。</td>
-</tr>
-<tr class="even">
-<td>风险信号</td>
-<td>描述天气、交通、狗群、地表和刺激因素。</td>
-</tr>
-<tr class="odd">
-<td>出行方案</td>
-<td>描述一组可执行步骤和对应地图节点。</td>
-</tr>
-<tr class="even">
-<td>结构化观察</td>
-<td>描述用户对某个节点在某个时间的验证或反馈。</td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="验收标准" class="level2" data-number="4.7">
-<h2 data-number="4.7" class="anchored" data-anchor-id="验收标准"><span class="header-section-number">4.7</span> 验收标准</h2>
-<p>MVP 是否成立，取决于能否稳定跑通固定演示场景，并证明它不是普通宠物地图。</p>
-<p>验收标准：</p>
-<ul>
-<li>用户可以创建或选择一只狗狗档案。</li>
-<li>用户可以输入时间预算、需求和避免偏好。</li>
-<li>系统可以读取样例天气、样例片区图谱和服务节点。</li>
-<li>在高温、怕热、高能量犬、低步行友好片区场景中，系统必须拒绝 30-40 分钟纯步行作为首选。</li>
-<li>系统必须解释拒绝原因。</li>
-<li>系统必须返回附近微出门、多方式接驳出行、服务或空间预约三类方案。</li>
-<li>每个方案必须说明可完成需求、未完成需求、风险、时间、成本和地图节点。</li>
-<li>用户选择方案后，地图必须高亮相关节点。</li>
-<li>用户可以提交结构化观察。</li>
-<li>提交观察后，当前会话中的下一次推荐必须体现该观察带来的变化。</li>
-</ul>
-</section>
-<section id="开放问题" class="level2" data-number="4.8">
-<h2 data-number="4.8" class="anchored" data-anchor-id="开放问题"><span class="header-section-number">4.8</span> 开放问题</h2>
-<ul>
-<li>MVP 的样例城市片区选择哪里最能体现“中国城市低步行友好”的问题？</li>
-<li>黑客松演示是否需要真实地图底图，还是用抽象地图和节点关系即可？</li>
-<li>狗狗档案中的风险阈值应该先按犬种、体型还是用户自评来判断？</li>
-<li>室内宠物空间、训练师和洗护点在 MVP 中是否使用虚拟商家？</li>
-<li>结构化观察是否需要审核机制，还是先在单用户会话中模拟？</li>
-<li>如果用户坚持执行高风险步行方案，产品应该给到什么程度的安全提示？</li>
-<li>后续商业化应优先连接宠物空间、宠物友好车，还是训练师服务？</li>
-</ul>
-</section>
-<section id="进一步说明" class="level2" data-number="4.9">
-<h2 data-number="4.9" class="anchored" data-anchor-id="进一步说明"><span class="header-section-number">4.9</span> 进一步说明</h2>
-<p>这份 PRD 的重点是先把“带宠出行决策”这个产品问题讲清楚。MVP 不追求数据覆盖面，而追求判断链路清晰、拒绝策略可信、替代方案可执行、图谱概念可展示。</p>
-<p>后续如果进入实现阶段，应优先把以下能力做扎实：</p>
-<ul>
-<li>狗狗档案和出行意图的最小输入闭环。</li>
-<li>样例 Dog Need Fulfillment Graph。</li>
-<li>风险评估和拒绝规则。</li>
-<li>三类方案生成。</li>
-<li>地图节点联动。</li>
-<li>结构化观察影响下一次推荐。</li>
-</ul>
-</section>
-</section>
-<section id="核心用户流程" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> 核心用户流程</h1>
-<p>核心用户流程是本产品最重要的部分。Pet Mobility Agent 的价值不在于展示一个地点，而在于把“狗狗今天要完成什么需求”翻译成可执行的出行任务，并在风险高时给出负责任的替代方案。</p>
-<section id="流程总览" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="流程总览"><span class="header-section-number">5.1</span> 流程总览</h2>
-<p>用户不应该被迫先搜索地点或路线。理想流程从“今天这只狗需要什么”开始，再由 Agent 根据上下文判断出门策略。</p>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
-    A[用户打开产品] --&gt; B[选择或创建狗狗档案]
-    B --&gt; C[输入今天的出行意图]
-    C --&gt; D[读取天气、时间、位置、图谱节点和服务供给]
-    D --&gt; E[Agent 解析需求和约束]
-    E --&gt; F[风险评估与可行性判断]
-    F --&gt; G{纯步行是否适合作为首选}
-    G -- 适合 --&gt; H[生成步行优先方案]
-    G -- 不适合 --&gt; I[拒绝纯步行首选并解释原因]
-    H --&gt; J[生成多方案对比]
-    I --&gt; J
-    J --&gt; K[用户查看方案卡和地图高亮]
-    K --&gt; L[用户选择执行方案]
-    L --&gt; M[出行后提交结构化观察]
-    M --&gt; N[观察进入图谱信号]
-    N --&gt; O[下一次推荐体现更新]
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-</section>
-<section id="第一步狗狗档案" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="第一步狗狗档案"><span class="header-section-number">5.2</span> 第一步：狗狗档案</h2>
-<p>狗狗档案不是普通资料页，而是 Agent 判断风险和需求优先级的基础。用户首次使用时，需要以低负担方式输入最小必要信息。MVP 可以用表单完成，后续可以支持自然语言补充。</p>
-<p>档案应覆盖：</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>信息类别</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>基本识别</td>
-<td>名字、品种或体型、年龄段。</td>
-</tr>
-<tr class="even">
-<td>运动特征</td>
-<td>精力水平、日常运动量、是否容易过度兴奋。</td>
-</tr>
-<tr class="odd">
-<td>温度敏感</td>
-<td>怕热程度、是否短鼻犬、是否老年犬、是否有心肺问题。</td>
-</tr>
-<tr class="even">
-<td>反应性</td>
-<td>是否怕狗、怕人、怕车、怕电动车、怕儿童、怕噪声。</td>
-</tr>
-<tr class="odd">
-<td>出行习惯</td>
-<td>是否能坐车、是否能进笼、是否能去室内空间。</td>
-</tr>
-<tr class="even">
-<td>主人偏好</td>
-<td>是否愿意打车、自驾、预约服务、避开主干路、避开狗群。</td>
-</tr>
-</tbody>
-</table>
-<p>档案的产品原则是“足够判断，不追求一次填完”。如果用户只填写犬种、年龄、精力和怕热程度，Agent 就应该能先给出保守方案；如果用户继续补充反应性、常去地点和历史反馈，系统再逐步变聪明。</p>
-</section>
-<section id="第二步出行意图输入" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="第二步出行意图输入"><span class="header-section-number">5.3</span> 第二步：出行意图输入</h2>
-<p>用户的输入可以是自然语言，也可以是结构化选择。MVP 建议同时支持“自然语言一句话”和“关键选项”，以便演示 Agent 理解能力，同时保证判断稳定。</p>
-<p>典型输入包括：</p>
+<section id="p2平台化与商业化" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="p2平台化与商业化"><span class="header-section-number">5.4</span> P2：平台化与商业化</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>输入项</th>
-<th>选项或说明</th>
+<th>功能组</th>
+<th>P2 范围</th>
+<th>目标</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>时间预算</td>
-<td>10 分钟、20 分钟、40 分钟、半天。</td>
+<td>商家端</td>
+<td>POI 认领、宠物友好认证、活动发布。</td>
+<td>提升 POI 真实性和商业合作。</td>
 </tr>
 <tr class="even">
-<td>主要需求</td>
-<td>排便、嗅闻、放电、降压、社交、避社交、洗护、就医。</td>
+<td>服务交易</td>
+<td>洗护、寄养、训练、宠物友好车。</td>
+<td>从推荐进入服务履约。</td>
 </tr>
 <tr class="odd">
-<td>优先级</td>
-<td>必须现在完成、可以部分完成、可以替代完成。</td>
+<td>可穿戴/硬件</td>
+<td>智能项圈、GPS、健康数据。</td>
+<td>将活动和健康信号纳入推荐。</td>
 </tr>
 <tr class="even">
-<td>避免偏好</td>
-<td>不想过大马路、不想遇到狗、不想晒太阳、不想打车、不想去商场。</td>
+<td>高级宠物分身</td>
+<td>多宠物、AR check-in、路线回放、装备/徽章。</td>
+<td>提升留存和身份表达。</td>
 </tr>
 <tr class="odd">
-<td>可接受方式</td>
-<td>步行、打车、自驾、室内空间、预约服务、小区内短出门。</td>
+<td>社区治理</td>
+<td>地图贡献者等级、审核队列、区域志愿者。</td>
+<td>支撑多区域数据质量。</td>
+</tr>
+<tr class="even">
+<td>多 Agent</td>
+<td>地图 Agent、隐私 Agent、推荐 Agent、商家核验 Agent。</td>
+<td>在规模复杂后拆分职责。</td>
 </tr>
 </tbody>
 </table>
-<p>Agent 需要把一句“我只有 40 分钟，狗很兴奋，最好不要过大马路”解析为几个决策变量：</p>
+</section>
+<section id="暂不进入-mvp" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="暂不进入-mvp"><span class="header-section-number">5.5</span> 暂不进入 MVP</h2>
+<p>以下内容不进入 P0：</p>
 <ul>
-<li>时间紧张。</li>
-<li>狗狗有放电需求。</li>
-<li>用户有交通风险规避偏好。</li>
-<li>不能只按距离最近生成路线。</li>
-<li>如果步行环境差，需要考虑接驳或空间预约。</li>
+<li>泛社区信息流。</li>
+<li>实时看到其他狗或狗主的位置。</li>
+<li>排行榜和竞技化路线挑战。</li>
+<li>完整商家后台。</li>
+<li>真实交易、支付和服务履约。</li>
+<li>完整 AR 宠物互动。</li>
+<li>医疗诊断和行为训练诊断。</li>
+<li>全国地图数据铺开。</li>
+<li>与硬件深度绑定。</li>
 </ul>
 </section>
-<section id="第三步上下文收集" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="第三步上下文收集"><span class="header-section-number">5.4</span> 第三步：上下文收集</h2>
-<p>在用户提交意图后，系统需要收集当前场景上下文。MVP 可以使用样例数据，但产品结构上要为真实接入留出位置。</p>
-<p>上下文分为五类：</p>
+</section>
+<section id="核心产品模块" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> 核心产品模块</h1>
+<section id="宠物档案" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="宠物档案"><span class="header-section-number">6.1</span> 宠物档案</h2>
+<p>宠物档案是推荐系统的核心输入，不是普通资料页。它决定路线、POI、天气风险、社交倾向和宠物分身状态。</p>
+<p>P0 最小字段：</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>上下文类型</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>天气上下文</td>
-<td>气温、湿度、降雨、体感温度、时间段、日照强度。</td>
-</tr>
-<tr class="even">
-<td>城市空间上下文</td>
-<td>小区门、出入口、绿地、阴影、路口、围挡、可停留区域。</td>
-</tr>
-<tr class="odd">
-<td>交通上下文</td>
-<td>主干路、电动车压力、过街复杂度、上车点、停车点、车程时间。</td>
-</tr>
-<tr class="even">
-<td>服务上下文</td>
-<td>室内跑场、洗护店、训练师、宠物友好空间、可预约时间。</td>
-</tr>
-<tr class="odd">
-<td>历史上下文</td>
-<td>狗狗过往偏好、用户常选方案、结构化观察、被拒绝或不可进入记录。</td>
-</tr>
-</tbody>
-</table>
-<p>这些上下文进入 Agent 后，不应该只是作为展示信息，而要参与风险判断和方案排序。</p>
-</section>
-<section id="第四步风险判断" class="level2" data-number="5.5">
-<h2 data-number="5.5" class="anchored" data-anchor-id="第四步风险判断"><span class="header-section-number">5.5</span> 第四步：风险判断</h2>
-<p>风险判断是产品的关键分水岭。普通地图默认“给路线”，Pet Mobility Agent 必须先判断“是否应该给这条路线”。在高风险场景下，拒绝不安全方案本身就是产品价值。</p>
-<p>风险判断至少包含六个维度：</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>维度</th>
-<th>判断因素</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>热/地表风险</td>
-<td>气温、湿度、日照、地面材质、阴影比例、狗狗怕热程度。</td>
-</tr>
-<tr class="even">
-<td>交通刺激</td>
-<td>主干路、电动车混行、过街次数、路口复杂度、上下车安全性。</td>
-</tr>
-<tr class="odd">
-<td>狗群和人流刺激</td>
-<td>高峰时段、常见狗群、儿童密度、商圈人流。</td>
-</tr>
-<tr class="even">
-<td>步行适配度</td>
-<td>连续可走空间、绿地可达性、停留点密度、可撤离点。</td>
-</tr>
-<tr class="odd">
-<td>需求完成度</td>
-<td>排便、嗅闻、放电、降压、社交或避社交能否完成。</td>
-</tr>
-<tr class="even">
-<td>主人可执行性</td>
-<td>时间预算、成本接受度、交通方式、预约意愿。</td>
-</tr>
-</tbody>
-</table>
-<p>判断结果不应只输出一个分数，而要输出“是否适合作为首选”和“为什么”。例如：</p>
-<ul>
-<li>纯步行不适合作为首选，因为当前温度高、阴影不足、主干路过街复杂，并且狗狗怕热程度高。</li>
-<li>楼下微出门适合完成排便和低强度嗅闻，但不能充分放电。</li>
-<li>打车到室内跑场更适合完成放电，但成本更高，需要预约。</li>
-</ul>
-</section>
-<section id="第五步拒绝不安全纯步行" class="level2" data-number="5.6">
-<h2 data-number="5.6" class="anchored" data-anchor-id="第五步拒绝不安全纯步行"><span class="header-section-number">5.6</span> 第五步：拒绝不安全纯步行</h2>
-<p>当风险超过阈值时，Agent 必须明确拒绝纯步行作为首选，而不是把风险藏在提示里。拒绝语气要坚定、解释要具体、替代方案要立刻跟上。</p>
-<p>拒绝不是“无法服务”，而是“换一种更合适的完成方式”。用户看到的体验应该是：</p>
-<ul>
-<li>先说明不推荐什么。</li>
-<li>再说明为什么。</li>
-<li>再给出可执行替代方案。</li>
-<li>再告诉用户如果仍坚持步行，需要如何降低风险。</li>
-</ul>
-<p>例如，在 34°C、湿度 72%、下午、边牧、40 分钟、避免大马路的场景中，系统应该表达：</p>
-<ul>
-<li>不建议把 30-40 分钟纯步行作为首选。</li>
-<li>主要原因是热/地表风险高、交通刺激高、连续阴影和安全停留点不足。</li>
-<li>推荐先完成 8 分钟楼下排便和阴影嗅闻，再通过接驳去室内宠物空间放电。</li>
-<li>如果用户只想在附近完成，则应降低目标，从“放电”改为“排便 + 降压 + 短嗅闻”。</li>
-</ul>
-</section>
-<section id="第六步生成三类方案" class="level2" data-number="5.7">
-<h2 data-number="5.7" class="anchored" data-anchor-id="第六步生成三类方案"><span class="header-section-number">5.7</span> 第六步：生成三类方案</h2>
-<p>Agent 至少生成三类方案，避免把用户锁死在单一路线里。每类方案都应有明确适用场景。</p>
-<p>第一类：附近微出门。</p>
-<p>适用于高温、时间很短、狗狗状态不稳定、主人不想移动太远的情况。它的目标不是充分放电，而是完成最低必要需求，例如排便、短嗅闻、情绪降压。</p>
-<p>应包含：</p>
-<ul>
-<li>从哪个小区门或楼下点位出发。</li>
-<li>停留在哪些阴影、草地或低刺激节点。</li>
-<li>总时长和最大连续暴露时间。</li>
-<li>哪些需求可以完成，哪些需求不能完成。</li>
-<li>如果遇到狗群、电动车或地面过热，如何撤回。</li>
-</ul>
-<p>第二类：多方式接驳出行。</p>
-<p>适用于附近不好走，但城市内存在更适合狗狗需求的空间。它的目标是通过打车、自驾或短距离接驳，把“危险或低效的步行段”替换成“更安全的到达方式”。</p>
-<p>应包含：</p>
-<ul>
-<li>安全上车点。</li>
-<li>接驳方式和预计时长。</li>
-<li>目的地节点。</li>
-<li>到达后的活动安排。</li>
-<li>返程方式和备选撤离点。</li>
-<li>成本和是否需要准备牵引、胸背、饮水、尿垫或车内保护用品。</li>
-</ul>
-<p>第三类：服务或空间预约。</p>
-<p>适用于狗狗需要放电、训练、洗护、避热、避社交或专业协助的情况。它的目标是把出行任务转化为服务任务。</p>
-<p>应包含：</p>
-<ul>
-<li>推荐服务类型。</li>
-<li>为什么这个服务匹配当前需求。</li>
-<li>预约时间窗口。</li>
-<li>是否适合反应犬、短鼻犬、老年犬或高能量犬。</li>
-<li>到达和离开时的低刺激动线。</li>
-<li>如果服务不可用，应该回退到哪一个方案。</li>
-</ul>
-</section>
-<section id="第七步方案对比与地图联动" class="level2" data-number="5.8">
-<h2 data-number="5.8" class="anchored" data-anchor-id="第七步方案对比与地图联动"><span class="header-section-number">5.8</span> 第七步：方案对比与地图联动</h2>
-<p>方案不应只是一段文本，而应以统一结构呈现，方便用户比较和执行。</p>
-<p>每个方案都应展示：</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>字段</th>
-<th>说明</th>
+<th>示例</th>
+<th>用途</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>方案标题</td>
-<td>方案的简短名称。</td>
+<td>名字</td>
+<td>奶茶</td>
+<td>个性化表达和宠物分身绑定。</td>
 </tr>
 <tr class="even">
-<td>适合原因</td>
-<td>说明为什么它匹配当前狗狗需求和场景约束。</td>
+<td>物种</td>
+<td>狗、猫</td>
+<td>P0 以狗为主，但保留扩展。</td>
 </tr>
 <tr class="odd">
-<td>主要步骤</td>
-<td>用户可以按顺序执行的行动。</td>
+<td>体型</td>
+<td>小型、中型、大型</td>
+<td>判断距离、POI 体型限制、社交风险。</td>
 </tr>
 <tr class="even">
-<td>预计总时长</td>
-<td>从出门准备到完成主要任务的时间。</td>
+<td>年龄段</td>
+<td>幼年、成年、老年</td>
+<td>判断运动强度和天气风险。</td>
 </tr>
 <tr class="odd">
-<td>估算成本</td>
-<td>交通、预约或服务可能产生的费用。</td>
+<td>精力水平</td>
+<td>1-5</td>
+<td>判断是否需要放电。</td>
 </tr>
 <tr class="even">
-<td>是否需要预约</td>
-<td>标明是否需要提前确认时间或空间。</td>
+<td>怕热程度</td>
+<td>1-5</td>
+<td>高温风险门控。</td>
 </tr>
 <tr class="odd">
-<td>可完成的狗狗需求</td>
-<td>方案可以完成的排便、嗅闻、放电、降压、社交或避社交需求。</td>
+<td>是否怕狗</td>
+<td>是/否/不确定</td>
+<td>社区狗密度推荐。</td>
 </tr>
 <tr class="even">
-<td>未能完成或只能部分完成的需求</td>
-<td>需要延期、替代或降低目标的需求。</td>
+<td>是否怕车/电动车</td>
+<td>是/否/不确定</td>
+<td>路线风险判断。</td>
 </tr>
 <tr class="odd">
-<td>主要风险和规避方式</td>
-<td>风险点及对应规避动作。</td>
+<td>社交偏好</td>
+<td>喜欢社交、适度、避社交</td>
+<td>路线标签和热力图解释。</td>
 </tr>
 <tr class="even">
-<td>地图节点</td>
-<td>出发点、停留点、风险点、上车点、服务点、撤离点。</td>
+<td>可走时长</td>
+<td>10/20/40 分钟</td>
+<td>常走路线推荐。</td>
+</tr>
+<tr class="odd">
+<td>主人偏好</td>
+<td>不打车、不进商场、避主干路</td>
+<td>方案过滤。</td>
 </tr>
 </tbody>
 </table>
-<p>地图联动的重点不是画一条漂亮路线，而是让用户理解“为什么这些节点重要”。例如，同样是 300 米，小区侧门到阴影草地可能比主门到开阔广场更适合；同样是打车，地库口可能比主干路边更适合作为上车点。</p>
+<p>档案原则：</p>
+<ul>
+<li>首次填写应轻量。</li>
+<li>允许后续通过出行反馈逐步完善。</li>
+<li>不把医疗诊断写成事实档案。</li>
+<li>对健康限制使用保守表达，例如“需要更短路线”而不是疾病判断。</li>
+</ul>
 </section>
-<section id="第八步执行中辅助" class="level2" data-number="5.9">
-<h2 data-number="5.9" class="anchored" data-anchor-id="第八步执行中辅助"><span class="header-section-number">5.9</span> 第八步：执行中辅助</h2>
-<p>MVP 可以不做实时导航，但 PRD 需要定义未来执行中的辅助能力。</p>
-<p>执行中辅助包括：</p>
+<section id="宠物分身-agent" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="宠物分身-agent"><span class="header-section-number">6.2</span> 宠物分身 Agent</h2>
+<p>宠物分身 Agent 是 Q 版/3D 虚拟宠物模块的产品化定义。它不是装饰，而是宠物画像和路线 Agent 的可视化身体。</p>
+<section id="产品价值" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="产品价值"><span class="header-section-number">6.2.1</span> 产品价值</h3>
+<p>宠物分身承担四个角色：</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -6464,350 +6256,128 @@ stroke: transparent !important;
 </colgroup>
 <thead>
 <tr class="header">
-<th>辅助类型</th>
+<th>角色</th>
 <th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>出发前检查</td>
-<td>水、牵引、胸背、拾便袋、降温用品、预约确认。</td>
+<td>宠物画像的可视化身体</td>
+<td>表达怕热、怕狗、精力、路线偏好等。</td>
 </tr>
 <tr class="even">
-<td>风险提醒</td>
-<td>连续暴露时间过长、即将经过主干路、附近狗群密度高。</td>
+<td>出门前决策助手</td>
+<td>用状态、表情和短句表达路线是否适合。</td>
 </tr>
 <tr class="odd">
-<td>需求确认</td>
-<td>是否已经排便、是否已经放松、是否仍然兴奋。</td>
+<td>路线记忆入口</td>
+<td>让复杂数据变成“今天更适合走短线”这样的直觉反馈。</td>
 </tr>
 <tr class="even">
-<td>方案切换</td>
-<td>如果草地不可用、狗群过多、温度升高或服务取消，切换到备选方案。</td>
-</tr>
-<tr class="odd">
-<td>快速撤回</td>
-<td>提示最近的安全撤离点、小区门、上车点或室内空间。</td>
+<td>社区贡献激励</td>
+<td>上传 POI、反馈路线、标记风险点后触发表情、徽章或成长。</td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="第九步出行后反馈" class="level2" data-number="5.10">
-<h2 data-number="5.10" class="anchored" data-anchor-id="第九步出行后反馈"><span class="header-section-number">5.10</span> 第九步：出行后反馈</h2>
-<p>出行后反馈是图谱进化的来源。反馈不能只是星级评分，而应尽量结构化，让系统知道哪个节点、哪个时间段、哪类狗狗、哪类需求发生了什么。</p>
-<p>反馈应覆盖：</p>
+<section id="生成链路" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="生成链路"><span class="header-section-number">6.2.2</span> 生成链路</h3>
+<p>推荐生成链路：</p>
+<pre class="text"><code>真实宠物照片
+-&gt; 宠物主体裁剪/背景去除/特征抽取
+-&gt; image-to-image 生成 Q 版 2D 形象
+-&gt; 生成多视角 Q 版参考图
+-&gt; image/multiview-to-3D 生成低面数模型
+-&gt; 自动/半自动 quadruped rig
+-&gt; idle / walk / run / sit / sniff 动画
+-&gt; GLB/USDZ 进入地图与互动场景</code></pre>
+<p>可选供应商或技术路线：</p>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>反馈类型</th>
-<th>记录内容</th>
+<th>环节</th>
+<th>方向</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>需求是否完成</td>
-<td>排便、嗅闻、放电、降压、社交、避社交。</td>
+<td>2D Q 版形象</td>
+<td>OpenAI 图像生成、Gemini 图像生成、Stable Diffusion/Flux 私有部署。</td>
 </tr>
 <tr class="even">
-<td>节点是否可用</td>
-<td>草地是否开放、入口是否可进、店铺是否接待宠物。</td>
+<td>2D 到 3D</td>
+<td>Tripo、Meshy、Rodin/Hyper3D、Stable Fast 3D、TripoSR。</td>
 </tr>
 <tr class="odd">
-<td>风险是否出现</td>
-<td>狗很多、电动车多、地面烫、无遮阴、噪声大。</td>
+<td>模型优化</td>
+<td>低面数、1K/2K 贴图、GLB/USDZ、移动端降级。</td>
 </tr>
 <tr class="even">
-<td>方案是否可执行</td>
-<td>时间是否准确、成本是否可接受、上车点是否安全。</td>
-</tr>
-<tr class="odd">
-<td>狗狗状态变化</td>
-<td>更平静、更兴奋、紧张、疲劳、过热、拒绝前进。</td>
+<td>动画与 rig</td>
+<td>四足动物 rig、idle/walk/sit/sniff 状态机。</td>
 </tr>
 </tbody>
 </table>
-<p>这些反馈进入 Dog Need Fulfillment Graph 后，可以影响下一次推荐。例如，如果多个用户在下午反馈某草地狗群密度高，反应犬模式就应降低该节点权重；如果某地库口被验证为安全上车点，接驳方案就可以优先使用它。</p>
 </section>
-<section id="黑客松固定演示流程" class="level2" data-number="5.11">
-<h2 data-number="5.11" class="anchored" data-anchor-id="黑客松固定演示流程"><span class="header-section-number">5.11</span> 黑客松固定演示流程</h2>
-<p>为了让路演稳定，MVP 应准备一个固定演示场景。</p>
-<p>输入：</p>
+<section id="mvp-范围" class="level3" data-number="6.2.3">
+<h3 data-number="6.2.3" class="anchored" data-anchor-id="mvp-范围"><span class="header-section-number">6.2.3</span> MVP 范围</h3>
+<p>P0 不要求完整高质量 3D 互动，但必须定义降级路径：</p>
+<ul>
+<li>用户上传 3 张宠物照片。</li>
+<li>系统生成 4 个 Q 版 2D 候选。</li>
+<li>用户选择一个候选作为宠物分身。</li>
+<li>可选异步生成静态或轻 idle 3D GLB。</li>
+<li>地图上宠物分身至少表达 3 类反馈：天气风险、路线强度、遇狗概率或 POI 状态。</li>
+<li>3D 生成失败时降级为 2D 头像，不阻塞地图使用。</li>
+</ul>
+</section>
+<section id="风险边界" class="level3" data-number="6.2.4">
+<h3 data-number="6.2.4" class="anchored" data-anchor-id="风险边界"><span class="header-section-number">6.2.4</span> 风险边界</h3>
 <table class="caption-top table">
 <thead>
 <tr class="header">
-<th>输入项</th>
-<th>示例值</th>
+<th>风险</th>
+<th>处理</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>城市片区</td>
-<td>重庆某新区样例区。</td>
+<td>Q 版不像真实宠物</td>
+<td>让用户确认耳型、毛色、斑纹、尾巴、体型、项圈。</td>
 </tr>
 <tr class="even">
-<td>天气</td>
-<td>34°C，湿度 72%，下午。</td>
+<td>单张照片无法知道背面</td>
+<td>P0 允许 AI 补多视角，P1 鼓励上传 3-5 张照片。</td>
 </tr>
 <tr class="odd">
-<td>狗狗</td>
-<td>边牧，3 岁，精力 5/5，怕热 4/5，反应性 3/5。</td>
+<td>四足 rig 不稳定</td>
+<td>默认 2D 降级，不阻塞核心流程。</td>
 </tr>
 <tr class="even">
-<td>用户意图</td>
-<td>40 分钟内完成排便和放电，最好不要穿过大马路。</td>
+<td>移动端性能</td>
+<td>GLB 目标小于 12MB，低端机自动降级 2D。</td>
 </tr>
-</tbody>
-</table>
-<p>预期过程：</p>
-<ol type="1">
-<li>用户选择边牧档案。</li>
-<li>用户输入“我只有 40 分钟，想让它排便和放电，最好不要过大马路”。</li>
-<li>Agent 读取天气、狗狗档案、片区图谱、服务节点。</li>
-<li>Agent 判断纯步行不适合作为首选。</li>
-<li>系统展示拒绝理由：热/地表风险高、交通刺激高、连续可用空间不足。</li>
-<li>系统生成三类方案。</li>
-<li>用户点击“接驳到室内宠物跑场”。</li>
-<li>地图高亮小区地库上车点、目的地、服务点和撤离点。</li>
-<li>用户模拟提交观察：“楼下草地今天狗很多，下午不适合反应犬”。</li>
-<li>系统展示下一次推荐中该草地的刺激风险上升。</li>
-</ol>
-<p>演示要让观众清楚看到产品差异：</p>
-<ul>
-<li>它不是搜索“附近宠物友好”。</li>
-<li>它不是生成一条最短步行路线。</li>
-<li>它会拒绝不安全的默认方案。</li>
-<li>它会把狗狗需求、城市风险和服务供给组合成一个任务计划。</li>
-</ul>
-</section>
-</section>
-<section id="agent-架构" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Agent 架构</h1>
-<p>Agent 是本产品的核心。它不只是把用户输入改写成路线搜索词，而是承担“理解需求、收集上下文、判断风险、拒绝不安全方案、生成替代计划、解释原因、吸收反馈”的完整决策链。</p>
-<section id="mvp-是否需要-multi-agent" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="mvp-是否需要-multi-agent"><span class="header-section-number">6.1</span> MVP 是否需要 Multi-Agent</h2>
-<p>MVP 不建议一开始做真正的多 Agent 系统。理由是本阶段数据量、工具数量和任务复杂度还可控，过早引入多 Agent 会增加调试、评估和演示不确定性。</p>
-<p>MVP 建议采用“单一 Orchestrator Agent + 多个确定性能力模块”的架构：</p>
-<ul>
-<li>Orchestrator Agent 负责理解用户意图、组织上下文、调用能力模块、生成最终方案和解释。</li>
-<li>风险评估、图谱检索、方案生成、服务匹配、观察写入等能力尽量模块化。</li>
-<li>每个模块输出结构化中间结果，避免所有判断都藏在大模型自然语言里。</li>
-<li>大模型负责综合、权衡和解释，但关键风险阈值和拒绝规则应尽量可配置、可测试。</li>
-</ul>
-<p>P1 或 P2 再考虑演进为多 Agent：</p>
-<ul>
-<li>当城市数据变多，需要专门的地图/图谱 Agent。</li>
-<li>当服务供给变复杂，需要专门的服务匹配 Agent。</li>
-<li>当用户长期记忆变复杂，需要专门的记忆与偏好 Agent。</li>
-<li>当执行中需要实时改线，需要专门的执行监控 Agent。</li>
-</ul>
-</section>
-<section id="mvp-推荐架构" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="mvp-推荐架构"><span class="header-section-number">6.2</span> MVP 推荐架构</h2>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart LR
-    U[用户] --&gt; UI[产品界面]
-    UI --&gt; O[Orchestrator Agent]
-    O --&gt; I[意图解析模块]
-    O --&gt; P[狗狗档案与偏好]
-    O --&gt; C[场景上下文模块]
-    O --&gt; G[Dog Need Fulfillment Graph]
-    O --&gt; R[风险评估模块]
-    O --&gt; S[方案生成模块]
-    O --&gt; X[解释与拒绝模块]
-    O --&gt; F[反馈观察模块]
-    C --&gt; R
-    P --&gt; R
-    G --&gt; R
-    R --&gt; S
-    G --&gt; S
-    S --&gt; X
-    X --&gt; UI
-    F --&gt; G
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<p>架构原则：</p>
-<ul>
-<li>意图解析和最终表达可以由 Agent 完成。</li>
-<li>风险计算要尽量有明确输入和输出。</li>
-<li>方案生成不能只依赖大模型自由发挥，应受到方案类型、节点、时间、风险和需求完成度约束。</li>
-<li>地图图谱是核心资产，不能只是展示层。</li>
-<li>结构化观察要进入图谱，而不是成为不可计算的评论。</li>
-</ul>
-</section>
-<section id="agent-决策链" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="agent-决策链"><span class="header-section-number">6.3</span> Agent 决策链</h2>
-<p>Agent 每次生成方案前，应按稳定顺序执行决策链。</p>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
-    A[解析用户意图] --&gt; B[识别狗狗需求]
-    B --&gt; C[读取狗狗档案和偏好]
-    C --&gt; D[读取天气、时间、位置和图谱]
-    D --&gt; E[生成候选完成方式]
-    E --&gt; F[评估每个候选方式的风险]
-    F --&gt; G{是否存在高风险默认方案}
-    G -- 是 --&gt; H[触发拒绝规则]
-    G -- 否 --&gt; I[保留为可推荐方案]
-    H --&gt; J[生成替代方案]
-    I --&gt; K[排序与解释]
-    J --&gt; K
-    K --&gt; L[输出方案卡、地图节点和注意事项]
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<p>决策链中的关键问题：</p>
-<ul>
-<li>用户真正想完成的是哪类狗狗需求？</li>
-<li>这些需求是否必须现在完成？</li>
-<li>当前天气和地表条件是否允许持续步行？</li>
-<li>当前片区是否存在连续、安全、低刺激的步行空间？</li>
-<li>狗狗档案是否要求更保守的阈值？</li>
-<li>是否存在更安全的替代完成方式？</li>
-<li>用户是否接受接驳、预约或降低目标？</li>
-<li>方案是否能被用户在时间和成本上执行？</li>
-</ul>
-</section>
-<section id="agent-输入" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="agent-输入"><span class="header-section-number">6.4</span> Agent 输入</h2>
-<p>Agent 的输入分为显式输入和隐式上下文。</p>
-<p>显式输入：</p>
-<ul>
-<li>狗狗档案。</li>
-<li>出行意图。</li>
-<li>时间预算。</li>
-<li>避免偏好。</li>
-<li>可接受交通方式。</li>
-<li>用户选择或反馈。</li>
-</ul>
-<p>隐式上下文：</p>
-<ul>
-<li>当前天气和时间。</li>
-<li>用户当前位置。</li>
-<li>样例片区图谱。</li>
-<li>服务节点和可用状态。</li>
-<li>历史观察。</li>
-<li>过去常选方案。</li>
-</ul>
-<p>MVP 可以先使用样例天气、样例图谱和本地会话状态，但接口边界上要保留真实接入空间。</p>
-</section>
-<section id="agent-输出" class="level2" data-number="6.5">
-<h2 data-number="6.5" class="anchored" data-anchor-id="agent-输出"><span class="header-section-number">6.5</span> Agent 输出</h2>
-<p>Agent 的输出必须可读、可比较、可执行。每次推荐至少包含：</p>
-<ul>
-<li>是否推荐纯步行作为首选。</li>
-<li>如果不推荐，明确拒绝原因。</li>
-<li>三类方案。</li>
-<li>每个方案的需求完成度。</li>
-<li>每个方案的风险说明。</li>
-<li>每个方案的步骤。</li>
-<li>每个方案的地图节点。</li>
-<li>每个方案的估算时间和成本。</li>
-<li>执行注意事项。</li>
-<li>可提交的出行后反馈入口。</li>
-</ul>
-<p>输出语气要像一个谨慎但不扫兴的出行助手。它既要保护狗狗安全，也要帮助主人完成现实任务。</p>
-</section>
-<section id="拒绝策略" class="level2" data-number="6.6">
-<h2 data-number="6.6" class="anchored" data-anchor-id="拒绝策略"><span class="header-section-number">6.6</span> 拒绝策略</h2>
-<p>拒绝策略是 Agent 的安全边界。系统应避免输出“虽然风险很高但你可以试试”这类含糊建议。</p>
-<p>触发拒绝的典型情况：</p>
-<ul>
-<li>高温高湿，狗狗怕热程度高或属于短鼻犬、老年犬。</li>
-<li>需要 30 分钟以上连续户外步行，但阴影不足。</li>
-<li>路线必须穿过多个主干路或复杂路口。</li>
-<li>电动车压力高，且狗狗反应性较高。</li>
-<li>用户要求放电，但附近只能完成排便或短嗅闻。</li>
-<li>服务或空间已经不可用，但用户仍期待完成高强度需求。</li>
-</ul>
-<p>拒绝后必须给出替代方式：</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>替代方式</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
 <tr class="odd">
-<td>降低目标</td>
-<td>从“排便 + 放电”改成“排便 + 降压”。</td>
+<td>生成成本</td>
+<td>设置重试次数和月度额度。</td>
 </tr>
 <tr class="even">
-<td>缩短暴露</td>
-<td>楼下 8-10 分钟微出门。</td>
-</tr>
-<tr class="odd">
-<td>改变交通</td>
-<td>用接驳替代危险步行段。</td>
-</tr>
-<tr class="even">
-<td>改变空间</td>
-<td>去室内宠物空间、训练场或可控场地。</td>
-</tr>
-<tr class="odd">
-<td>改变时间</td>
-<td>建议清晨或夜间再完成放电。</td>
+<td>宠物照片隐私</td>
+<td>原图加密、默认不公开、用户删除宠物时删除衍生资产。</td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="记忆系统设计" class="level2" data-number="6.7">
-<h2 data-number="6.7" class="anchored" data-anchor-id="记忆系统设计"><span class="header-section-number">6.7</span> 记忆系统设计</h2>
-<p>MVP 需要轻量记忆，但不需要复杂长期记忆系统。推荐分三层设计。</p>
-<p>第一层：会话记忆。</p>
-<p>用于保存当前对话中的狗狗档案、用户意图、Agent 判断、用户选择和临时观察。MVP 必须支持这一层，否则演示无法体现“观察影响下一次推荐”。</p>
-<p>第二层：用户与狗狗记忆。</p>
-<p>用于保存长期偏好和狗狗特征，例如常用出入口、常去草地、是否愿意打车、是否怕狗、是否容易中暑。P1 应支持这一层。</p>
-<p>第三层：图谱记忆。</p>
-<p>用于保存和聚合多个用户对城市节点的观察，例如某草地在晚上狗很多、某小区门更适合上车、某商场入口虽然宠物友好但电梯绕行复杂。P1 后期或 P2 应支持这一层。</p>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
-    A[当前会话] --&gt; B[会话记忆]
-    C[狗狗档案和主人偏好] --&gt; D[用户与狗狗记忆]
-    E[结构化微观察] --&gt; F[图谱记忆]
-    B --&gt; G[本次推荐]
-    D --&gt; G
-    F --&gt; G
-    G --&gt; H[用户选择和反馈]
-    H --&gt; B
-    H --&gt; D
-    H --&gt; F
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<p>记忆系统的边界：</p>
-<ul>
-<li>不把医疗诊断写成事实记忆。</li>
-<li>不把一次异常体验永久固化为节点结论。</li>
-<li>对用户隐私信息做最小化采集。</li>
-<li>对群体观察做可信度、时间衰减和冲突处理。</li>
-</ul>
 </section>
-<section id="图谱设计" class="level2" data-number="6.8">
-<h2 data-number="6.8" class="anchored" data-anchor-id="图谱设计"><span class="header-section-number">6.8</span> 图谱设计</h2>
-<p>Dog Need Fulfillment Graph 是产品的数据核心。它的节点和边应围绕“需求如何完成”组织，而不是围绕普通 POI 分类组织。</p>
-<p>节点类型：</p>
+<section id="宠物友好地图与-dog-need-fulfillment-graph" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="宠物友好地图与-dog-need-fulfillment-graph"><span class="header-section-number">6.3</span> 宠物友好地图与 Dog Need Fulfillment Graph</h2>
+<p>现有 Dog Need Fulfillment Graph 应升级为宠物友好地图的数据核心。它不是普通 POI 目录，而是记录“哪些空间、路线、时间、入口、风险、服务和社区反馈能帮助这只宠物完成本次出门目标”的结构化图谱。</p>
+<section id="节点类型" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="节点类型"><span class="header-section-number">6.3.1</span> 节点类型</h3>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -6825,59 +6395,558 @@ stroke: transparent !important;
 <td>家、小区楼栋、小区门、地库口。</td>
 </tr>
 <tr class="even">
+<td>路线节点</td>
+<td>常走路线、短程排便线、河边路线、公园路线。</td>
+</tr>
+<tr class="odd">
 <td>空间节点</td>
 <td>草地、广场、阴影路、室内宠物空间、商圈可停留区。</td>
 </tr>
+<tr class="even">
+<td>POI 节点</td>
+<td>宠物友好咖啡店、宠物店、医院、洗护、寄养、水碗。</td>
+</tr>
 <tr class="odd">
 <td>风险节点</td>
-<td>主干路、复杂路口、电动车高压段、狗群聚集点、无遮阴硬质路面。</td>
+<td>主干路、电动车高压段、狗群聚集点、禁入点、施工点、无遮阴硬质路面。</td>
 </tr>
 <tr class="even">
 <td>交通节点</td>
 <td>上车点、停车点、电梯、入口、撤离点。</td>
 </tr>
+</tbody>
+</table>
+</section>
+<section id="边与信号" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="边与信号"><span class="header-section-number">6.3.2</span> 边与信号</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>类型</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
 <tr class="odd">
-<td>服务节点</td>
-<td>洗护、训练、室内跑场、医院、宠物友好车。</td>
+<td>可步行到达</td>
+<td>从小区东门到河边短线。</td>
+</tr>
+<tr class="even">
+<td>可完成需求</td>
+<td>可排便、可嗅闻、可放电、可降压、可社交、可避社交。</td>
+</tr>
+<tr class="odd">
+<td>存在风险</td>
+<td>狗多、电动车多、地面烫、无遮阴、禁入。</td>
+</tr>
+<tr class="even">
+<td>POI 规则</td>
+<td>可进室内、仅户外、需牵引、体型限制。</td>
+</tr>
+<tr class="odd">
+<td>社区趋势</td>
+<td>工作日晚间狗多、周末上午安静、雨后泥泞。</td>
+</tr>
+<tr class="even">
+<td>可信度</td>
+<td>最近验证时间、多人确认、争议状态。</td>
 </tr>
 </tbody>
 </table>
-<p>边类型：</p>
+</section>
+</section>
+<section id="常走路线记忆" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="常走路线记忆"><span class="header-section-number">6.4</span> 常走路线记忆</h2>
+<p>常走路线是新 PRD 的核心。产品应承认：用户日常遛狗大多数时候不是探索，而是从熟悉路线中选择今天更合适的一条。</p>
+<section id="识别方式" class="level3" data-number="6.4.1">
+<h3 data-number="6.4.1" class="anchored" data-anchor-id="识别方式"><span class="header-section-number">6.4.1</span> 识别方式</h3>
+<p>P0 支持两种方式：</p>
+<ol type="1">
+<li>用户手动保存路线。</li>
+<li>系统根据 3 次以上相似轨迹建议合并为常走路线。</li>
+</ol>
+</section>
+<section id="路线标签" class="level3" data-number="6.4.2">
+<h3 data-number="6.4.2" class="anchored" data-anchor-id="路线标签"><span class="header-section-number">6.4.2</span> 路线标签</h3>
+<p>常走路线应被结构化为以下标签：</p>
 <ul>
-<li>可步行到达。</li>
-<li>可接驳到达。</li>
-<li>可完成某类需求。</li>
-<li>存在刺激或风险。</li>
-<li>需要预约。</li>
-<li>适合或不适合某类狗狗。</li>
+<li>短程排便线。</li>
+<li>安静路线。</li>
+<li>嗅闻路线。</li>
+<li>社交路线。</li>
+<li>避狗路线。</li>
+<li>夜间路线。</li>
+<li>雨后不推荐路线。</li>
+<li>高温短走路线。</li>
+<li>顺路补给路线。</li>
 </ul>
-<p>图谱信号：</p>
+</section>
+<section id="路线卡片字段" class="level3" data-number="6.4.3">
+<h3 data-number="6.4.3" class="anchored" data-anchor-id="路线卡片字段"><span class="header-section-number">6.4.3</span> 路线卡片字段</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>路线名称</td>
+<td>用户命名或系统建议。</td>
+</tr>
+<tr class="even">
+<td>起终点隐私区域</td>
+<td>不展示精确家庭地址。</td>
+</tr>
+<tr class="odd">
+<td>常走时段</td>
+<td>例如工作日晚 19:00。</td>
+</tr>
+<tr class="even">
+<td>平均时长和距离</td>
+<td>只用于个人，不直接公开。</td>
+</tr>
+<tr class="odd">
+<td>适合需求</td>
+<td>排便、嗅闻、放松、社交、放电。</td>
+</tr>
+<tr class="even">
+<td>风险标签</td>
+<td>狗多、车多、无遮阴、雨后泥、禁入。</td>
+</tr>
+<tr class="odd">
+<td>社区交叉信号</td>
+<td>该时段狗多概率、安静程度、热门 POI。</td>
+</tr>
+<tr class="even">
+<td>最近反馈</td>
+<td>用户和社区的结构化观察。</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="出门-agent-推荐" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="出门-agent-推荐"><span class="header-section-number">6.5</span> 出门 Agent 推荐</h2>
+<p>Agent 是产品决策核心。它不只是聊天，也不是把用户输入改写成地图搜索词，而是完成：</p>
+<pre class="text"><code>理解目标 -&gt; 召回路线/POI -&gt; 读取宠物画像 -&gt; 读取天气与社区热力 -&gt; 风险门控 -&gt; 排序 -&gt; 解释 -&gt; 反馈写入</code></pre>
+<section id="模式-a无目标日常出门" class="level3" data-number="6.5.1">
+<h3 data-number="6.5.1" class="anchored" data-anchor-id="模式-a无目标日常出门"><span class="header-section-number">6.5.1</span> 模式 A：无目标日常出门</h3>
+<p>用户打开产品，只是准备带宠物出门。</p>
+<p>输入：</p>
+<pre class="text"><code>准备带奶茶出门。</code></pre>
+<p>Agent 需要：</p>
 <ul>
-<li>可用性。</li>
-<li>阴影程度。</li>
-<li>狗密度。</li>
-<li>电动车压力。</li>
-<li>地表风险。</li>
-<li>停留友好度。</li>
-<li>入口复杂度。</li>
+<li>读取常走路线。</li>
+<li>读取当前天气和时间。</li>
+<li>读取宠物档案。</li>
+<li>读取社区热力和风险点。</li>
+<li>判断今天哪条熟悉路线更合适。</li>
+<li>必要时建议缩短、改时段、换路线或只做楼下微出门。</li>
+</ul>
+<p>输出示例：</p>
+<pre class="text"><code>今天 19:00 不太建议走“东门环线”完整路线：
+- 当前天气闷热，连续暴露段偏长；
+- 社区热力显示 18:30-19:30 东门草地狗密度偏高；
+- 奶茶档案显示怕大狗。
+
+更建议走“河边短线”，控制在 18 分钟内。它更安静，阴影更多，但水碗点仍待验证，建议带水。</code></pre>
+</section>
+<section id="模式-b有目标附近出行" class="level3" data-number="6.5.2">
+<h3 data-number="6.5.2" class="anchored" data-anchor-id="模式-b有目标附近出行"><span class="header-section-number">6.5.2</span> 模式 B：有目标附近出行</h3>
+<p>用户有明确目标，例如咖啡店、宠物医院、宠物店、草地、公园或顺路补给。</p>
+<p>输入：</p>
+<pre class="text"><code>今晚想带狗去能坐下的地方，最好顺路买点狗粮，别遇到太多大狗。</code></pre>
+<p>Agent 需要：</p>
+<ul>
+<li>召回宠物友好 POI。</li>
+<li>过滤宠物规则不匹配的地点。</li>
+<li>召回路线和交通方式。</li>
+<li>结合社区狗密度、天气、POI 可信度排序。</li>
+<li>输出首推、备选和不推荐项。</li>
+</ul>
+<p>输出必须包含：</p>
+<ul>
+<li>推荐地点和路线。</li>
+<li>推荐理由。</li>
+<li>宠物友好规则。</li>
 <li>最近验证时间。</li>
+<li>狗多概率或社区趋势。</li>
+<li>风险点和规避建议。</li>
+<li>备选方案。</li>
+<li>一键反馈或纠错入口。</li>
 </ul>
 </section>
-<section id="是否需要-rag" class="level2" data-number="6.9">
-<h2 data-number="6.9" class="anchored" data-anchor-id="是否需要-rag"><span class="header-section-number">6.9</span> 是否需要 RAG</h2>
-<p>MVP 可以不做复杂 RAG，但需要“图谱检索”。如果把图谱数据理解为一组结构化节点和规则，Agent 每次推荐前都应检索相关节点，而不是凭空编造地点。</p>
-<p>推荐策略：</p>
+<section id="推荐分" class="level3" data-number="6.5.3">
+<h3 data-number="6.5.3" class="anchored" data-anchor-id="推荐分"><span class="header-section-number">6.5.3</span> 推荐分</h3>
+<p>P0 使用规则 + 加权排序，不做复杂黑盒模型。</p>
+<pre class="text"><code>推荐分 =
+目标匹配
++ 宠物适配
++ 天气安全
++ 路线熟悉度
++ POI 可信度
++ 社交匹配
+- 风险惩罚
+- 绕路成本</code></pre>
+<p>安全风险必须 hard veto，不能被总分抵消。</p>
+<p>触发 hard veto 的情况：</p>
 <ul>
-<li>MVP 使用本地样例图谱检索。</li>
-<li>P1 接入真实地图、天气和服务数据。</li>
-<li>P2 再考虑把用户评论、商家规则、物业公告、社区观察等非结构化内容纳入检索。</li>
+<li>高温高湿 + 怕热宠物 + 连续暴露超过阈值。</li>
+<li>反应犬 + 狗密度高路线。</li>
+<li>用户明确不接受打车，但方案依赖接驳。</li>
+<li>POI 宠物规则和宠物体型/行为不匹配。</li>
+<li>当前会话反馈某节点不可用。</li>
+<li>时间预算不足以完成目标需求。</li>
 </ul>
-<p>RAG 的边界是：检索可以帮助 Agent 理解地点和规则，但最终推荐必须经过风险评估和方案排序，不能因为某个地点文本里写了“宠物友好”就直接推荐。</p>
 </section>
-<section id="agent-评估方式" class="level2" data-number="6.10">
-<h2 data-number="6.10" class="anchored" data-anchor-id="agent-评估方式"><span class="header-section-number">6.10</span> Agent 评估方式</h2>
-<p>Agent 的评估不应只看回答是否流畅，而要看它是否做出了正确决策。</p>
-<p>核心评估样例：</p>
+</section>
+<section id="社区热力图" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="社区热力图"><span class="header-section-number">6.6</span> 社区热力图</h2>
+<p>社区热力图用于回答“附近趋势”，不是用于追踪其他用户。</p>
+<section id="展示内容" class="level3" data-number="6.6.1">
+<h3 data-number="6.6.1" class="anchored" data-anchor-id="展示内容"><span class="header-section-number">6.6.1</span> 展示内容</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>图层</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>狗友常走路线热度</td>
+<td>脱敏聚合后的路线使用趋势。</td>
+</tr>
+<tr class="even">
+<td>狗多时段</td>
+<td>某区域在粗时间段内狗密度较高。</td>
+</tr>
+<tr class="odd">
+<td>安静路线</td>
+<td>社区反馈狗少、人少、车少的路线。</td>
+</tr>
+<tr class="even">
+<td>社交路线</td>
+<td>狗友更常聚集、适合社交的路线。</td>
+</tr>
+<tr class="odd">
+<td>风险热力</td>
+<td>禁入、施工、电动车压力、流浪狗、地面烫等。</td>
+</tr>
+<tr class="even">
+<td>热门 POI</td>
+<td>被确认次数多、最近仍可用的宠物友好地点。</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="禁止内容" class="level3" data-number="6.6.2">
+<h3 data-number="6.6.2" class="anchored" data-anchor-id="禁止内容"><span class="header-section-number">6.6.2</span> 禁止内容</h3>
+<p>社区热力图不得展示：</p>
+<ul>
+<li>单个用户实时位置。</li>
+<li>单条原始轨迹。</li>
+<li>可推断家庭地址的起终点。</li>
+<li>某只具体宠物的行动轨迹。</li>
+<li>追踪某个狗友现在在哪里的能力。</li>
+</ul>
+</section>
+</section>
+<section id="ugc-poi" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="ugc-poi"><span class="header-section-number">6.7</span> UGC POI</h2>
+<p>UGC POI 是宠物友好地图的供给来源。用户上传的 POI 不是内容流，而是进入 Agent 推荐系统的结构化数据。</p>
+<section id="poi-类型" class="level3" data-number="6.7.1">
+<h3 data-number="6.7.1" class="anchored" data-anchor-id="poi-类型"><span class="header-section-number">6.7.1</span> POI 类型</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>类型</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>宠物友好餐饮</td>
+<td>咖啡店、餐厅、露台。</td>
+</tr>
+<tr class="even">
+<td>活动空间</td>
+<td>草地、公园、广场、河边步道。</td>
+</tr>
+<tr class="odd">
+<td>补给</td>
+<td>水碗、宠物店、宠物用品柜。</td>
+</tr>
+<tr class="even">
+<td>医疗</td>
+<td>宠物医院、夜间急诊。</td>
+</tr>
+<tr class="odd">
+<td>服务</td>
+<td>洗护、训练、寄养。</td>
+</tr>
+<tr class="even">
+<td>风险</td>
+<td>禁入点、狗多点、施工、电动车高压段、流浪狗点。</td>
+</tr>
+<tr class="odd">
+<td>交通辅助</td>
+<td>安全上车点、停车点、入口、电梯。</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="poi-状态" class="level3" data-number="6.7.2">
+<h3 data-number="6.7.2" class="anchored" data-anchor-id="poi-状态"><span class="header-section-number">6.7.2</span> POI 状态</h3>
+<ul>
+<li>待验证。</li>
+<li>已验证。</li>
+<li>有争议。</li>
+<li>已过期。</li>
+<li>已隐藏。</li>
+</ul>
+</section>
+<section id="poi-可信度" class="level3" data-number="6.7.3">
+<h3 data-number="6.7.3" class="anchored" data-anchor-id="poi-可信度"><span class="header-section-number">6.7.3</span> POI 可信度</h3>
+<pre class="text"><code>POI 可信度 =
+上传者信誉
++ 多人确认
++ 最近验证时间
++ 照片/签到/商家证据
++ Agent 外部核验
+- 纠错次数
+- 信息过期
+- 争议记录</code></pre>
+</section>
+<section id="上传流程" class="level3" data-number="6.7.4">
+<h3 data-number="6.7.4" class="anchored" data-anchor-id="上传流程"><span class="header-section-number">6.7.4</span> 上传流程</h3>
+<pre class="text"><code>用户长按地图 / 拍照上传
+-&gt; 选择 POI 类型
+-&gt; 填写宠物友好规则或风险描述
+-&gt; 上传证据
+-&gt; 进入待验证状态
+-&gt; 附近用户确认或纠错
+-&gt; Agent 定期复核
+-&gt; 进入推荐系统</code></pre>
+<p>高风险 POI，例如医院、急救、禁入和危险点，不能只靠单个用户上传进入高置信推荐。</p>
+</section>
+</section>
+</section>
+<section id="核心用户流程" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> 核心用户流程</h1>
+<section id="首次使用流程" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="首次使用流程"><span class="header-section-number">7.1</span> 首次使用流程</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    A[打开产品] --&gt; B[创建宠物档案]
+    B --&gt; C[上传宠物照片]
+    C --&gt; D[生成 Q 版宠物分身]
+    D --&gt; E[选择是否记录路线]
+    E --&gt; F[设置隐私与社区贡献]
+    F --&gt; G[保存第一条常走路线或开始出门]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>首次使用不应让用户填太多。最低可完成：</p>
+<ul>
+<li>创建宠物档案。</li>
+<li>选择是否生成 Q 版宠物分身。</li>
+<li>选择是否记录路线。</li>
+<li>明确社区热力贡献默认关闭或明确 opt-in。</li>
+</ul>
+</section>
+<section id="无目标日常出门流程" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="无目标日常出门流程"><span class="header-section-number">7.2</span> 无目标日常出门流程</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    A[用户打开出门页] --&gt; B[选择宠物]
+    B --&gt; C[读取常走路线]
+    C --&gt; D[读取天气、时间、社区热力和 POI]
+    D --&gt; E[Agent 判断常走路线是否适合]
+    E --&gt; F{是否存在高风险}
+    F -- 是 --&gt; G[推荐缩短、改时段或替代路线]
+    F -- 否 --&gt; H[推荐最合适的熟悉路线]
+    G --&gt; I[宠物分身表达状态]
+    H --&gt; I
+    I --&gt; J[用户开始记录]
+    J --&gt; K[出行后轻量反馈]
+    K --&gt; L[更新路线记忆、POI 和社区趋势]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="有目标推荐流程" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="有目标推荐流程"><span class="header-section-number">7.3</span> 有目标推荐流程</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    A[用户输入目标] --&gt; B[Agent 解析目标和约束]
+    B --&gt; C[召回 POI 和候选路线]
+    C --&gt; D[读取宠物档案、天气、社区热力]
+    D --&gt; E[过滤不匹配 POI 和高风险路线]
+    E --&gt; F[排序并生成推荐解释]
+    F --&gt; G[展示首推、备选和不推荐项]
+    G --&gt; H[用户选择执行]
+    H --&gt; I[到达或出行后反馈]
+    I --&gt; J[更新 POI 可信度和路线记忆]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="ugc-poi-上传流程" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="ugc-poi-上传流程"><span class="header-section-number">7.4</span> UGC POI 上传流程</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    A[用户发现地点或风险] --&gt; B[长按地图或拍照上传]
+    B --&gt; C[选择 POI 类型]
+    C --&gt; D[填写规则、证据和适合宠物类型]
+    D --&gt; E[进入待验证]
+    E --&gt; F[附近用户确认或纠错]
+    F --&gt; G[更新可信度]
+    G --&gt; H[进入 Agent 推荐系统]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="宠物分身生成流程" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="宠物分身生成流程"><span class="header-section-number">7.5</span> 宠物分身生成流程</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    A[上传 3-5 张宠物照片] --&gt; B[主体裁剪和特征抽取]
+    B --&gt; C[生成 Q 版 2D 候选]
+    C --&gt; D[用户选择或重试]
+    D --&gt; E[异步生成 3D 模型]
+    E --&gt; F{生成是否成功}
+    F -- 成功 --&gt; G[生成 GLB/USDZ 和基础动画]
+    F -- 失败 --&gt; H[降级为 2D 宠物分身]
+    G --&gt; I[绑定宠物档案和地图状态]
+    H --&gt; I
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="agent-架构" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Agent 架构</h1>
+<section id="架构原则" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="架构原则"><span class="header-section-number">8.1</span> 架构原则</h2>
+<p>MVP 不建议一开始做真正的多 Agent 系统。建议采用“单一 Orchestrator Agent + 多个确定性能力模块”的架构。</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    U[用户] --&gt; UI[产品界面]
+    UI --&gt; O[Orchestrator Agent]
+    O --&gt; P[宠物档案与宠物分身状态]
+    O --&gt; R[常走路线记忆]
+    O --&gt; M[宠物友好地图与 POI]
+    O --&gt; H[社区热力检索]
+    O --&gt; W[天气与风险评估]
+    O --&gt; S[推荐排序与解释]
+    O --&gt; F[反馈写入]
+    O --&gt; V[隐私策略检查]
+    P --&gt; S
+    R --&gt; S
+    M --&gt; S
+    H --&gt; S
+    W --&gt; S
+    V --&gt; H
+    S --&gt; UI
+    F --&gt; R
+    F --&gt; M
+    F --&gt; H
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>关键原则：</p>
+<ul>
+<li>大模型负责理解、综合、解释和生成自然语言。</li>
+<li>风险门控、隐私策略、POI 可信度和推荐分应尽量结构化、可测试。</li>
+<li>Agent 不得凭空编造 POI、路线或宠物友好规则。</li>
+<li>对低置信信息必须标注“待验证”或“不确定”。</li>
+<li>高风险推荐必须保守。</li>
+</ul>
+</section>
+<section id="p1p2-多-agent-演进" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="p1p2-多-agent-演进"><span class="header-section-number">8.2</span> P1/P2 多 Agent 演进</h2>
+<p>当数据和工具复杂度上升后，可拆分为：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Agent</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>地图 Agent</td>
+<td>管理 POI、路线、风险点和图谱检索。</td>
+</tr>
+<tr class="even">
+<td>推荐 Agent</td>
+<td>生成有目标和无目标推荐。</td>
+</tr>
+<tr class="odd">
+<td>隐私 Agent</td>
+<td>检查路线贡献、热力展示和起终点遮罩。</td>
+</tr>
+<tr class="even">
+<td>商家核验 Agent</td>
+<td>核验宠物友好规则、营业时间、商家认领。</td>
+</tr>
+<tr class="odd">
+<td>宠物分身 Agent</td>
+<td>管理形象生成、状态表达和反馈引导。</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="数据模型" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> 数据模型</h1>
+<section id="核心对象" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="核心对象"><span class="header-section-number">9.1</span> 核心对象</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -6885,47 +6954,470 @@ stroke: transparent !important;
 </colgroup>
 <thead>
 <tr class="header">
-<th>场景</th>
-<th>期望判断</th>
+<th>对象</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>高温 + 短鼻犬</td>
-<td>必须拒绝长时间纯步行。</td>
+<td><code>UserProfile</code></td>
+<td>居住区域粗粒度、出行偏好、隐私设置、是否参与社区热力。</td>
 </tr>
 <tr class="even">
-<td>低温 + 高能量犬 + 有安全绿地</td>
-<td>可以推荐步行放电方案。</td>
+<td><code>PetProfile</code></td>
+<td>体型、年龄、品种、精力、怕热/怕冷、怕狗、社交偏好、健康限制。</td>
 </tr>
 <tr class="odd">
-<td>反应犬 + 狗群高密度</td>
-<td>必须降低社交方案权重。</td>
+<td><code>PetAvatar</code></td>
+<td>Q 版图、3D 模型、动画、生成状态、版本、删除状态。</td>
 </tr>
 <tr class="even">
-<td>时间只有 10 分钟</td>
-<td>必须优先完成排便和低强度嗅闻，而不是推荐远距离服务。</td>
+<td><code>RouteSession</code></td>
+<td>一次出门记录，含时间、天气、路线 polyline、停留点、距离、反馈。</td>
 </tr>
 <tr class="odd">
-<td>用户不接受打车</td>
-<td>不能把接驳方案排在首位。</td>
+<td><code>RoutineRoute</code></td>
+<td>系统识别或用户保存的常走路线。</td>
 </tr>
 <tr class="even">
-<td>草地观察为不可用</td>
-<td>不能继续把该草地作为核心节点。</td>
+<td><code>CommunityHeatCell</code></td>
+<td>按空间格网和时间段聚合的社区热力单元。</td>
+</tr>
+<tr class="odd">
+<td><code>POI</code></td>
+<td>宠物友好地点、草地、水源、医院、宠物店、风险点、禁入点。</td>
+</tr>
+<tr class="even">
+<td><code>POIObservation</code></td>
+<td>用户上传、签到、纠错、照片、评论、Agent 验证记录。</td>
+</tr>
+<tr class="odd">
+<td><code>RecommendationContext</code></td>
+<td>一次推荐请求的目标、天气、时间、宠物状态、附近热度、常走路线、POI 可信度。</td>
 </tr>
 </tbody>
 </table>
-<p>评估输出应检查：</p>
+</section>
+<section id="事件采集" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="事件采集"><span class="header-section-number">9.2</span> 事件采集</h2>
+<p>P0 应采集以下事件：</p>
 <ul>
-<li>是否理解狗狗需求。</li>
-<li>是否正确拒绝高风险方案。</li>
-<li>是否给出替代方案。</li>
-<li>是否使用图谱节点。</li>
-<li>是否解释关键原因。</li>
-<li>是否避免医疗诊断和过度承诺。</li>
+<li>打开出门页。</li>
+<li>开始路线。</li>
+<li>结束路线。</li>
+<li>偏航。</li>
+<li>停留。</li>
+<li>收藏路线。</li>
+<li>拒绝推荐。</li>
+<li>选择推荐。</li>
+<li>上传 POI。</li>
+<li>纠错 POI。</li>
+<li>标记遇到狗。</li>
+<li>标记危险点。</li>
+<li>天气触发提醒。</li>
+<li>推荐后反馈。</li>
+<li>宠物分身生成、选择、失败、删除。</li>
+</ul>
+<p>事件采集必须遵循最小化原则，并受到隐私设置控制。</p>
+</section>
+</section>
+<section id="隐私与安全" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> 隐私与安全</h1>
+<section id="路线隐私" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="路线隐私"><span class="header-section-number">10.1</span> 路线隐私</h2>
+<p>路线数据是高度敏感数据，可以推断家庭住址、工作地点、日常规律和宠物活动习惯。PRD 必须明确：</p>
+<ul>
+<li>原始 GPS 轨迹只用于个人路线回放和个性化推荐。</li>
+<li>社区热力只使用聚合后的格网数据。</li>
+<li>用户必须明确 opt-in 后才贡献社区热力。</li>
+<li>起点和终点必须做隐私遮罩，尤其是家、公司、小区门口。</li>
+<li>用户可以暂停记录、删除历史、退出社区贡献。</li>
+<li>不展示实时个人位置。</li>
+<li>不展示单条原始路线。</li>
 </ul>
 </section>
+<section id="社区热力脱敏策略" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="社区热力脱敏策略"><span class="header-section-number">10.2</span> 社区热力脱敏策略</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>策略</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>默认 opt-in</td>
+<td>用户明确同意后才贡献社区热力。</td>
+</tr>
+<tr class="even">
+<td>原始 GPS 私有</td>
+<td>原始轨迹不进入公共展示层。</td>
+</tr>
+<tr class="odd">
+<td>聚合格网</td>
+<td>使用 H3/geohash 等空间格网。</td>
+</tr>
+<tr class="even">
+<td>起终点遮罩</td>
+<td>家、公司、小区门口附近做隐私半径。</td>
+</tr>
+<tr class="odd">
+<td>延迟展示</td>
+<td>至少延迟 30-60 分钟进入社区热力。</td>
+</tr>
+<tr class="even">
+<td>k 匿名阈值</td>
+<td>达到足够不同用户或 session 后才展示，例如 10 个用户以上。</td>
+</tr>
+<tr class="odd">
+<td>粗时间粒度</td>
+<td>使用“工作日晚上”“周末上午”等，不精确到分钟。</td>
+</tr>
+<tr class="even">
+<td>低密度隐藏</td>
+<td>低密度区域不展示或加噪声。</td>
+</tr>
+<tr class="odd">
+<td>用户控制</td>
+<td>可暂停贡献、删除历史、退出热力图。</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="推荐安全边界" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="推荐安全边界"><span class="header-section-number">10.3</span> 推荐安全边界</h2>
+<p>系统不得承诺：</p>
+<ul>
+<li>POI 永远可进。</li>
+<li>路线绝对安全。</li>
+<li>一定不会遇到其他狗。</li>
+<li>医疗和行为判断的确定结论。</li>
+<li>社区热力等于实时情况。</li>
+</ul>
+<p>所有推荐都应展示置信度、最近验证时间、风险和备选。</p>
+</section>
+</section>
+<section id="非功能需求" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> 非功能需求</h1>
+<section id="性能" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="性能"><span class="header-section-number">11.1</span> 性能</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>项目</th>
+<th>要求</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>出门推荐</td>
+<td>P95 小于 5 秒返回首屏建议。</td>
+</tr>
+<tr class="even">
+<td>地图 POI 加载</td>
+<td>P95 小于 2 秒加载当前视野基础 POI。</td>
+</tr>
+<tr class="odd">
+<td>Q 版形象生成</td>
+<td>P95 小于 60 秒。</td>
+</tr>
+<tr class="even">
+<td>3D 模型生成</td>
+<td>可异步，P95 小于 10 分钟，不阻塞地图使用。</td>
+</tr>
+<tr class="odd">
+<td>宠物分身渲染</td>
+<td>移动端目标 45fps 以上，低端机降级 2D。</td>
+</tr>
+<tr class="even">
+<td>3D 资产大小</td>
+<td>单个 GLB 目标小于 12MB，贴图默认 1K。</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="可用性" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="可用性"><span class="header-section-number">11.2</span> 可用性</h2>
+<ul>
+<li>用户首次出门推荐应在 3 分钟内完成设置。</li>
+<li>出行后反馈不超过 2 个核心问题。</li>
+<li>POI 上传可以 30 秒内完成基础提交。</li>
+<li>隐私设置必须在首次路线记录前明确展示。</li>
+</ul>
+</section>
+<section id="可解释性" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="可解释性"><span class="header-section-number">11.3</span> 可解释性</h2>
+<p>每个推荐必须包含：</p>
+<ul>
+<li>推荐理由。</li>
+<li>风险因素。</li>
+<li>社区数据或 POI 证据。</li>
+<li>备选方案。</li>
+<li>不确定信息标注。</li>
+</ul>
+</section>
+</section>
+<section id="黑客松-mvp-演示流程" class="level1" data-number="12">
+<h1 data-number="12"><span class="header-section-number">12</span> 黑客松 / MVP 演示流程</h1>
+<p>为了让路演稳定，MVP 应准备一个固定演示区域和固定宠物档案。</p>
+<section id="演示输入" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="演示输入"><span class="header-section-number">12.1</span> 演示输入</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>输入项</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>城市片区</td>
+<td>上海某社区样例区。</td>
+</tr>
+<tr class="even">
+<td>天气</td>
+<td>32°C，湿度 70%，工作日晚上。</td>
+</tr>
+<tr class="odd">
+<td>宠物</td>
+<td>柯基，3 岁，中型，怕热 4/5，怕大狗。</td>
+</tr>
+<tr class="even">
+<td>常走路线</td>
+<td>东门环线、河边短线、便利店补给线。</td>
+</tr>
+<tr class="odd">
+<td>社区热力</td>
+<td>东门草地 18:30-19:30 狗多，河边路线更安静。</td>
+</tr>
+<tr class="even">
+<td>用户目标</td>
+<td>无目标日常出门，或想顺路买狗粮。</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="演示步骤" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="演示步骤"><span class="header-section-number">12.2</span> 演示步骤</h2>
+<ol type="1">
+<li>用户选择宠物档案。</li>
+<li>展示 Q 版宠物分身。</li>
+<li>用户点击“准备出门”。</li>
+<li>Agent 读取天气、常走路线、社区热力和 POI。</li>
+<li>系统不推荐东门环线完整路线，解释狗多和天气风险。</li>
+<li>系统推荐河边短线，提示带水。</li>
+<li>用户切换到有目标模式：“顺路买狗粮”。</li>
+<li>Agent 推荐便利店补给线，展示 POI 可信度和路线风险。</li>
+<li>用户走完后反馈“路上狗不多，水碗可用”。</li>
+<li>地图更新 POI 和路线信号。</li>
+</ol>
+<p>演示要让观众看到：</p>
+<ul>
+<li>它不是普通路线导航。</li>
+<li>它会记住常走路线。</li>
+<li>它会用社区趋势做判断。</li>
+<li>它会解释为什么推荐或不推荐。</li>
+<li>它会把用户反馈沉淀到地图。</li>
+<li>宠物分身不是装饰，而是推荐解释和反馈入口。</li>
+</ul>
+</section>
+</section>
+<section id="成功指标" class="level1" data-number="13">
+<h1 data-number="13"><span class="header-section-number">13</span> 成功指标</h1>
+<section id="核心指标" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="核心指标"><span class="header-section-number">13.1</span> 核心指标</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>指标</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>出门建议采纳率</td>
+<td>用户是否真的按推荐出门。</td>
+</tr>
+<tr class="even">
+<td>推荐后完成出门率</td>
+<td>用户查看建议后是否开始路线记录。</td>
+</tr>
+<tr class="odd">
+<td>7 日 / 30 日重复使用率</td>
+<td>是否形成出门前打开习惯。</td>
+</tr>
+<tr class="even">
+<td>常走路线保存率</td>
+<td>用户是否愿意让产品记住路线。</td>
+</tr>
+<tr class="odd">
+<td>常走路线识别准确率</td>
+<td>用户是否认可系统识别的 routine。</td>
+</tr>
+<tr class="even">
+<td>推荐解释满意度</td>
+<td>用户是否理解为什么推荐。</td>
+</tr>
+<tr class="odd">
+<td>POI 贡献率</td>
+<td>每 100 个活跃用户贡献多少有效 POI。</td>
+</tr>
+<tr class="even">
+<td>POI 验证率</td>
+<td>UGC 信息被其他用户确认的比例。</td>
+</tr>
+<tr class="odd">
+<td>POI 纠错率</td>
+<td>信息过期或错误比例。</td>
+</tr>
+<tr class="even">
+<td>路线反馈率</td>
+<td>出行后是否愿意反馈。</td>
+</tr>
+<tr class="odd">
+<td>热力图 opt-in 率</td>
+<td>用户是否信任社区贡献。</td>
+</tr>
+<tr class="even">
+<td>风险提醒命中率</td>
+<td>天气、狗多、禁入、施工提醒是否有用。</td>
+</tr>
+<tr class="odd">
+<td>宠物分身生成完成率</td>
+<td>用户是否完成 Q 版或 3D 生成。</td>
+</tr>
+<tr class="even">
+<td>宠物分身使用影响</td>
+<td>宠物分身是否提升反馈率、留存和贡献率。</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="p0-验收标准" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="p0-验收标准"><span class="header-section-number">13.2</span> P0 验收标准</h2>
+<ul>
+<li>用户可以创建宠物档案，并用档案影响推荐。</li>
+<li>用户可以保存或识别至少 2 条常走路线。</li>
+<li>无目标出门时，Agent 能判断今天哪条常走路线更合适。</li>
+<li>有目标出门时，Agent 能结合 POI、天气、宠物档案和路线风险输出推荐。</li>
+<li>用户可以上传 POI，并进入待验证状态。</li>
+<li>出行后反馈能影响下一次推荐。</li>
+<li>用户可明确控制路线记录和社区热力贡献。</li>
+<li>Q 版宠物分身可以生成并在推荐页表达至少 3 类状态。</li>
+</ul>
+</section>
+</section>
+<section id="风险与应对" class="level1" data-number="14">
+<h1 data-number="14"><span class="header-section-number">14</span> 风险与应对</h1>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>风险</th>
+<th>影响</th>
+<th>应对</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>路线数据泄露家庭地址</td>
+<td>高</td>
+<td>opt-in、起终点遮罩、聚合展示、删除权。</td>
+</tr>
+<tr class="even">
+<td>POI 信息过期</td>
+<td>高</td>
+<td>最近验证时间、可信度、过期降权、争议标记。</td>
+</tr>
+<tr class="odd">
+<td>社区热力冷启动</td>
+<td>中</td>
+<td>先做小区域 pilot，使用模拟和核心用户贡献。</td>
+</tr>
+<tr class="even">
+<td>推荐错误导致危险路线</td>
+<td>高</td>
+<td>hard veto、风险解释、备选方案、保守阈值。</td>
+</tr>
+<tr class="odd">
+<td>3D 宠物生成质量不稳定</td>
+<td>中</td>
+<td>2D 降级、异步生成、用户确认特征。</td>
+</tr>
+<tr class="even">
+<td>功能发散</td>
+<td>高</td>
+<td>MVP 聚焦常走路线、出门 Agent、基础 POI 和轻量反馈。</td>
+</tr>
+<tr class="odd">
+<td>用户不愿反馈</td>
+<td>中</td>
+<td>宠物分身引导、反馈问题不超过 2 个、反馈带来可见价值。</td>
+</tr>
+<tr class="even">
+<td>社区滥用或骚扰</td>
+<td>高</td>
+<td>不显示实时位置、不做附近实时找人、举报和审核机制。</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="里程碑" class="level1" data-number="15">
+<h1 data-number="15"><span class="header-section-number">15</span> 里程碑</h1>
+<section id="天原型" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="天原型"><span class="header-section-number">15.1</span> 7 天原型</h2>
+<ul>
+<li>第 1 天：定义样例区域、宠物档案和 3 条常走路线。</li>
+<li>第 2 天：构建基础 POI 和风险点数据。</li>
+<li>第 3 天：实现无目标出门推荐和有目标推荐的规则链路。</li>
+<li>第 4 天：实现 Q 版宠物分身生成或静态 mock。</li>
+<li>第 5 天：实现 POI 上传和出行后轻量反馈。</li>
+<li>第 6 天：实现社区热力模拟图层和隐私说明。</li>
+<li>第 7 天：跑 5 个用户脚本，验证推荐解释是否可理解。</li>
+</ul>
+</section>
+<section id="周-mvp" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="周-mvp"><span class="header-section-number">15.2</span> 4 周 MVP</h2>
+<ul>
+<li>第 1 周：宠物档案、路线记录、常走路线保存。</li>
+<li>第 2 周：基础 POI、UGC 上传、可信度字段。</li>
+<li>第 3 周：出门 Agent、天气风险、推荐解释、反馈写入。</li>
+<li>第 4 周：Q 版宠物分身、热力图 pilot、隐私控制、内测指标。</li>
+</ul>
+</section>
+</section>
+<section id="开放问题" class="level1" data-number="16">
+<h1 data-number="16"><span class="header-section-number">16</span> 开放问题</h1>
+<ul>
+<li>P0 是否优先支持狗，还是也允许猫用户建立档案但不进入路线推荐主链路？</li>
+<li>常走路线的识别是纯客户端、本地优先，还是服务端聚合？</li>
+<li>社区热力 opt-in 是否默认关闭，还是在用户完成首次路线后引导开启？</li>
+<li>Q 版/3D 宠物分身是否作为 MVP 路演亮点，还是完全放到 P1？</li>
+<li>POI 的商家认领是否需要提前设计接口，还是 P2 再做？</li>
+<li>是否需要引入宠物医院、夜间急诊和 SOS，作为后续高情绪场景扩展？</li>
+</ul>
+</section>
+<section id="参考链接" class="level1" data-number="17">
+<h1 data-number="17"><span class="header-section-number">17</span> 参考链接</h1>
+<ul>
+<li><a href="https://www.tripo3d.ai/">Tripo</a></li>
+<li><a href="https://github.com/VAST-AI-Research/TripoSR">TripoSR GitHub</a></li>
+<li><a href="https://stability.ai/news-updates/introducing-stable-fast-3d">Stable Fast 3D</a></li>
+<li><a href="https://www.meshy.ai/">Meshy</a></li>
+<li><a href="https://metro.strava.com/">Strava Metro</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Waze">Waze crowdsourced navigation overview</a></li>
+<li><a href="https://www.alltrails.com/">AllTrails</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Strava">Strava heatmap privacy discussion</a></li>
+</ul>
 </section>
 
 </main>

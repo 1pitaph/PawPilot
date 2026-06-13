@@ -1,9 +1,9 @@
 ---
-title: "Pet Mobility Agent / 带宠出行决策系统"
-subtitle: "狗狗需求完成图谱与带宠出行决策 PRD"
-date: "2026-06-13 10:29:42"
+title: "Pet Mobility Agent / 宠物友好地图 Agent"
+subtitle: "宠物友好地图、常走路线、社区热力与宠物分身 PRD"
+date: "2026-06-13 13:55:57"
 date-format: "YYYY-MM-DD HH:mm:ss"
-version: "第 2 版"
+version: "第 3 版"
 lang: zh-CN
 format:
   html:
@@ -32,8 +32,8 @@ execute:
 <div class="prd-title-meta" aria-label="文档元信息">
   <div class="prd-title-meta-label">发布于</div>
   <div class="prd-title-meta-label prd-title-meta-right">版本</div>
-  <div class="prd-title-meta-value">2026-06-13 10:29:42</div>
-  <div class="prd-title-meta-value prd-title-meta-right">第 2 版</div>
+  <div class="prd-title-meta-value">2026-06-13 13:55:57</div>
+  <div class="prd-title-meta-value prd-title-meta-right">第 3 版</div>
 </div>
 
 {{< include prd-pet-mobility-agent.md >}}
