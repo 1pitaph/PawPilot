@@ -1,93 +1,107 @@
 "use client";
 
-import Link from "next/link";
-import { Menu, X } from "lucide-react";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
-
-import { Button } from "@/components/button";
-import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
 
+import { Button } from "@/components/button";
+import { useState } from "react";
+import { IconMenu2, IconX } from "@tabler/icons-react";
+import { Logo } from "@/components/logo";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+
 const navItems = [
-  { label: "首页", href: "/" },
-  { label: "功能", href: "/features" },
-  { label: "场景", href: "/scenarios" },
-  { label: "隐私", href: "/privacy" },
-  { label: "FAQ", href: "/faq" }
+  { label: "Work", href: "/work" },
+  { label: "Products", href: "/products" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Blog", href: "/blog" },
 ];
 
-export function Navbar() {
+export const Navbar = ({ className }: { className?: string | undefined }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-  const home = pathname === "/";
+
+  const isDarkMode = pathname === "/";
 
   return (
-    <header
+    <nav
       className={cn(
-        "z-50 w-full",
-        home ? "absolute inset-x-0 top-4" : "sticky top-0 border-b border-natural-black/10 bg-background/85 backdrop-blur"
+        isDarkMode
+          ? "absolute inset-x-0 top-4 z-50 mx-auto w-full lg:top-4 lg:max-w-[calc(100%-4rem)]"
+          : "mt-4",
+        className,
       )}
     >
-      <nav className="mx-auto max-w-container px-4 sm:px-6 lg:px-8" aria-label="主导航">
-        <div className="flex min-h-16 items-center justify-between">
-          <Logo className={home ? "text-natural-white" : "text-natural-black"} />
-          <div className="hidden items-center gap-1 md:flex">
-            {navItems.map((item) => {
-              const active = pathname === item.href;
-              return (
+      <div className="max-w-container mx-auto px-8 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo */}
+          <div className="flex shrink-0 items-center gap-2 lg:min-w-45">
+            <Logo className="size-8" />
+          </div>
+          <div className="hidden md:block">
+            <div className="ml-10 flex items-baseline space-x-8">
+              {navItems.map((item) => (
                 <Link
-                  key={item.href}
+                  key={item.label}
                   href={item.href}
                   className={cn(
-                    "rounded-[8px] px-3 py-2 text-sm font-medium transition-colors",
-                    home
-                      ? "text-natural-white/76 hover:text-natural-white"
-                      : "text-natural-black/70 hover:text-natural-black",
-                    active && (home ? "bg-natural-white/10 text-natural-white" : "bg-natural-black/6 text-natural-black")
+                    "px-3 py-2 text-sm font-medium transition-colors duration-200",
+                    isDarkMode
+                      ? "text-natural-white/80 hover:text-natural-white"
+                      : "text-natural-black/80 hover:text-natural-black",
                   )}
                 >
                   {item.label}
                 </Link>
-              );
-            })}
+              ))}
+            </div>
           </div>
+
+          {/* Desktop Navigation */}
+
+          {/* Desktop CTA Button */}
           <div className="hidden md:block">
-            <Button text="加入内测" href="#waitlist" variant={home ? "light" : "dark"} />
+            <Button />
           </div>
-          <button
-            type="button"
-            className={cn(
-              "inline-flex size-10 items-center justify-center rounded-[8px] border md:hidden",
-              home ? "border-white/20 text-white" : "border-natural-black/15 text-natural-black"
-            )}
-            aria-label={open ? "关闭菜单" : "打开菜单"}
-            onClick={() => setOpen((current) => !current)}
-          >
-            {open ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2 text-white/80 hover:text-white"
+            >
+              {isMenuOpen ? (
+                <IconX className={cn("size-6", isDarkMode ? "text-natural-white" : "text-natural-black")} />
+              ) : (
+                <IconMenu2 className={cn("size-6", isDarkMode ? "text-natural-white" : "text-natural-black")} />
+              )}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Navigation */}
         <div
           className={cn(
-            "overflow-hidden transition-all duration-300 md:hidden",
-            open ? "max-h-96 pb-4 opacity-100" : "max-h-0 opacity-0"
+            "overflow-hidden rounded-xl bg-neutral-900 transition-all duration-300 ease-in-out md:hidden",
+            isMenuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0",
           )}
         >
-          <div className="rounded-[8px] border border-natural-black/10 bg-natural-white p-2 shadow-card-lg">
+          <div className="gap-1 px-2 pt-2 pb-3">
             {navItems.map((item) => (
               <Link
-                key={item.href}
+                key={item.label}
                 href={item.href}
-                onClick={() => setOpen(false)}
-                className="block rounded-[8px] px-3 py-3 text-sm font-semibold text-natural-black hover:bg-secondary"
+                className="block px-3 py-2 text-base font-medium text-white/80 transition-colors duration-200 hover:text-white"
+                onClick={() => setIsMenuOpen(false)}
               >
                 {item.label}
               </Link>
             ))}
-            <Button className="mt-2 w-full" text="加入内测" href="#waitlist" variant="dark" />
+            <div className="px-2 pt-4">
+              <Button />
+            </div>
           </div>
         </div>
-      </nav>
-    </header>
+      </div>
+    </nav>
   );
-}
+};
