@@ -1,6 +1,13 @@
 import { StatusBar } from "expo-status-bar";
+import {
+  Home,
+  Map,
+  Plus,
+  type LucideIcon
+} from "lucide-react-native";
 import { useMemo, useState } from "react";
 import {
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -9,7 +16,8 @@ import {
 } from "react-native";
 import {
   SafeAreaProvider,
-  SafeAreaView
+  SafeAreaView,
+  useSafeAreaInsets
 } from "react-native-safe-area-context";
 
 import {
@@ -22,17 +30,29 @@ import {
   type RoutineRoute
 } from "@pets/shared";
 
-type TabKey = "today" | "routes" | "map" | "profile";
+type TabKey = "today" | "map";
 
-const tabs: Array<{ key: TabKey; label: string }> = [
-  { key: "today", label: "出门" },
-  { key: "routes", label: "路线" },
-  { key: "map", label: "地点" },
-  { key: "profile", label: "档案" }
-];
+const BOTTOM_NAV_HEIGHT = 64;
+const BOTTOM_NAV_MIN_SAFE_PADDING = 10;
 
 export default function App() {
+  return (
+    <SafeAreaProvider>
+      <AppShell />
+    </SafeAreaProvider>
+  );
+}
+
+function AppShell() {
   const [activeTab, setActiveTab] = useState<TabKey>("today");
+  const [isAddNoticeVisible, setAddNoticeVisible] = useState(false);
+  const insets = useSafeAreaInsets();
+  const bottomSafePadding = Math.max(
+    insets.bottom,
+    BOTTOM_NAV_MIN_SAFE_PADDING
+  );
+  const scrollBottomPadding =
+    BOTTOM_NAV_HEIGHT + bottomSafePadding + 24;
 
   const advice = useMemo(
     () =>
@@ -46,56 +66,166 @@ export default function App() {
   );
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView edges={["top", "right", "left"]} style={styles.safeArea}>
-        <StatusBar style="dark" />
-        <View style={styles.shell}>
-          <View style={styles.header}>
-            <View style={styles.avatar}>
-              <Text style={styles.avatarEar}>小</Text>
-              <Text style={styles.avatarName}>{demoPet.name.slice(0, 1)}</Text>
-            </View>
-            <View>
-              <Text style={styles.kicker}>爪边 P0</Text>
-              <Text style={styles.title}>今天怎么遛更稳？</Text>
-            </View>
+    <SafeAreaView edges={["top", "right", "left"]} style={styles.safeArea}>
+      <StatusBar style="dark" />
+      <View style={styles.shell}>
+        <View style={styles.header}>
+          <View style={styles.avatar}>
+            <Text style={styles.avatarEar}>小</Text>
+            <Text style={styles.avatarName}>{demoPet.name.slice(0, 1)}</Text>
           </View>
-
-          <View style={styles.tabBar} accessibilityRole="tablist">
-            {tabs.map((tab) => (
-              <TouchableOpacity
-                accessibilityRole="tab"
-                accessibilityState={{ selected: activeTab === tab.key }}
-                key={tab.key}
-                onPress={() => setActiveTab(tab.key)}
-                style={[styles.tab, activeTab === tab.key && styles.tabActive]}
-              >
-                <Text
-                  style={[
-                    styles.tabText,
-                    activeTab === tab.key && styles.tabTextActive
-                  ]}
-                >
-                  {tab.label}
-                </Text>
-              </TouchableOpacity>
-            ))}
+          <View>
+            <Text style={styles.kicker}>爪边 P0</Text>
+            <Text style={styles.title}>今天怎么遛更稳？</Text>
           </View>
-
-          <ScrollView
-            contentContainerStyle={styles.content}
-            showsVerticalScrollIndicator={false}
-          >
-            {activeTab === "today" && (
-              <TodayView advice={advice} route={advice.recommendedRoute} />
-            )}
-            {activeTab === "routes" && <RoutesView routes={demoRoutes} />}
-            {activeTab === "map" && <PoisView pois={demoPois} />}
-            {activeTab === "profile" && <ProfileView />}
-          </ScrollView>
         </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
+
+        <ScrollView
+          contentContainerStyle={[
+            styles.content,
+            { paddingBottom: scrollBottomPadding }
+          ]}
+          showsVerticalScrollIndicator={false}
+        >
+          {activeTab === "today" && (
+            <TodayView advice={advice} route={advice.recommendedRoute} />
+          )}
+          {activeTab === "map" && <PoisView pois={demoPois} />}
+        </ScrollView>
+      </View>
+
+      {isAddNoticeVisible && (
+        <AddPlaceholderNotice
+          bottom={BOTTOM_NAV_HEIGHT + bottomSafePadding + 14}
+          onPress={() => setAddNoticeVisible(false)}
+        />
+      )}
+
+      <BottomNavBar
+        activeTab={activeTab}
+        bottomSafePadding={bottomSafePadding}
+        onAddPress={() => setAddNoticeVisible((isVisible) => !isVisible)}
+        onTabPress={(tab) => {
+          setActiveTab(tab);
+          setAddNoticeVisible(false);
+        }}
+      />
+    </SafeAreaView>
+  );
+}
+
+function BottomNavBar({
+  activeTab,
+  bottomSafePadding,
+  onAddPress,
+  onTabPress
+}: {
+  activeTab: TabKey;
+  bottomSafePadding: number;
+  onAddPress: () => void;
+  onTabPress: (tab: TabKey) => void;
+}) {
+  return (
+    <View
+      style={[
+        styles.bottomNav,
+        {
+          height: BOTTOM_NAV_HEIGHT + bottomSafePadding,
+          paddingBottom: bottomSafePadding
+        }
+      ]}
+    >
+      <View style={styles.bottomNavContent} accessibilityRole="tablist">
+        <BottomNavItem
+          Icon={Home}
+          isActive={activeTab === "today"}
+          label="Today"
+          onPress={() => onTabPress("today")}
+        />
+        <View style={styles.centerNavSlot}>
+          <CenterAddButton onPress={onAddPress} />
+        </View>
+        <BottomNavItem
+          Icon={Map}
+          isActive={activeTab === "map"}
+          label="Map"
+          onPress={() => onTabPress("map")}
+        />
+      </View>
+    </View>
+  );
+}
+
+function BottomNavItem({
+  Icon,
+  isActive,
+  label,
+  onPress
+}: {
+  Icon: LucideIcon;
+  isActive: boolean;
+  label: string;
+  onPress: () => void;
+}) {
+  const color = isActive ? "#2A1A0F" : "#A3A3A3";
+
+  return (
+    <Pressable
+      accessibilityHint={`Switches to ${label}`}
+      accessibilityLabel={label}
+      accessibilityRole="button"
+      accessibilityState={{ selected: isActive }}
+      hitSlop={8}
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.bottomNavItem,
+        pressed && styles.navPressed
+      ]}
+    >
+      <Icon color={color} size={24} strokeWidth={2.5} />
+      <Text style={[styles.bottomNavLabel, { color }]}>{label}</Text>
+    </Pressable>
+  );
+}
+
+function CenterAddButton({ onPress }: { onPress: () => void }) {
+  return (
+    <Pressable
+      accessibilityHint="Shows the upcoming add entry"
+      accessibilityLabel="Add"
+      accessibilityRole="button"
+      hitSlop={12}
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.centerAddButton,
+        pressed && styles.centerAddButtonPressed
+      ]}
+    >
+      <Plus color="#FFFFFF" size={28} strokeWidth={2.5} />
+    </Pressable>
+  );
+}
+
+function AddPlaceholderNotice({
+  bottom,
+  onPress
+}: {
+  bottom: number;
+  onPress: () => void;
+}) {
+  return (
+    <Pressable
+      accessibilityHint="Dismisses the add placeholder"
+      accessibilityLabel="Add entry placeholder"
+      accessibilityRole="button"
+      onPress={onPress}
+      style={[styles.addPlaceholderNotice, { bottom }]}
+    >
+      <Text style={styles.addPlaceholderTitle}>添加入口即将接入</Text>
+      <Text style={styles.addPlaceholderText}>
+        上报风险、添加地点、路线反馈会从这里开始。
+      </Text>
+    </Pressable>
   );
 }
 
@@ -316,34 +446,97 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     lineHeight: 24
   },
-  tabBar: {
-    backgroundColor: "#E8E3D7",
-    borderRadius: 8,
-    flexDirection: "row",
-    gap: 6,
-    padding: 5
+  bottomNav: {
+    backgroundColor: "#FFFFFF",
+    borderColor: "rgba(42,26,15,0.08)",
+    borderRadius: 28,
+    borderWidth: StyleSheet.hairlineWidth,
+    bottom: 0,
+    left: 12,
+    overflow: "visible",
+    position: "absolute",
+    right: 12,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 18,
+    elevation: 10
   },
-  tab: {
+  bottomNavContent: {
     alignItems: "center",
-    borderRadius: 6,
+    flexDirection: "row",
+    height: BOTTOM_NAV_HEIGHT,
+    justifyContent: "space-around"
+  },
+  bottomNavItem: {
+    alignItems: "center",
     flex: 1,
-    minHeight: 38,
-    justifyContent: "center"
+    gap: 4,
+    justifyContent: "center",
+    minHeight: 56,
+    minWidth: 64
   },
-  tabActive: {
-    backgroundColor: "#FFFFFF"
+  bottomNavLabel: {
+    fontSize: 11,
+    fontWeight: "600",
+    lineHeight: 13
   },
-  tabText: {
-    color: "#5E655E",
-    fontSize: 14,
-    fontWeight: "700"
+  navPressed: {
+    opacity: 0.72
   },
-  tabTextActive: {
-    color: "#1E2420"
+  centerNavSlot: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 88
+  },
+  centerAddButton: {
+    alignItems: "center",
+    backgroundColor: "#2A1A0F",
+    borderRadius: 28,
+    height: 56,
+    justifyContent: "center",
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.18,
+    shadowRadius: 14,
+    transform: [{ translateY: -8 }],
+    width: 56,
+    elevation: 8
+  },
+  centerAddButtonPressed: {
+    opacity: 0.88,
+    transform: [{ translateY: -8 }, { scale: 0.96 }]
   },
   content: {
-    paddingBottom: 28,
-    paddingTop: 16
+    paddingTop: 10
+  },
+  addPlaceholderNotice: {
+    backgroundColor: "#FFFFFF",
+    borderColor: "rgba(42,26,15,0.08)",
+    borderRadius: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+    left: 18,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    position: "absolute",
+    right: 18,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
+    elevation: 9
+  },
+  addPlaceholderTitle: {
+    color: "#2A1A0F",
+    fontSize: 15,
+    fontWeight: "900"
+  },
+  addPlaceholderText: {
+    color: "#6A6258",
+    fontSize: 13,
+    fontWeight: "700",
+    lineHeight: 18,
+    marginTop: 4
   },
   stack: {
     gap: 14
