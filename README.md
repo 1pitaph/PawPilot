@@ -19,7 +19,7 @@ Nook 目前处于 `Prototype / 0.1.0` 阶段。代码用于交互验证，不代
 - 快捷建议卡：`Collect an idea`、`Save a link`、`Make a list`、`Capture a file`。
 - 多来源入口：Text、Link、Image、Voice、File。
 - 收集卡片：展示标题、详情、来源和标签。
-- 收集状态面板：查看条目数量、当前来源和输入状态。
+- 收集分类面板：按 Pin、To-Do、Highlight、Quotes、Photos、Audio、Links、Remind 查看条目数量与列表。
 - SwiftUI Preview：包含空状态和已有收集状态。
 
 ## 占位与下一步
@@ -87,7 +87,7 @@ xcodebuild -project apps/nook-ios/Nook.xcodeproj \
 | `apps/nook-ios/project.yml` | XcodeGen 项目配置 |
 | `apps/nook-ios/Nook/App/NookApp.swift` | App 入口 |
 | `apps/nook-ios/Nook/Features/Collection/NookHomeView.swift` | 首页、底部输入栏、建议卡、Sheet 与 Preview |
-| `apps/nook-ios/Nook/Features/Collection/NookHomeModel.swift` | 收集状态、输入状态和交互逻辑 |
+| `apps/nook-ios/Nook/Features/Collection/NookHomeModel.swift` | 收集分类、输入状态和交互逻辑 |
 | `apps/nook-ios/Nook/Models/CollectionEntry.swift` | 收集条目与来源类型 |
 | `apps/nook-ios/Nook/Models/NookSuggestion.swift` | 默认快捷建议 |
 | `apps/nook-ios/Nook/Design/NookTheme.swift` | 颜色、阴影和界面基础样式 |
