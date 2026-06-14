@@ -83,6 +83,176 @@ export interface DepartureAdvice {
   alerts: string[];
 }
 
+export type AvatarGenerationMode = "q_only" | "q_to_3d" | "rigged_3d";
+
+export type AvatarJobStatus =
+  | "queued"
+  | "running"
+  | "waiting_user"
+  | "ready"
+  | "degraded"
+  | "failed"
+  | "canceled";
+
+export type AvatarPipelineStage =
+  | "created"
+  | "photo_uploaded"
+  | "quality_checking"
+  | "quality_failed"
+  | "q_generating"
+  | "q_ready"
+  | "waiting_user_selection"
+  | "multiview_generating"
+  | "tripo_submitting"
+  | "tripo_processing"
+  | "model_downloading"
+  | "model_archived"
+  | "qa_running"
+  | "qa_failed"
+  | "prerig_checking"
+  | "rigging_skipped"
+  | "rigging_running"
+  | "rig_ready"
+  | "retarget_running"
+  | "ready_2d"
+  | "ready_3d"
+  | "ready_rigged"
+  | "ready_degraded"
+  | "failed"
+  | "canceled";
+
+export type AvatarAssetKind =
+  | "source_photo"
+  | "q_candidate"
+  | "q_selected"
+  | "multiview_front"
+  | "multiview_left"
+  | "multiview_back"
+  | "multiview_right"
+  | "model_glb"
+  | "model_fbx"
+  | "model_usdz"
+  | "rigged_glb"
+  | "rigged_fbx"
+  | "preview_image"
+  | "quality_report"
+  | "metadata";
+
+export type AvatarProvider = "mock" | "apimart" | "openai" | "tripo" | "ultron";
+
+export interface AvatarAsset {
+  id: string;
+  kind: AvatarAssetKind;
+  url: string;
+  provider: AvatarProvider;
+  status: "pending" | "ready" | "failed";
+  label?: string;
+  fileName?: string;
+  mimeType?: string;
+  providerTaskId?: string;
+  sizeBytes?: number;
+  metadata?: Record<string, string | number | boolean | null>;
+  createdAt: string;
+}
+
+export interface AvatarRig {
+  status: "not_started" | "checking" | "skipped" | "running" | "ready" | "failed";
+  riggable?: boolean;
+  skeletonType?: "biped" | "quadruped" | "hexapod" | "octopod" | "avian" | "serpentine" | "aquatic";
+  providerTaskId?: string;
+  animationClips: string[];
+  errorMessage?: string;
+}
+
+export interface AvatarQualityReport {
+  passed: boolean;
+  score: number;
+  checks: Array<{
+    id: string;
+    label: string;
+    passed: boolean;
+    detail: string;
+  }>;
+}
+
+export interface AvatarGenerationJob {
+  id: string;
+  petId: string;
+  mode: AvatarGenerationMode;
+  status: AvatarJobStatus;
+  stage: AvatarPipelineStage;
+  progress: number;
+  headline: string;
+  message: string;
+  sourceFileIds: string[];
+  assets: AvatarAsset[];
+  selectedQAssetId?: string;
+  providerTaskIds: string[];
+  rig: AvatarRig;
+  qualityReport?: AvatarQualityReport;
+  errorCode?: string;
+  errorMessage?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateAvatarJobRequest {
+  petId: string;
+  sourceFileIds: string[];
+  sourceImageUrls?: string[];
+  candidateCount?: number;
+  mode?: AvatarGenerationMode;
+  tryRig?: boolean;
+  autoSelectFirstCandidate?: boolean;
+  geometryQuality?: "standard" | "detailed";
+  idempotencyKey?: string;
+}
+
+export interface CreateAvatarJobResponse {
+  job: AvatarGenerationJob;
+}
+
+export interface SelectAvatarCandidateRequest {
+  selectedQAssetId: string;
+}
+
+export const avatarStageLabels: Record<AvatarPipelineStage, string> = {
+  created: "创建任务",
+  photo_uploaded: "照片已上传",
+  quality_checking: "检查照片",
+  quality_failed: "照片不可用",
+  q_generating: "生成 Q 版候选",
+  q_ready: "Q 版候选已就绪",
+  waiting_user_selection: "等待选择主设定",
+  multiview_generating: "生成多视角",
+  tripo_submitting: "提交 Tripo",
+  tripo_processing: "生成 3D 模型",
+  model_downloading: "下载模型",
+  model_archived: "归档资产",
+  qa_running: "自动质检",
+  qa_failed: "质检未通过",
+  prerig_checking: "检查骨骼绑定",
+  rigging_skipped: "跳过骨骼绑定",
+  rigging_running: "绑定骨骼",
+  rig_ready: "骨骼已就绪",
+  retarget_running: "生成动作",
+  ready_2d: "2D 分身就绪",
+  ready_3d: "3D 分身就绪",
+  ready_rigged: "骨骼 3D 就绪",
+  ready_degraded: "降级分身就绪",
+  failed: "生成失败",
+  canceled: "已取消"
+};
+
+export function isAvatarJobFinal(status: AvatarJobStatus) {
+  return (
+    status === "ready" ||
+    status === "degraded" ||
+    status === "failed" ||
+    status === "canceled"
+  );
+}
+
 export const demoMapCenter: GeoCoordinate = {
   latitude: 31.2307,
   longitude: 121.4742

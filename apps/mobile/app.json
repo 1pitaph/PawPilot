@@ -11,6 +11,15 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.pets.pawnearby"
     },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "允许爪边拍摄宠物照片，用于生成 Q 版 3D 分身。",
+          "photosPermission": "允许爪边选择宠物照片，用于生成 Q 版 3D 分身。"
+        }
+      ]
+    ],
     "extra": {
       "prdVersion": "第 15 版"
     }

@@ -1,0 +1,19 @@
+{
+  "name": "@pets/avatar-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/services/avatar-api/src/server.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/services/avatar-api/src/server.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@pets/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^6.0.3"
+  }
+}

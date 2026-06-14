@@ -1,10 +1,15 @@
 import { StatusBar } from "expo-status-bar";
+import * as ImagePicker from "expo-image-picker";
 import {
   AlertTriangle,
+  Box,
+  Camera,
   ChevronRight,
+  CheckCircle2,
   CloudSun,
   Droplets,
   Home,
+  Images,
   Map,
   MapPin,
   MessageCircle,
@@ -14,11 +19,13 @@ import {
   Route,
   Search,
   ShieldCheck,
+  Sparkles,
   UserRound,
   type LucideIcon
 } from "lucide-react-native";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   Pressable,
   ScrollView,
@@ -35,15 +42,27 @@ import {
 import petMascotImage from "../assets/pet-mascot.png";
 import quietWalkRouteImage from "../assets/quiet-walk-route.png";
 import {
+  avatarStageLabels,
   buildDepartureAdvice,
   demoPet,
   demoPois,
   demoRoutes,
   demoWeather,
+  isAvatarJobFinal,
+  type AvatarAsset,
+  type AvatarGenerationJob,
   type Poi,
   type RoutineRoute
 } from "@pets/shared";
 
+import {
+  AVATAR_API_BASE_URL,
+  createAvatarJob,
+  fetchAvatarJob,
+  getAvatarApiErrorMessage,
+  selectAvatarCandidate,
+  uploadAvatarSource
+} from "./avatarApi";
 import { MapScreen } from "./MapScreen";
 
 type TabKey = "today" | "map" | "spots" | "pet";
@@ -55,6 +74,7 @@ type HomeNoticeKind =
   | "feedbackRisk"
   | "addMode";
 type FeedbackState = "idle" | "smooth" | "risk";
+type AvatarPhotoSource = "camera" | "library" | "demo";
 
 const BOTTOM_NAV_HEIGHT = 76;
 const BOTTOM_NAV_MIN_SAFE_PADDING = 10;
@@ -105,6 +125,9 @@ function AppShell() {
   const [isAddingPoi, setAddingPoi] = useState(false);
   const [customPois, setCustomPois] = useState<Poi[]>([]);
   const [homeRouteId, setHomeRouteId] = useState<string | null>(null);
+  const [avatarJob, setAvatarJob] = useState<AvatarGenerationJob | null>(null);
+  const [avatarLoading, setAvatarLoading] = useState(false);
+  const [avatarError, setAvatarError] = useState<string | null>(null);
   const insets = useSafeAreaInsets();
   const bottomSafePadding = Math.max(
     insets.bottom,
@@ -138,6 +161,41 @@ function AppShell() {
     setHomeNotice(kind);
   }
 
+  useEffect(() => {
+    const jobId = avatarJob?.id;
+    if (
+      !jobId ||
+      avatarJob.status === "waiting_user" ||
+      isAvatarJobFinal(avatarJob.status)
+    ) {
+      return;
+    }
+
+    let canceled = false;
+    const refresh = async () => {
+      try {
+        const nextJob = await fetchAvatarJob(jobId);
+        if (!canceled) {
+          setAvatarJob(nextJob);
+          setAvatarError(null);
+        }
+      } catch (error) {
+        if (!canceled) {
+          setAvatarError(getAvatarApiErrorMessage(error));
+        }
+      }
+    };
+    const interval = setInterval(() => {
+      void refresh();
+    }, 1800);
+
+    void refresh();
+    return () => {
+      canceled = true;
+      clearInterval(interval);
+    };
+  }, [avatarJob?.id, avatarJob?.status]);
+
   function handleRouteSwap() {
     const currentIndex = Math.max(
       0,
@@ -164,6 +222,107 @@ function AppShell() {
   function submitFeedback(nextState: Exclude<FeedbackState, "idle">) {
     setFeedbackState(nextState);
     showNotice(nextState === "smooth" ? "feedbackSmooth" : "feedbackRisk");
+  }
+
+  async function startAvatarGeneration(source: AvatarPhotoSource = "camera") {
+    setAvatarLoading(true);
+    setAvatarError(null);
+    try {
+      const uploadFileId = await prepareAvatarSource(source);
+      if (uploadFileId === null) {
+        return;
+      }
+      const job = await createAvatarJob(demoPet.id, {
+        sourceFileIds: uploadFileId ? [uploadFileId] : [],
+        candidateCount: 4,
+        mode: "rigged_3d",
+        tryRig: true,
+        autoSelectFirstCandidate: false,
+        geometryQuality: "standard"
+      });
+      setAvatarJob(job);
+    } catch (error) {
+      setAvatarError(getAvatarApiErrorMessage(error));
+    } finally {
+      setAvatarLoading(false);
+    }
+  }
+
+  async function refreshAvatarGeneration() {
+    if (!avatarJob) {
+      await startAvatarGeneration("camera");
+      return;
+    }
+
+    setAvatarLoading(true);
+    setAvatarError(null);
+    try {
+      const job = await fetchAvatarJob(avatarJob.id);
+      setAvatarJob(job);
+    } catch (error) {
+      setAvatarError(getAvatarApiErrorMessage(error));
+    } finally {
+      setAvatarLoading(false);
+    }
+  }
+
+  async function chooseAvatarCandidate(assetId: string) {
+    if (!avatarJob) {
+      return;
+    }
+
+    setAvatarLoading(true);
+    setAvatarError(null);
+    try {
+      const job = await selectAvatarCandidate(avatarJob.id, assetId);
+      setAvatarJob(job);
+    } catch (error) {
+      setAvatarError(getAvatarApiErrorMessage(error));
+    } finally {
+      setAvatarLoading(false);
+    }
+  }
+
+  async function prepareAvatarSource(source: AvatarPhotoSource) {
+    if (source === "demo") {
+      return undefined;
+    }
+
+    const permission =
+      source === "camera"
+        ? await ImagePicker.requestCameraPermissionsAsync()
+        : await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) {
+      throw new Error(source === "camera" ? "需要相机权限才能拍照生成。" : "需要相册权限才能选择照片。");
+    }
+
+    const options: ImagePicker.ImagePickerOptions = {
+      allowsEditing: true,
+      aspect: [1, 1],
+      base64: true,
+      mediaTypes: ["images"],
+      quality: 0.86
+    };
+    const result =
+      source === "camera"
+        ? await ImagePicker.launchCameraAsync(options)
+        : await ImagePicker.launchImageLibraryAsync(options);
+
+    if (result.canceled) {
+      return null;
+    }
+
+    const asset = result.assets[0];
+    if (!asset?.base64) {
+      throw new Error("照片读取失败，请重新选择一张宠物照片。");
+    }
+
+    const upload = await uploadAvatarSource({
+      base64: asset.base64,
+      fileName: asset.fileName ?? `${demoPet.id}-avatar.jpg`,
+      mimeType: asset.mimeType ?? "image/jpeg"
+    });
+    return upload.fileId;
   }
 
   return (
@@ -231,7 +390,14 @@ function AppShell() {
               subtitle="怕热、怕车、怕大狗会直接改变路线排序。"
               title={`${demoPet.name} 的出门偏好`}
             >
-              <ProfileView />
+              <ProfileView
+                avatarError={avatarError}
+                avatarJob={avatarJob}
+                avatarLoading={avatarLoading}
+                onRefreshAvatar={refreshAvatarGeneration}
+                onSelectAvatarCandidate={chooseAvatarCandidate}
+                onStartAvatar={startAvatarGeneration}
+              />
             </SecondaryPageShell>
           )}
         </SafeAreaView>
@@ -878,7 +1044,21 @@ function PoisView({ pois }: { pois: Poi[] }) {
   );
 }
 
-function ProfileView() {
+function ProfileView({
+  avatarError,
+  avatarJob,
+  avatarLoading,
+  onRefreshAvatar,
+  onSelectAvatarCandidate,
+  onStartAvatar
+}: {
+  avatarError: string | null;
+  avatarJob: AvatarGenerationJob | null;
+  avatarLoading: boolean;
+  onRefreshAvatar: () => void;
+  onSelectAvatarCandidate: (assetId: string) => void;
+  onStartAvatar: (source: AvatarPhotoSource) => void;
+}) {
   return (
     <View style={styles.stack}>
       <View style={styles.profilePanel}>
@@ -894,6 +1074,15 @@ function ProfileView() {
         </Text>
       </View>
 
+      <AvatarStudio
+        avatarError={avatarError}
+        job={avatarJob}
+        loading={avatarLoading}
+        onRefresh={onRefreshAvatar}
+        onSelectCandidate={onSelectAvatarCandidate}
+        onStart={onStartAvatar}
+      />
+
       <View style={styles.profileSection}>
         <Text style={styles.sectionTitle}>影响推荐的档案</Text>
         <Text style={styles.sectionMeta}>这些标签会影响路线排序和风险提示。</Text>
@@ -907,6 +1096,261 @@ function ProfileView() {
       </View>
     </View>
   );
+}
+
+function AvatarStudio({
+  avatarError,
+  job,
+  loading,
+  onRefresh,
+  onSelectCandidate,
+  onStart
+}: {
+  avatarError: string | null;
+  job: AvatarGenerationJob | null;
+  loading: boolean;
+  onRefresh: () => void;
+  onSelectCandidate: (assetId: string) => void;
+  onStart: (source: AvatarPhotoSource) => void;
+}) {
+  const progress = Math.max(0, Math.min(job?.progress ?? 0, 100));
+  const qCandidates =
+    job?.assets.filter(
+      (asset) => asset.kind === "q_candidate" || asset.kind === "q_selected"
+    ) ?? [];
+  const previewAsset = findLatestAsset(job?.assets, [
+    "preview_image",
+    "q_selected",
+    "q_candidate"
+  ]);
+  const modelAsset = findLatestAsset(job?.assets, ["rigged_glb", "model_glb"]);
+  const isWaitingForPick = job?.status === "waiting_user";
+  const isFinal = job ? isAvatarJobFinal(job.status) : false;
+  const stageLabel = job ? avatarStageLabels[job.stage] : "尚未开始";
+  const primaryLabel = !job
+    ? "拍照生成"
+    : isWaitingForPick
+      ? "刷新候选"
+      : isFinal
+        ? "重新拍照"
+        : "刷新进度";
+
+  return (
+    <View style={styles.avatarStudio}>
+      <View style={styles.avatarStudioHeader}>
+        <View style={styles.avatarStudioIcon}>
+          <Sparkles color="#FFFFFF" size={21} strokeWidth={2.6} />
+        </View>
+        <View style={styles.avatarStudioTitleGroup}>
+          <Text style={styles.avatarStudioTitle}>Q 版 3D 分身</Text>
+          <Text numberOfLines={1} style={styles.avatarStudioMeta}>
+            {stageLabel} · {job?.status ?? "idle"}
+          </Text>
+        </View>
+        {loading && <ActivityIndicator color="#5C6CF6" />}
+      </View>
+
+      <View style={styles.avatarPreviewRow}>
+        <View style={styles.avatarPreviewFrame}>
+          <Image
+            accessibilityIgnoresInvertColors
+            resizeMode="cover"
+            source={previewAsset ? { uri: previewAsset.url } : petMascotImage}
+            style={styles.avatarPreviewImage}
+          />
+        </View>
+        <View style={styles.avatarProgressPanel}>
+          <Text style={styles.avatarProgressValue}>{progress}%</Text>
+          <Text style={styles.avatarProgressLabel}>{job?.headline ?? "等待生成"}</Text>
+          <View style={styles.avatarProgressTrack}>
+            <View
+              style={[
+                styles.avatarProgressFill,
+                { width: `${Math.max(progress, 4)}%` }
+              ]}
+            />
+          </View>
+          <Text numberOfLines={3} style={styles.avatarProgressMessage}>
+            {job?.message ?? "从宠物照片生成 Q 版候选，再转 Tripo 3D 与骨骼绑定任务。"}
+          </Text>
+        </View>
+      </View>
+
+      {qCandidates.length > 0 && (
+        <View style={styles.avatarCandidateSection}>
+          <Text style={styles.avatarSubTitle}>主设定候选</Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.avatarCandidateScroll}
+          >
+            {qCandidates.map((asset) => {
+              const selected =
+                asset.kind === "q_selected" || asset.id === job?.selectedQAssetId;
+              return (
+                <Pressable
+                  accessibilityLabel={`选择${asset.label ?? "Q 版候选"}`}
+                  accessibilityRole="button"
+                  disabled={!isWaitingForPick || loading}
+                  key={asset.id}
+                  onPress={() => onSelectCandidate(asset.id)}
+                  style={({ pressed }) => [
+                    styles.avatarCandidateCard,
+                    selected && styles.avatarCandidateCardSelected,
+                    pressed && styles.cardPressed
+                  ]}
+                >
+                  <Image
+                    accessibilityIgnoresInvertColors
+                    resizeMode="cover"
+                    source={{ uri: asset.url }}
+                    style={styles.avatarCandidateImage}
+                  />
+                  <Text numberOfLines={1} style={styles.avatarCandidateLabel}>
+                    {selected ? "已选" : asset.label ?? "候选"}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+        </View>
+      )}
+
+      {modelAsset && (
+        <View style={styles.avatarAssetPanel}>
+          <View style={styles.avatarAssetIcon}>
+            <Box color="#26322D" size={22} strokeWidth={2.5} />
+          </View>
+          <View style={styles.avatarAssetText}>
+            <Text style={styles.avatarAssetTitle}>
+              {modelAsset.kind === "rigged_glb" ? "骨骼 GLB 已就绪" : "静态 GLB 已就绪"}
+            </Text>
+            <Text numberOfLines={1} style={styles.avatarAssetMeta}>
+              {modelAsset.fileName ?? "pet-avatar.glb"}
+            </Text>
+          </View>
+          <CheckCircle2 color="#31A66C" size={23} strokeWidth={2.6} />
+        </View>
+      )}
+
+      {job?.qualityReport && (
+        <View style={styles.avatarQaGrid}>
+          {job.qualityReport.checks.map((check) => (
+            <View key={check.id} style={styles.avatarQaItem}>
+              <Text style={styles.avatarQaLabel}>{check.label}</Text>
+              <Text
+                style={[
+                  styles.avatarQaStatus,
+                  !check.passed && styles.avatarQaStatusWarn
+                ]}
+              >
+                {check.passed ? "通过" : "待处理"}
+              </Text>
+            </View>
+          ))}
+        </View>
+      )}
+
+      {avatarError && (
+        <Text numberOfLines={3} style={styles.avatarErrorText}>
+          {avatarError}
+        </Text>
+      )}
+
+      <View style={styles.avatarActions}>
+        <AvatarActionButton
+          Icon={!job || isFinal ? Camera : RefreshCw}
+          disabled={loading}
+          label={primaryLabel}
+          onPress={!job || isFinal ? () => onStart("camera") : onRefresh}
+          tone="primary"
+        />
+        {(!job || isFinal) && (
+          <AvatarActionButton
+            Icon={Images}
+            disabled={loading}
+            label="从相册选"
+            onPress={() => onStart("library")}
+            tone="secondary"
+          />
+        )}
+        {isWaitingForPick && qCandidates[0] && (
+          <AvatarActionButton
+            Icon={ChevronRight}
+            disabled={loading}
+            label="选择第一张"
+            onPress={() => onSelectCandidate(qCandidates[0].id)}
+            tone="secondary"
+          />
+        )}
+      </View>
+
+      <Text numberOfLines={1} style={styles.avatarApiHint}>
+        {AVATAR_API_BASE_URL}
+      </Text>
+    </View>
+  );
+}
+
+function AvatarActionButton({
+  Icon,
+  disabled,
+  label,
+  onPress,
+  tone
+}: {
+  Icon: LucideIcon;
+  disabled?: boolean;
+  label: string;
+  onPress: () => void;
+  tone: "primary" | "secondary";
+}) {
+  return (
+    <Pressable
+      accessibilityLabel={label}
+      accessibilityRole="button"
+      disabled={disabled}
+      onPress={onPress}
+      style={({ pressed }) => [
+        tone === "primary"
+          ? styles.avatarPrimaryButton
+          : styles.avatarSecondaryButton,
+        disabled && styles.avatarButtonDisabled,
+        pressed && styles.buttonPressed
+      ]}
+    >
+      <Icon
+        color={tone === "primary" ? "#FFFFFF" : "#5C6CF6"}
+        size={17}
+        strokeWidth={2.6}
+      />
+      <Text
+        style={
+          tone === "primary"
+            ? styles.avatarPrimaryButtonText
+            : styles.avatarSecondaryButtonText
+        }
+      >
+        {label}
+      </Text>
+    </Pressable>
+  );
+}
+
+function findLatestAsset(
+  assets: AvatarAsset[] | undefined,
+  kinds: AvatarAsset["kind"][]
+) {
+  if (!assets) {
+    return undefined;
+  }
+  for (let index = assets.length - 1; index >= 0; index -= 1) {
+    const asset = assets[index];
+    if (kinds.includes(asset.kind)) {
+      return asset;
+    }
+  }
+  return undefined;
 }
 
 function TrustBadge({ trust }: { trust: Poi["trust"] }) {
@@ -1646,6 +2090,252 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     paddingHorizontal: 10,
     paddingVertical: 7
+  },
+  avatarStudio: {
+    backgroundColor: "#FFFFFF",
+    borderColor: "#E5E9F5",
+    borderRadius: 24,
+    borderWidth: 1,
+    gap: 14,
+    padding: 16,
+    shadowColor: "#64708A",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.07,
+    shadowRadius: 18,
+    elevation: 4
+  },
+  avatarStudioHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 11
+  },
+  avatarStudioIcon: {
+    alignItems: "center",
+    backgroundColor: "#5C6CF6",
+    borderRadius: 19,
+    height: 38,
+    justifyContent: "center",
+    width: 38
+  },
+  avatarStudioTitleGroup: {
+    flex: 1,
+    minWidth: 0
+  },
+  avatarStudioTitle: {
+    color: "#242833",
+    fontSize: 18,
+    fontWeight: "900"
+  },
+  avatarStudioMeta: {
+    color: "#717789",
+    fontSize: 12,
+    fontWeight: "800",
+    marginTop: 3
+  },
+  avatarPreviewRow: {
+    flexDirection: "row",
+    gap: 14
+  },
+  avatarPreviewFrame: {
+    backgroundColor: "#FFF6EA",
+    borderColor: "#EEF0FF",
+    borderRadius: 26,
+    borderWidth: 1,
+    height: 126,
+    overflow: "hidden",
+    width: 126
+  },
+  avatarPreviewImage: {
+    height: "100%",
+    width: "100%"
+  },
+  avatarProgressPanel: {
+    flex: 1,
+    justifyContent: "center",
+    minWidth: 0
+  },
+  avatarProgressValue: {
+    color: "#242833",
+    fontSize: 28,
+    fontWeight: "900"
+  },
+  avatarProgressLabel: {
+    color: "#3F4657",
+    fontSize: 14,
+    fontWeight: "900",
+    marginTop: 1
+  },
+  avatarProgressTrack: {
+    backgroundColor: "#EEF0FF",
+    borderRadius: 7,
+    height: 8,
+    marginTop: 10,
+    overflow: "hidden"
+  },
+  avatarProgressFill: {
+    backgroundColor: "#5C6CF6",
+    borderRadius: 7,
+    height: "100%"
+  },
+  avatarProgressMessage: {
+    color: "#6B7280",
+    fontSize: 12,
+    fontWeight: "700",
+    lineHeight: 17,
+    marginTop: 9
+  },
+  avatarCandidateSection: {
+    gap: 9
+  },
+  avatarSubTitle: {
+    color: "#242833",
+    fontSize: 15,
+    fontWeight: "900"
+  },
+  avatarCandidateScroll: {
+    marginHorizontal: -3
+  },
+  avatarCandidateCard: {
+    backgroundColor: "#F8F9FC",
+    borderColor: "#E8ECF4",
+    borderRadius: 18,
+    borderWidth: 1,
+    marginHorizontal: 3,
+    padding: 7,
+    width: 94
+  },
+  avatarCandidateCardSelected: {
+    borderColor: "#5C6CF6",
+    borderWidth: 2
+  },
+  avatarCandidateImage: {
+    backgroundColor: "#FFF6EA",
+    borderRadius: 12,
+    height: 78,
+    width: "100%"
+  },
+  avatarCandidateLabel: {
+    color: "#4E596B",
+    fontSize: 11,
+    fontWeight: "900",
+    marginTop: 6,
+    textAlign: "center"
+  },
+  avatarAssetPanel: {
+    alignItems: "center",
+    backgroundColor: "#F2FAF6",
+    borderColor: "#D8EFE2",
+    borderRadius: 18,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: 11,
+    minHeight: 62,
+    paddingHorizontal: 12
+  },
+  avatarAssetIcon: {
+    alignItems: "center",
+    backgroundColor: "#DCEFE6",
+    borderRadius: 17,
+    height: 34,
+    justifyContent: "center",
+    width: 34
+  },
+  avatarAssetText: {
+    flex: 1,
+    minWidth: 0
+  },
+  avatarAssetTitle: {
+    color: "#26322D",
+    fontSize: 14,
+    fontWeight: "900"
+  },
+  avatarAssetMeta: {
+    color: "#617066",
+    fontSize: 12,
+    fontWeight: "800",
+    marginTop: 3
+  },
+  avatarQaGrid: {
+    flexDirection: "row",
+    gap: 8
+  },
+  avatarQaItem: {
+    backgroundColor: "#F7F9F5",
+    borderColor: "#DDE8D8",
+    borderRadius: 16,
+    borderWidth: 1,
+    flex: 1,
+    minHeight: 58,
+    paddingHorizontal: 10,
+    paddingVertical: 9
+  },
+  avatarQaLabel: {
+    color: "#59665D",
+    fontSize: 11,
+    fontWeight: "800"
+  },
+  avatarQaStatus: {
+    color: "#176B52",
+    fontSize: 15,
+    fontWeight: "900",
+    marginTop: 4
+  },
+  avatarQaStatusWarn: {
+    color: "#8C5B13"
+  },
+  avatarErrorText: {
+    backgroundColor: "#FFF0D4",
+    borderRadius: 14,
+    color: "#8C5B13",
+    fontSize: 12,
+    fontWeight: "800",
+    lineHeight: 17,
+    paddingHorizontal: 11,
+    paddingVertical: 9
+  },
+  avatarActions: {
+    flexDirection: "row",
+    gap: 10
+  },
+  avatarPrimaryButton: {
+    alignItems: "center",
+    backgroundColor: "#5C6CF6",
+    borderRadius: 21,
+    flex: 1,
+    flexDirection: "row",
+    gap: 7,
+    height: 42,
+    justifyContent: "center"
+  },
+  avatarSecondaryButton: {
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderColor: "rgba(92,108,246,0.18)",
+    borderRadius: 21,
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: "row",
+    gap: 7,
+    height: 42,
+    justifyContent: "center"
+  },
+  avatarButtonDisabled: {
+    opacity: 0.6
+  },
+  avatarPrimaryButtonText: {
+    color: "#FFFFFF",
+    fontSize: 14,
+    fontWeight: "900"
+  },
+  avatarSecondaryButtonText: {
+    color: "#5C6CF6",
+    fontSize: 14,
+    fontWeight: "900"
+  },
+  avatarApiHint: {
+    color: "#969CAA",
+    fontSize: 11,
+    fontWeight: "700"
   },
   profilePanel: {
     alignItems: "center",

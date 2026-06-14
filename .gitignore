@@ -42,6 +42,7 @@ web-build/
 .next/
 .source/
 out/
+dist/
 next-env.d.ts
 *.tsbuildinfo
 
@@ -72,5 +73,7 @@ __pycache__/
 tmp/
 temp/
 .cache/
+.data/
+services/avatar-api/.data/
 
 web_reference

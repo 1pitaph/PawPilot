@@ -5,6 +5,9 @@
   "description": "Pet Mobility Agent monorepo.",
   "packageManager": "pnpm@11.6.0",
   "scripts": {
+    "avatar:build": "pnpm --filter @pets/avatar-api build",
+    "avatar:start": "pnpm --filter @pets/avatar-api start",
+    "avatar:typecheck": "pnpm --filter @pets/avatar-api typecheck",
     "mobile:start": "pnpm --filter @pets/mobile start",
     "mobile:ios": "pnpm --filter @pets/mobile ios",
     "web:dev": "pnpm --filter @pets/web dev",
