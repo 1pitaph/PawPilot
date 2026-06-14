@@ -38,6 +38,12 @@ ios/
 android/
 web-build/
 
+# Next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
 # Quarto and document build artifacts
 .quarto/
 _site/
@@ -65,3 +71,5 @@ __pycache__/
 tmp/
 temp/
 .cache/
+
+web_reference

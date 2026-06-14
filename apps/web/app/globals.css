@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #f5f3ee;
+  --color-foreground: #171711;
+  --color-natural-black: #11110d;
+  --color-natural-white: #ffffff;
+  --color-muted-foreground: #73716b;
+  --color-primary: #ffca3a;
+  --color-secondary: #e9efe7;
+  --color-heading: #25231d;
+  --color-charcoal: #1b1a15;
+  --color-offwhite: #f5f3ee;
+  --color-dusty-red: #df6a5d;
+  --color-dusty-green: #3c7d63;
+  --color-sky-soft: #89b8c2;
+  --shadow-card-md: 0 2px 6px 0 rgba(17, 17, 13, 0.12);
+  --shadow-card-lg: 0 8px 24px 0 rgba(17, 17, 13, 0.14);
+  --spacing-container: 1440px;
+  --font-sans: Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    linear-gradient(180deg, rgba(137, 184, 194, 0.14), transparent 420px),
+    var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+button,
+a {
+  letter-spacing: 0;
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, transparent, black 18%, black 78%, transparent);
+}
+
+.route-line {
+  background-image:
+    linear-gradient(115deg, transparent 0 42%, rgba(255, 202, 58, 0.72) 42% 45%, transparent 45%),
+    linear-gradient(25deg, transparent 0 51%, rgba(60, 125, 99, 0.68) 51% 54%, transparent 54%),
+    linear-gradient(160deg, transparent 0 58%, rgba(137, 184, 194, 0.52) 58% 61%, transparent 61%);
+}
+
+.soft-noise {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 202, 58, 0.16), transparent 24%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 45%),
+    rgba(255, 255, 255, 0.04);
+}
+
+.marquee-track {
+  animation: marquee 26s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

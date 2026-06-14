@@ -12,6 +12,7 @@
 
 ```text
 apps/mobile          Expo React Native app
+apps/web             Next.js 宣传 web
 packages/shared      共享类型、mock 数据与推荐逻辑
 docs/                PRD 与 Quarto 渲染文件
 ```
@@ -19,8 +20,10 @@ docs/                PRD 与 Quarto 渲染文件
 ## 运行
 
 ```bash
-npm install
-npm run mobile:ios
+pnpm install
+pnpm mobile:ios
+pnpm web:dev
 ```
 
-`npm run mobile:ios` 会启动 Expo dev server，并尝试把 app 打开到当前 iOS 模拟器。
+`pnpm mobile:ios` 会启动 Expo dev server，并尝试把 app 打开到当前 iOS 模拟器。
+`pnpm web:dev` 会启动爪边宣传站，默认访问 `http://127.0.0.1:3000`。

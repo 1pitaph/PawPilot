@@ -3,15 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "description": "Pet Mobility Agent monorepo.",
-  "packageManager": "npm@10.9.8",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "packageManager": "pnpm@11.6.0",
   "scripts": {
-    "mobile:start": "npm run start -w @pets/mobile",
-    "mobile:ios": "npm run ios -w @pets/mobile",
-    "typecheck": "npm run typecheck --workspaces --if-present"
+    "mobile:start": "pnpm --filter @pets/mobile start",
+    "mobile:ios": "pnpm --filter @pets/mobile ios",
+    "web:dev": "pnpm --filter @pets/web dev",
+    "web:build": "pnpm --filter @pets/web build",
+    "typecheck": "pnpm -r --if-present run typecheck"
   },
   "devDependencies": {
     "typescript": "~6.0.3"
