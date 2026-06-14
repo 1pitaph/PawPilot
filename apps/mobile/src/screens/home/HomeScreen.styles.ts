@@ -78,11 +78,23 @@ export const styles = StyleSheet.create({
     right: 0,
     top: 0
   },
+  mapWash: {
+    backgroundColor: "rgba(247,247,246,0.38)",
+    bottom: 0,
+    left: 0,
+    position: "absolute",
+    right: 0,
+    top: 0
+  },
   mapStatusRow: {
     alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.76)",
+    borderRadius: 18,
     flexDirection: "row",
     gap: 8,
     left: 26,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     position: "absolute",
     top: 24
   },

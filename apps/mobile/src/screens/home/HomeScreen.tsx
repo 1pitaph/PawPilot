@@ -115,10 +115,16 @@ export function HomeScreen({
       >
         <View pointerEvents="none" style={styles.mapSurface}>
           <MapView
+            mapType="mutedStandard"
             pitchEnabled={false}
             region={mapRegion}
             rotateEnabled={false}
             scrollEnabled={false}
+            showsBuildings={false}
+            showsCompass={false}
+            showsPointsOfInterests={false}
+            showsScale={false}
+            showsTraffic={false}
             style={styles.mapPreview}
             toolbarEnabled={false}
             zoomEnabled={false}
@@ -146,6 +152,7 @@ export function HomeScreen({
               </View>
             </Marker>
           </MapView>
+          <View style={styles.mapWash} />
         </View>
 
         <View style={styles.mapStatusRow}>

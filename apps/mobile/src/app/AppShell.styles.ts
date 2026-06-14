@@ -2,11 +2,11 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   root: {
-    backgroundColor: "#F8F8F4",
+    backgroundColor: "#F7F7F6",
     flex: 1
   },
   safeArea: {
-    backgroundColor: "#F7E8D5",
+    backgroundColor: "#F7F7F6",
     flex: 1,
     zIndex: 2
   },
