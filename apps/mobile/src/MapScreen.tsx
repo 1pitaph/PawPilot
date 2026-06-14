@@ -105,6 +105,12 @@ export function MapScreen({
     routes.find((route) => route.id === activeRouteId) ?? routes[0];
 
   useEffect(() => {
+    if (!isAddingPoi) {
+      resetDraftPoi();
+    }
+  }, [isAddingPoi]);
+
+  useEffect(() => {
     const normalizedQuery = query.trim();
 
     if (normalizedQuery.length < 2) {
@@ -226,6 +232,18 @@ export function MapScreen({
     focusCoordinate(coordinate, 0.0028);
   }
 
+  function resetDraftPoi() {
+    setDraftCoordinate(null);
+    setDraftName("");
+    setDraftRule("");
+    setDraftCategory("custom");
+  }
+
+  function cancelDraftPoi() {
+    resetDraftPoi();
+    onCancelAdding();
+  }
+
   function handleSaveCustomPoi() {
     if (!draftCoordinate) {
       return;
@@ -255,11 +273,7 @@ export function MapScreen({
     setQuery("");
     setSelectedCategory("all");
     setFilterOpen(false);
-
-    setDraftName("");
-    setDraftRule("");
-    setDraftCategory("custom");
-    setDraftCoordinate(null);
+    resetDraftPoi();
     onCancelAdding();
   }
 
@@ -483,10 +497,7 @@ export function MapScreen({
               draftCoordinate={draftCoordinate}
               draftName={draftName}
               draftRule={draftRule}
-              onCancel={() => {
-                setDraftCoordinate(null);
-                onCancelAdding();
-              }}
+              onCancel={cancelDraftPoi}
               onCategoryChange={setDraftCategory}
               onNameChange={setDraftName}
               onRuleChange={setDraftRule}
