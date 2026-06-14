@@ -1,8 +1,11 @@
 import {
+  ChevronDown,
   CircleAlert,
+  Clock3,
   Crosshair,
-  MapPin,
   Search,
+  ShieldCheck,
+  SlidersHorizontal,
   X
 } from "lucide-react-native";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -63,26 +66,32 @@ const CUSTOM_CATEGORY_OPTIONS: PoiCategory[] = [
 
 export function MapScreen({
   activeRouteId,
-  bottomInset,
+  bottomNavInset,
   isAddingPoi,
   onCancelAdding,
   onCreateCustomPoi,
   pois,
-  routes
+  routes,
+  topInset
 }: {
   activeRouteId: string;
-  bottomInset: number;
+  bottomNavInset: number;
   isAddingPoi: boolean;
   onCancelAdding: () => void;
   onCreateCustomPoi: (poi: Poi) => void;
   pois: Poi[];
   routes: RoutineRoute[];
+  topInset: number;
 }) {
   const mapRef = useRef<MapView>(null);
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] =
     useState<PoiCategory | "all">("all");
   const [selectedPoiId, setSelectedPoiId] = useState(pois[0]?.id ?? "");
+  const [activeCardIndex, setActiveCardIndex] = useState(0);
+  const [isFilterOpen, setFilterOpen] = useState(false);
+  const [isRecommendationCardVisible, setRecommendationCardVisible] =
+    useState(true);
   const [draftCoordinate, setDraftCoordinate] =
     useState<GeoCoordinate | null>(null);
   const [draftName, setDraftName] = useState("");
@@ -160,6 +169,17 @@ export function MapScreen({
     });
   }, [query, searchablePois, selectedCategory]);
 
+  useEffect(() => {
+    if (filteredPois.length === 0) {
+      return;
+    }
+
+    if (!filteredPois.some((poi) => poi.id === selectedPoiId)) {
+      setSelectedPoiId(filteredPois[0].id);
+      setActiveCardIndex(0);
+    }
+  }, [filteredPois, selectedPoiId]);
+
   const selectedPoi =
     filteredPois.find((poi) => poi.id === selectedPoiId) ?? filteredPois[0];
 
@@ -174,8 +194,25 @@ export function MapScreen({
     );
   }
 
-  function selectPoi(poi: Poi) {
+  function focusRoute(route: RoutineRoute) {
+    mapRef.current?.fitToCoordinates(route.path, {
+      animated: true,
+      edgePadding: {
+        top: Math.round(topInset + 190),
+        right: 40,
+        bottom: Math.round(bottomNavInset + 160),
+        left: 40
+      }
+    });
+  }
+
+  function selectPoi(poi: Poi, cardIndex?: number) {
     setSelectedPoiId(poi.id);
+    setActiveCardIndex(
+      cardIndex ??
+        Math.max(0, filteredPois.findIndex((item) => item.id === poi.id))
+    );
+    setRecommendationCardVisible(true);
     focusCoordinate(poi.coordinate);
   }
 
@@ -214,6 +251,10 @@ export function MapScreen({
 
     onCreateCustomPoi(customPoi);
     setSelectedPoiId(customPoi.id);
+    setActiveCardIndex(0);
+    setQuery("");
+    setSelectedCategory("all");
+    setFilterOpen(false);
 
     setDraftName("");
     setDraftRule("");
@@ -223,85 +264,150 @@ export function MapScreen({
   }
 
   return (
-    <View style={[styles.container, { paddingBottom: bottomInset }]}>
-      <View style={styles.mapFrame}>
-        <MapView
-          ref={mapRef}
-          accessibilityLabel="Apple Maps MapKit map"
-          initialRegion={MAPKIT_REGION}
-          loadingEnabled
-          mapType="standard"
-          onLongPress={handleMapPress}
-          onPress={handleMapPress}
-          showsCompass
-          showsPointsOfInterests
-          showsUserLocation={false}
-          style={styles.map}
-        >
-          {activeRoute && (
-            <Polyline
-              coordinates={activeRoute.path}
-              lineCap="round"
-              lineJoin="round"
-              strokeColor="#176B52"
-              strokeWidth={5}
-            />
-          )}
+    <View style={styles.container}>
+      <MapView
+        ref={mapRef}
+        accessibilityLabel="Apple Maps MapKit map"
+        initialRegion={MAPKIT_REGION}
+        loadingEnabled
+        mapPadding={{
+          top: Math.round(topInset + 170),
+          right: 22,
+          bottom: Math.round(bottomNavInset + (isAddingPoi ? 238 : 158)),
+          left: 22
+        }}
+        mapType="standard"
+        onLongPress={handleMapPress}
+        onPress={handleMapPress}
+        showsCompass
+        showsPointsOfInterests
+        showsUserLocation={false}
+        style={styles.map}
+      >
+        {activeRoute && (
+          <Polyline
+            coordinates={activeRoute.path}
+            lineCap="round"
+            lineJoin="round"
+            strokeColor="#176B52"
+            strokeWidth={5}
+          />
+        )}
 
-          {filteredPois.map((poi) => (
+        <Marker
+          anchor={{ x: 0.5, y: 0.5 }}
+          coordinate={demoMapCenter}
+          tracksViewChanges={false}
+          zIndex={30}
+        >
+          <View style={styles.userMarkerOuter}>
+            <View style={styles.userMarkerDot} />
+          </View>
+        </Marker>
+
+        {filteredPois.map((poi) => {
+          const isSelected = selectedPoi?.id === poi.id;
+
+          return (
             <Marker
               key={poi.id}
               coordinate={poi.coordinate}
-              pinColor={getMarkerColor(poi)}
+              onPress={() => selectPoi(poi)}
+              pinColor={getMarkerColor(poi, isSelected)}
               title={poi.name}
-              onPress={() => setSelectedPoiId(poi.id)}
+              zIndex={isSelected ? 20 : 10}
             >
               <Callout tooltip onPress={() => selectPoi(poi)}>
                 <View style={styles.callout}>
                   <Text style={styles.calloutTitle}>{poi.name}</Text>
                   <Text style={styles.calloutText}>
-                    {poiCategoryLabels[poi.category]} · {getTrustLabel(poi)}
+                    {poiCategoryLabels[poi.category]} ·{" "}
+                    {getTrustLabel(poi.trust)}
                   </Text>
                 </View>
               </Callout>
             </Marker>
-          ))}
+          );
+        })}
 
-          {draftCoordinate && (
-            <Marker
-              coordinate={draftCoordinate}
-              pinColor="#2A1A0F"
-              title="新自定义地点"
+        {draftCoordinate && (
+          <Marker
+            coordinate={draftCoordinate}
+            pinColor="#2A1A0F"
+            title="新自定义地点"
+            zIndex={25}
+          />
+        )}
+      </MapView>
+
+      <View pointerEvents="box-none" style={styles.overlay}>
+        <View style={[styles.topControls, { top: topInset + 10 }]}>
+          <View style={styles.searchPill}>
+            <Search color="#4F5B54" size={18} strokeWidth={2.5} />
+            <TextInput
+              accessibilityLabel="Search POI"
+              autoCapitalize="none"
+              clearButtonMode="while-editing"
+              onChangeText={setQuery}
+              placeholder="附近 · 今晚适合遛狗"
+              placeholderTextColor="#46534B"
+              returnKeyType="search"
+              style={styles.searchInput}
+              value={query}
             />
-          )}
-        </MapView>
+            {query.length > 0 ? (
+              <Pressable
+                accessibilityLabel="Clear search"
+                hitSlop={8}
+                onPress={() => setQuery("")}
+              >
+                <X color="#4F5B54" size={18} strokeWidth={2.4} />
+              </Pressable>
+            ) : (
+              <ChevronDown color="#4F5B54" size={17} strokeWidth={2.5} />
+            )}
+          </View>
 
-        <View pointerEvents="box-none" style={styles.mapOverlay}>
-          <View style={styles.searchPanel}>
-            <View style={styles.searchRow}>
-              <Search color="#526159" size={18} strokeWidth={2.4} />
-              <TextInput
-                accessibilityLabel="Search POI"
-                autoCapitalize="none"
-                clearButtonMode="while-editing"
-                onChangeText={setQuery}
-                placeholder="搜索 POI、规则或标签"
-                placeholderTextColor="#8A8F89"
-                returnKeyType="search"
-                style={styles.searchInput}
-                value={query}
-              />
-              {query.length > 0 && (
-                <Pressable
-                  accessibilityLabel="Clear search"
-                  hitSlop={8}
-                  onPress={() => setQuery("")}
-                >
-                  <X color="#526159" size={18} strokeWidth={2.4} />
-                </Pressable>
-              )}
+          <Pressable
+            accessibilityLabel="Focus nearby area"
+            hitSlop={8}
+            onPress={() => focusCoordinate(demoMapCenter, 0.004)}
+            style={({ pressed }) => [
+              styles.roundControl,
+              pressed && styles.controlPressed
+            ]}
+          >
+            <Crosshair color="#1E2420" size={20} strokeWidth={2.4} />
+          </Pressable>
+
+          <Pressable
+            accessibilityLabel="Filter POI"
+            hitSlop={8}
+            onPress={() => setFilterOpen((isOpen) => !isOpen)}
+            style={({ pressed }) => [
+              styles.roundControl,
+              isFilterOpen && styles.roundControlActive,
+              pressed && styles.controlPressed
+            ]}
+          >
+            <SlidersHorizontal
+              color={isFilterOpen ? "#FFFFFF" : "#1E2420"}
+              size={20}
+              strokeWidth={2.4}
+            />
+          </Pressable>
+        </View>
+
+        {isFilterOpen && (
+          <View style={[styles.filterPanel, { top: topInset + 66 }]}>
+            <View style={styles.filterHeader}>
+              <Text style={styles.filterTitle}>POI 筛选</Text>
+              <Text style={styles.filterMeta}>
+                {isAppleSearchLoading
+                  ? "Apple 候选搜索中"
+                  : `${filteredPois.length} 个可用地点`}
+              </Text>
             </View>
-
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
@@ -335,158 +441,228 @@ export function MapScreen({
               })}
             </ScrollView>
           </View>
+        )}
 
-          <View style={styles.mapkitBadge}>
-            <MapPin color="#176B52" size={15} strokeWidth={2.6} />
-            <Text style={styles.mapkitBadgeText}>
-              iOS 使用 Apple Maps / MapKit
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        keyboardVerticalOffset={92}
-      >
-        {isAddingPoi ? (
-          <AddPoiPanel
-            draftCategory={draftCategory}
-            draftCoordinate={draftCoordinate}
-            draftName={draftName}
-            draftRule={draftRule}
-            onCancel={() => {
-              setDraftCoordinate(null);
-              onCancelAdding();
-            }}
-            onCategoryChange={setDraftCategory}
-            onNameChange={setDraftName}
-            onRuleChange={setDraftRule}
-            onSave={handleSaveCustomPoi}
-          />
-        ) : (
-          <PoiBottomSheet
+        {activeRoute && isRecommendationCardVisible && !isFilterOpen && !isAddingPoi && (
+          <RecommendationCard
             activeRoute={activeRoute}
-            filteredCount={filteredPois.length}
+            onClose={() => setRecommendationCardVisible(false)}
+            onFocusPoi={selectedPoi ? () => selectPoi(selectedPoi) : undefined}
+            onFocusRoute={() => focusRoute(activeRoute)}
+            selectedPoi={selectedPoi}
+            top={topInset + 118}
+          />
+        )}
+
+        {!isAddingPoi && (
+          <PoiCardRail
+            activeCardIndex={activeCardIndex}
+            bottom={bottomNavInset + 14}
             isAppleSearchLoading={isAppleSearchLoading}
-            onFocusUser={() => focusCoordinate(demoMapCenter, 0.004)}
             onSelectPoi={selectPoi}
             pois={filteredPois}
             selectedPoi={selectedPoi}
           />
         )}
-      </KeyboardAvoidingView>
+
+        {isAddingPoi && (
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : undefined}
+            keyboardVerticalOffset={bottomNavInset + 18}
+            style={[styles.addPanelHost, { bottom: bottomNavInset + 14 }]}
+          >
+            <AddPoiPanel
+              draftCategory={draftCategory}
+              draftCoordinate={draftCoordinate}
+              draftName={draftName}
+              draftRule={draftRule}
+              onCancel={() => {
+                setDraftCoordinate(null);
+                onCancelAdding();
+              }}
+              onCategoryChange={setDraftCategory}
+              onNameChange={setDraftName}
+              onRuleChange={setDraftRule}
+              onSave={handleSaveCustomPoi}
+            />
+          </KeyboardAvoidingView>
+        )}
+      </View>
     </View>
   );
 }
 
-function PoiBottomSheet({
+function RecommendationCard({
   activeRoute,
-  filteredCount,
+  onClose,
+  onFocusPoi,
+  onFocusRoute,
+  selectedPoi,
+  top
+}: {
+  activeRoute: RoutineRoute;
+  onClose: () => void;
+  onFocusPoi?: () => void;
+  onFocusRoute: () => void;
+  selectedPoi?: Poi;
+  top: number;
+}) {
+  return (
+    <View style={[styles.recommendationCard, { top }]}>
+      <View style={styles.recommendationHeader}>
+        <View style={styles.routeIcon}>
+          <ShieldCheck color="#FFFFFF" size={20} strokeWidth={2.5} />
+        </View>
+        <View style={styles.recommendationTitleBlock}>
+          <Text style={styles.cardKicker}>今晚推荐路线</Text>
+          <Text numberOfLines={1} style={styles.recommendationTitle}>
+            {activeRoute.name}
+          </Text>
+        </View>
+        <Pressable
+          accessibilityLabel="Hide route recommendation"
+          hitSlop={8}
+          onPress={onClose}
+          style={styles.closeButton}
+        >
+          <X color="#6B716C" size={17} strokeWidth={2.4} />
+        </Pressable>
+      </View>
+
+      <Text numberOfLines={2} style={styles.recommendationBody}>
+        {activeRoute.description}
+      </Text>
+
+      <View style={styles.routeStats}>
+        <RouteStat Icon={Clock3} label="耗时" value={`${activeRoute.minutes} 分`} />
+        <RouteStat label="狗密度" value={activeRoute.dogDensity} />
+        <RouteStat label="适配" value={`${activeRoute.fitScore}`} />
+      </View>
+
+      <View style={styles.recommendationFooter}>
+        <Text numberOfLines={1} style={styles.recommendationPoi}>
+          {selectedPoi
+            ? `${selectedPoi.name} · ${getTrustLabel(selectedPoi.trust)}`
+            : "暂无匹配 POI"}
+        </Text>
+        <View style={styles.recommendationActions}>
+          <Pressable onPress={onFocusRoute} style={styles.ghostAction}>
+            <Text style={styles.ghostActionText}>看路线</Text>
+          </Pressable>
+          {onFocusPoi && (
+            <Pressable onPress={onFocusPoi} style={styles.primaryAction}>
+              <Text style={styles.primaryActionText}>看 POI</Text>
+            </Pressable>
+          )}
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function RouteStat({
+  Icon,
+  label,
+  value
+}: {
+  Icon?: typeof Clock3;
+  label: string;
+  value: string;
+}) {
+  return (
+    <View style={styles.routeStat}>
+      {Icon && <Icon color="#176B52" size={15} strokeWidth={2.4} />}
+      <Text style={styles.routeStatValue}>{value}</Text>
+      <Text style={styles.routeStatLabel}>{label}</Text>
+    </View>
+  );
+}
+
+function PoiCardRail({
+  activeCardIndex,
+  bottom,
   isAppleSearchLoading,
-  onFocusUser,
   onSelectPoi,
   pois,
   selectedPoi
 }: {
-  activeRoute?: RoutineRoute;
-  filteredCount: number;
+  activeCardIndex: number;
+  bottom: number;
   isAppleSearchLoading: boolean;
-  onFocusUser: () => void;
-  onSelectPoi: (poi: Poi) => void;
+  onSelectPoi: (poi: Poi, cardIndex?: number) => void;
   pois: Poi[];
   selectedPoi?: Poi;
 }) {
   return (
-    <View style={styles.bottomSheet}>
-      <View style={styles.sheetHeader}>
-        <View>
-          <Text style={styles.sheetTitle}>附近 POI</Text>
-          <Text style={styles.sheetMeta}>
-            {isAppleSearchLoading
-              ? "Apple 搜索中"
-              : `${filteredCount} 个结果`}{" "}
-            ·{" "}
-            {activeRoute?.name ?? "未选择路线"}
-          </Text>
-        </View>
-        <Pressable
-          accessibilityLabel="Focus home area"
-          hitSlop={8}
-          onPress={onFocusUser}
-          style={styles.iconButton}
-        >
-          <Crosshair color="#1E2420" size={18} strokeWidth={2.4} />
-        </Pressable>
-      </View>
-
-      {selectedPoi ? (
-        <View style={styles.selectedPoi}>
-          <View style={styles.poiTitleRow}>
-            <View style={styles.poiIcon}>
-              <Text style={styles.poiIconText}>
-                {getCategoryInitial(selectedPoi.category)}
-              </Text>
-            </View>
-            <View style={styles.poiTitleBlock}>
-              <Text style={styles.poiName}>{selectedPoi.name}</Text>
-              <Text style={styles.poiMeta}>
-                {poiCategoryLabels[selectedPoi.category]} ·{" "}
-                {getSourceLabel(selectedPoi.source)}
-              </Text>
-            </View>
-            <TrustBadge trust={selectedPoi.trust} />
-          </View>
-          <Text style={styles.poiRule}>{selectedPoi.rule}</Text>
-          <View style={styles.chipRow}>
-            {selectedPoi.tags.map((tag) => (
-              <Text key={tag} style={styles.chip}>
-                {tag}
-              </Text>
-            ))}
-          </View>
-        </View>
-      ) : (
-        <View style={styles.emptyState}>
-          <CircleAlert color="#8C5B13" size={18} strokeWidth={2.4} />
-          <Text style={styles.emptyText}>没有匹配的 POI，试试换个词。</Text>
-        </View>
-      )}
-
+    <View pointerEvents="box-none" style={[styles.poiRail, { bottom }]}>
       <ScrollView
         horizontal
+        keyboardShouldPersistTaps="handled"
         showsHorizontalScrollIndicator={false}
-        style={styles.poiStrip}
+        snapToInterval={294}
+        snapToAlignment="start"
+        decelerationRate="fast"
+        contentContainerStyle={styles.poiRailContent}
       >
-        {pois.map((poi) => (
-          <Pressable
-            key={poi.id}
-            accessibilityRole="button"
-            onPress={() => onSelectPoi(poi)}
-            style={[
-              styles.poiPill,
-              selectedPoi?.id === poi.id && styles.poiPillActive
-            ]}
-          >
-            <Text
-              numberOfLines={1}
-              style={[
-                styles.poiPillTitle,
-                selectedPoi?.id === poi.id && styles.poiPillTitleActive
-              ]}
-            >
-              {poi.name}
-            </Text>
-            <Text
-              style={[
-                styles.poiPillMeta,
-                selectedPoi?.id === poi.id && styles.poiPillMetaActive
-              ]}
-            >
-              {poiCategoryLabels[poi.category]}
-            </Text>
-          </Pressable>
-        ))}
+        {pois.length > 0 ? (
+          pois.map((poi, index) => {
+            const isActive = selectedPoi
+              ? selectedPoi.id === poi.id
+              : activeCardIndex === index;
+
+            return (
+              <Pressable
+                key={poi.id}
+                accessibilityRole="button"
+                onPress={() => onSelectPoi(poi, index)}
+                style={[
+                  styles.poiCard,
+                  isActive && styles.poiCardActive
+                ]}
+              >
+                <View style={styles.poiCardHeader}>
+                  <View style={styles.poiIcon}>
+                    <Text style={styles.poiIconText}>
+                      {getCategoryInitial(poi.category)}
+                    </Text>
+                  </View>
+                  <View style={styles.poiTitleBlock}>
+                    <Text numberOfLines={1} style={styles.poiName}>
+                      {poi.name}
+                    </Text>
+                    <Text numberOfLines={1} style={styles.poiMeta}>
+                      {poiCategoryLabels[poi.category]} ·{" "}
+                      {getSourceLabel(poi.source)}
+                    </Text>
+                  </View>
+                  <TrustBadge trust={poi.trust} />
+                </View>
+
+                <Text numberOfLines={2} style={styles.poiRule}>
+                  {poi.rule}
+                </Text>
+
+                <View style={styles.tagRow}>
+                  {poi.tags.slice(0, 3).map((tag) => (
+                    <Text key={tag} numberOfLines={1} style={styles.tag}>
+                      {tag}
+                    </Text>
+                  ))}
+                </View>
+              </Pressable>
+            );
+          })
+        ) : (
+          <View style={styles.emptyPoiCard}>
+            <CircleAlert color="#8C5B13" size={18} strokeWidth={2.4} />
+            <View style={styles.emptyPoiTextBlock}>
+              <Text style={styles.emptyPoiTitle}>
+                {isAppleSearchLoading ? "Apple 搜索中" : "没有匹配的 POI"}
+              </Text>
+              <Text style={styles.emptyPoiText}>换个关键词或筛选条件。</Text>
+            </View>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -515,20 +691,20 @@ function AddPoiPanel({
 }) {
   return (
     <View style={styles.addPanel}>
-      <View style={styles.sheetHeader}>
+      <View style={styles.addPanelHeader}>
         <View>
-          <Text style={styles.sheetTitle}>添加自定义 POI</Text>
-          <Text style={styles.sheetMeta}>
+          <Text style={styles.addPanelTitle}>添加自定义 POI</Text>
+          <Text style={styles.addPanelMeta}>
             {draftCoordinate
-              ? "填写后保存为私人地点"
-              : "点按地图选择位置，也可以长按地图"}
+              ? `${draftCoordinate.latitude.toFixed(5)}, ${draftCoordinate.longitude.toFixed(5)}`
+              : "等待地图选点"}
           </Text>
         </View>
         <Pressable
           accessibilityLabel="Cancel adding POI"
           hitSlop={8}
           onPress={onCancel}
-          style={styles.iconButton}
+          style={styles.closeButton}
         >
           <X color="#1E2420" size={18} strokeWidth={2.4} />
         </Pressable>
@@ -591,7 +767,7 @@ function AddPoiPanel({
         ]}
       >
         <Text style={styles.saveButtonText}>
-          {draftCoordinate ? "保存私人 POI" : "先在地图上选点"}
+          {draftCoordinate ? "保存私人 POI" : "等待选点"}
         </Text>
       </Pressable>
     </View>
@@ -599,8 +775,6 @@ function AddPoiPanel({
 }
 
 function TrustBadge({ trust }: { trust: Poi["trust"] }) {
-  const label = getTrustLabel({ trust } as Poi);
-
   return (
     <Text
       style={[
@@ -609,7 +783,7 @@ function TrustBadge({ trust }: { trust: Poi["trust"] }) {
         trust === "claim" && styles.trustClaim
       ]}
     >
-      {label}
+      {getTrustLabel(trust)}
     </Text>
   );
 }
@@ -634,12 +808,12 @@ function mergePois(localPois: Poi[], applePois: Poi[]) {
   return merged;
 }
 
-function getTrustLabel(poi: Pick<Poi, "trust">) {
-  if (poi.trust === "verified") {
+function getTrustLabel(trust: Poi["trust"]) {
+  if (trust === "verified") {
     return "已验证";
   }
 
-  if (poi.trust === "needs-recheck") {
+  if (trust === "needs-recheck") {
     return "待复查";
   }
 
@@ -658,7 +832,11 @@ function getSourceLabel(source: Poi["source"]) {
   return "社区贡献";
 }
 
-function getMarkerColor(poi: Poi) {
+function getMarkerColor(poi: Poi, isSelected: boolean) {
+  if (isSelected) {
+    return "#5C6CF6";
+  }
+
   if (poi.category === "risk") {
     return "#D86C4D";
   }
@@ -680,16 +858,8 @@ function getCategoryInitial(category: PoiCategory) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    gap: 10
-  },
-  mapFrame: {
-    borderColor: "#D7D0C0",
-    borderRadius: 8,
-    borderWidth: 1,
-    flex: 1,
-    minHeight: 390,
-    overflow: "hidden"
+    backgroundColor: "#D6E8E5",
+    flex: 1
   },
   map: {
     bottom: 0,
@@ -698,41 +868,101 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0
   },
-  mapOverlay: {
+  overlay: {
     bottom: 0,
     left: 0,
-    padding: 12,
     position: "absolute",
     right: 0,
     top: 0
   },
-  searchPanel: {
-    backgroundColor: "rgba(255,255,255,0.96)",
-    borderColor: "rgba(42,26,15,0.08)",
-    borderRadius: 8,
-    borderWidth: StyleSheet.hairlineWidth,
-    padding: 10,
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 7
-  },
-  searchRow: {
+  topControls: {
     alignItems: "center",
     flexDirection: "row",
+    gap: 10,
+    left: 16,
+    position: "absolute",
+    right: 16
+  },
+  searchPill: {
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.96)",
+    borderColor: "rgba(30,36,32,0.08)",
+    borderRadius: 24,
+    borderWidth: StyleSheet.hairlineWidth,
+    flex: 1,
+    flexDirection: "row",
     gap: 8,
-    minHeight: 40
+    minHeight: 48,
+    paddingHorizontal: 14,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 8
   },
   searchInput: {
     color: "#1E2420",
     flex: 1,
     fontSize: 15,
-    fontWeight: "700",
-    paddingVertical: 6
+    fontWeight: "800",
+    minHeight: 42,
+    paddingVertical: 0
+  },
+  roundControl: {
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.96)",
+    borderColor: "rgba(30,36,32,0.08)",
+    borderRadius: 24,
+    borderWidth: StyleSheet.hairlineWidth,
+    height: 48,
+    justifyContent: "center",
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    width: 48,
+    elevation: 8
+  },
+  roundControlActive: {
+    backgroundColor: "#176B52",
+    borderColor: "#176B52"
+  },
+  controlPressed: {
+    opacity: 0.78,
+    transform: [{ scale: 0.96 }]
+  },
+  filterPanel: {
+    backgroundColor: "rgba(255,255,255,0.97)",
+    borderColor: "rgba(30,36,32,0.08)",
+    borderRadius: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+    left: 16,
+    padding: 12,
+    position: "absolute",
+    right: 16,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
+    elevation: 9
+  },
+  filterHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  filterTitle: {
+    color: "#1E2420",
+    fontSize: 14,
+    fontWeight: "900"
+  },
+  filterMeta: {
+    color: "#68746D",
+    fontSize: 12,
+    fontWeight: "700"
   },
   filterScroller: {
-    marginTop: 8
+    marginTop: 10
   },
   filterChip: {
     backgroundColor: "#EFF4F0",
@@ -756,100 +986,175 @@ const styles = StyleSheet.create({
   filterChipTextActive: {
     color: "#FFFFFF"
   },
-  mapkitBadge: {
-    alignItems: "center",
-    alignSelf: "flex-start",
-    backgroundColor: "rgba(255,255,255,0.94)",
-    borderRadius: 6,
-    flexDirection: "row",
-    gap: 6,
-    marginTop: 10,
-    minHeight: 30,
-    paddingHorizontal: 9
-  },
-  mapkitBadgeText: {
-    color: "#176B52",
-    fontSize: 12,
-    fontWeight: "900"
-  },
-  callout: {
+  recommendationCard: {
     backgroundColor: "#FFFFFF",
+    borderColor: "rgba(30,36,32,0.08)",
     borderRadius: 8,
-    maxWidth: 210,
-    padding: 10
+    borderWidth: StyleSheet.hairlineWidth,
+    left: 32,
+    padding: 14,
+    position: "absolute",
+    right: 32,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.13,
+    shadowRadius: 22,
+    elevation: 10
   },
-  calloutTitle: {
+  recommendationHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 10
+  },
+  routeIcon: {
+    alignItems: "center",
+    backgroundColor: "#B85CD2",
+    borderRadius: 20,
+    height: 40,
+    justifyContent: "center",
+    width: 40
+  },
+  recommendationTitleBlock: {
+    flex: 1
+  },
+  cardKicker: {
+    color: "#6A746E",
+    fontSize: 12,
+    fontWeight: "800"
+  },
+  recommendationTitle: {
+    color: "#1E2420",
+    fontSize: 16,
+    fontWeight: "900",
+    marginTop: 2
+  },
+  closeButton: {
+    alignItems: "center",
+    borderRadius: 16,
+    height: 32,
+    justifyContent: "center",
+    width: 32
+  },
+  recommendationBody: {
+    color: "#4F5B54",
+    fontSize: 13,
+    fontWeight: "700",
+    lineHeight: 18,
+    marginTop: 10
+  },
+  routeStats: {
+    flexDirection: "row",
+    gap: 8,
+    marginTop: 12
+  },
+  routeStat: {
+    alignItems: "center",
+    backgroundColor: "#F1F6F3",
+    borderRadius: 8,
+    flex: 1,
+    minHeight: 52,
+    justifyContent: "center",
+    paddingHorizontal: 6
+  },
+  routeStatValue: {
     color: "#1E2420",
     fontSize: 14,
     fontWeight: "900"
   },
-  calloutText: {
-    color: "#617067",
-    fontSize: 12,
-    fontWeight: "700",
-    marginTop: 4
+  routeStatLabel: {
+    color: "#68746D",
+    fontSize: 11,
+    fontWeight: "800",
+    marginTop: 2
   },
-  bottomSheet: {
-    backgroundColor: "#FFFFFF",
-    borderColor: "#DED8CA",
-    borderRadius: 8,
-    borderWidth: 1,
-    padding: 12
-  },
-  addPanel: {
-    backgroundColor: "#FFFFFF",
-    borderColor: "#D49C45",
-    borderRadius: 8,
-    borderWidth: 2,
-    padding: 12
-  },
-  sheetHeader: {
+  recommendationFooter: {
     alignItems: "center",
     flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 12
+    gap: 10,
+    marginTop: 12
   },
-  sheetTitle: {
+  recommendationPoi: {
+    color: "#6A6258",
+    flex: 1,
+    fontSize: 12,
+    fontWeight: "800"
+  },
+  recommendationActions: {
+    flexDirection: "row",
+    gap: 8
+  },
+  ghostAction: {
+    alignItems: "center",
+    borderColor: "#D9DDD8",
+    borderRadius: 18,
+    borderWidth: 1,
+    height: 34,
+    justifyContent: "center",
+    minWidth: 72,
+    paddingHorizontal: 12
+  },
+  ghostActionText: {
     color: "#1E2420",
-    fontSize: 17,
+    fontSize: 12,
     fontWeight: "900"
   },
-  sheetMeta: {
-    color: "#72756D",
-    fontSize: 12,
-    fontWeight: "700",
-    marginTop: 3
-  },
-  iconButton: {
+  primaryAction: {
     alignItems: "center",
-    backgroundColor: "#F1EFE7",
-    borderRadius: 8,
-    height: 38,
+    backgroundColor: "#5C6CF6",
+    borderRadius: 18,
+    height: 34,
     justifyContent: "center",
-    width: 38
+    minWidth: 72,
+    paddingHorizontal: 12
   },
-  selectedPoi: {
-    backgroundColor: "#F8F7F2",
+  primaryActionText: {
+    color: "#FFFFFF",
+    fontSize: 12,
+    fontWeight: "900"
+  },
+  poiRail: {
+    left: 0,
+    position: "absolute",
+    right: 0
+  },
+  poiRailContent: {
+    gap: 12,
+    paddingHorizontal: 18
+  },
+  poiCard: {
+    backgroundColor: "#FFFFFF",
+    borderColor: "rgba(30,36,32,0.08)",
     borderRadius: 8,
-    marginTop: 10,
-    padding: 12
+    borderWidth: StyleSheet.hairlineWidth,
+    minHeight: 116,
+    padding: 12,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
+    width: 282,
+    elevation: 9
   },
-  poiTitleRow: {
+  poiCardActive: {
+    borderColor: "#5C6CF6",
+    borderWidth: 2
+  },
+  poiCardHeader: {
     alignItems: "center",
     flexDirection: "row",
     gap: 10
   },
   poiIcon: {
     alignItems: "center",
-    backgroundColor: "#DFF1E2",
+    backgroundColor: "#EAF4EE",
     borderRadius: 8,
-    height: 40,
+    height: 48,
     justifyContent: "center",
-    width: 40
+    width: 48
   },
   poiIconText: {
     color: "#176B52",
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: "900"
   },
   poiTitleBlock: {
@@ -857,124 +1162,130 @@ const styles = StyleSheet.create({
   },
   poiName: {
     color: "#1E2420",
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "900"
   },
   poiMeta: {
-    color: "#617067",
+    color: "#68746D",
     fontSize: 12,
-    fontWeight: "800",
-    marginTop: 2
-  },
-  poiRule: {
-    color: "#4E5A52",
-    fontSize: 13,
     fontWeight: "700",
-    lineHeight: 19,
-    marginTop: 10
+    marginTop: 3
   },
   trustBadge: {
-    backgroundColor: "#DFF1E2",
-    borderRadius: 6,
+    backgroundColor: "#E3F4E8",
+    borderRadius: 5,
     color: "#176B52",
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "900",
     overflow: "hidden",
-    paddingHorizontal: 8,
-    paddingVertical: 5
+    paddingHorizontal: 7,
+    paddingVertical: 4
   },
   trustWarn: {
-    backgroundColor: "#F7E8BF",
+    backgroundColor: "#FFF0D4",
     color: "#8C5B13"
   },
   trustClaim: {
-    backgroundColor: "#EEEAE1",
-    color: "#665A4D"
+    backgroundColor: "#EEF0FF",
+    color: "#5C6CF6"
   },
-  chipRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
-    marginTop: 10
-  },
-  chip: {
-    backgroundColor: "#FFFFFF",
-    borderColor: "#D9E4DC",
-    borderRadius: 6,
-    borderWidth: 1,
-    color: "#3B5147",
+  poiRule: {
+    color: "#4F5B54",
     fontSize: 12,
+    fontWeight: "700",
+    lineHeight: 17,
+    marginTop: 9
+  },
+  tagRow: {
+    flexDirection: "row",
+    gap: 6,
+    marginTop: 8
+  },
+  tag: {
+    backgroundColor: "#F3F1EC",
+    borderRadius: 5,
+    color: "#6A6258",
+    flexShrink: 1,
+    fontSize: 11,
     fontWeight: "800",
     overflow: "hidden",
-    paddingHorizontal: 9,
-    paddingVertical: 6
+    paddingHorizontal: 7,
+    paddingVertical: 4
   },
-  poiStrip: {
-    marginTop: 10
-  },
-  poiPill: {
-    backgroundColor: "#F1EFE7",
-    borderColor: "#E1DACB",
+  emptyPoiCard: {
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderColor: "rgba(30,36,32,0.08)",
     borderRadius: 8,
-    borderWidth: 1,
-    marginRight: 8,
-    maxWidth: 150,
-    minHeight: 54,
-    minWidth: 120,
-    paddingHorizontal: 10,
-    paddingVertical: 8
+    borderWidth: StyleSheet.hairlineWidth,
+    flexDirection: "row",
+    gap: 10,
+    minHeight: 86,
+    padding: 14,
+    width: 282
   },
-  poiPillActive: {
-    backgroundColor: "#26322D",
-    borderColor: "#26322D"
+  emptyPoiTextBlock: {
+    flex: 1
   },
-  poiPillTitle: {
+  emptyPoiTitle: {
     color: "#1E2420",
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: "900"
   },
-  poiPillTitleActive: {
-    color: "#FFFFFF"
+  emptyPoiText: {
+    color: "#6A6258",
+    fontSize: 12,
+    fontWeight: "700",
+    marginTop: 3
   },
-  poiPillMeta: {
-    color: "#72756D",
+  addPanelHost: {
+    left: 14,
+    position: "absolute",
+    right: 14
+  },
+  addPanel: {
+    backgroundColor: "#FFFFFF",
+    borderColor: "rgba(30,36,32,0.08)",
+    borderRadius: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+    padding: 14,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.14,
+    shadowRadius: 24,
+    elevation: 11
+  },
+  addPanelHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  addPanelTitle: {
+    color: "#1E2420",
+    fontSize: 16,
+    fontWeight: "900"
+  },
+  addPanelMeta: {
+    color: "#68746D",
     fontSize: 12,
     fontWeight: "800",
-    marginTop: 4
-  },
-  poiPillMetaActive: {
-    color: "#C6D7CE"
-  },
-  emptyState: {
-    alignItems: "center",
-    backgroundColor: "#F7E8BF",
-    borderRadius: 8,
-    flexDirection: "row",
-    gap: 8,
-    marginTop: 10,
-    padding: 12
-  },
-  emptyText: {
-    color: "#6F4B18",
-    flex: 1,
-    fontSize: 13,
-    fontWeight: "800"
+    marginTop: 3
   },
   formGrid: {
     gap: 8,
-    marginTop: 10
+    marginTop: 12
   },
   formInput: {
-    backgroundColor: "#F8F7F2",
-    borderColor: "#E1DACB",
+    backgroundColor: "#F6F8F5",
+    borderColor: "#E0E5DF",
     borderRadius: 8,
     borderWidth: 1,
     color: "#1E2420",
     fontSize: 14,
     fontWeight: "700",
-    minHeight: 44,
-    paddingHorizontal: 11,
-    paddingVertical: 10
+    minHeight: 42,
+    paddingHorizontal: 12,
+    paddingVertical: 9
   },
   formInputMultiline: {
     minHeight: 70,
@@ -984,22 +1295,64 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 8,
-    marginTop: 10
+    marginTop: 12
   },
   saveButton: {
     alignItems: "center",
-    backgroundColor: "#2A1A0F",
+    backgroundColor: "#176B52",
     borderRadius: 8,
+    height: 46,
     justifyContent: "center",
-    marginTop: 12,
-    minHeight: 44
+    marginTop: 12
   },
   saveButtonDisabled: {
-    backgroundColor: "#A8A29A"
+    backgroundColor: "#A8B4AE"
   },
   saveButtonText: {
     color: "#FFFFFF",
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: "900"
+  },
+  userMarkerOuter: {
+    alignItems: "center",
+    backgroundColor: "rgba(92,108,246,0.18)",
+    borderColor: "rgba(92,108,246,0.38)",
+    borderRadius: 32,
+    borderWidth: 1,
+    height: 64,
+    justifyContent: "center",
+    width: 64
+  },
+  userMarkerDot: {
+    backgroundColor: "#5C6CF6",
+    borderColor: "#FFFFFF",
+    borderRadius: 8,
+    borderWidth: 3,
+    height: 16,
+    width: 16
+  },
+  callout: {
+    backgroundColor: "#FFFFFF",
+    borderColor: "rgba(30,36,32,0.08)",
+    borderRadius: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+    minWidth: 150,
+    padding: 10,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.14,
+    shadowRadius: 14,
+    elevation: 8
+  },
+  calloutTitle: {
+    color: "#1E2420",
+    fontSize: 13,
+    fontWeight: "900"
+  },
+  calloutText: {
+    color: "#68746D",
+    fontSize: 12,
+    fontWeight: "700",
+    marginTop: 4
   }
 });

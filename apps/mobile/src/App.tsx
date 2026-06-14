@@ -57,7 +57,7 @@ function AppShell() {
   );
   const scrollBottomPadding =
     BOTTOM_NAV_HEIGHT + bottomSafePadding + 24;
-  const mapBottomPadding = BOTTOM_NAV_HEIGHT + bottomSafePadding + 12;
+  const mapBottomNavInset = BOTTOM_NAV_HEIGHT + bottomSafePadding;
 
   const pois = useMemo(() => [...demoPois, ...customPois], [customPois]);
 
@@ -73,36 +73,14 @@ function AppShell() {
   );
 
   return (
-    <SafeAreaView edges={["top", "right", "left"]} style={styles.safeArea}>
+    <View style={styles.root}>
       <StatusBar style="dark" />
-      <View style={styles.shell}>
-        <View style={styles.header}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarEar}>小</Text>
-            <Text style={styles.avatarName}>{demoPet.name.slice(0, 1)}</Text>
-          </View>
-          <View>
-            <Text style={styles.kicker}>爪边 P0</Text>
-            <Text style={styles.title}>今天怎么遛更稳？</Text>
-          </View>
-        </View>
 
-        {activeTab === "today" && (
-          <ScrollView
-            contentContainerStyle={[
-              styles.content,
-              { paddingBottom: scrollBottomPadding }
-            ]}
-            showsVerticalScrollIndicator={false}
-          >
-            <TodayView advice={advice} route={advice.recommendedRoute} />
-          </ScrollView>
-        )}
-
-        {activeTab === "map" && (
+      {activeTab === "map" ? (
+        <View style={styles.mapPage}>
           <MapScreen
             activeRouteId={advice.recommendedRoute.id}
-            bottomInset={mapBottomPadding}
+            bottomNavInset={mapBottomNavInset}
             isAddingPoi={isAddingPoi}
             onCancelAdding={() => setAddingPoi(false)}
             onCreateCustomPoi={(poi) => {
@@ -110,9 +88,37 @@ function AppShell() {
             }}
             pois={pois}
             routes={demoRoutes}
+            topInset={insets.top}
           />
-        )}
-      </View>
+        </View>
+      ) : (
+        <SafeAreaView edges={["top", "right", "left"]} style={styles.safeArea}>
+          <View style={styles.shell}>
+            <View style={styles.header}>
+              <View style={styles.avatar}>
+                <Text style={styles.avatarEar}>小</Text>
+                <Text style={styles.avatarName}>
+                  {demoPet.name.slice(0, 1)}
+                </Text>
+              </View>
+              <View>
+                <Text style={styles.kicker}>爪边 P0</Text>
+                <Text style={styles.title}>今天怎么遛更稳？</Text>
+              </View>
+            </View>
+
+            <ScrollView
+              contentContainerStyle={[
+                styles.content,
+                { paddingBottom: scrollBottomPadding }
+              ]}
+              showsVerticalScrollIndicator={false}
+            >
+              <TodayView advice={advice} route={advice.recommendedRoute} />
+            </ScrollView>
+          </View>
+        </SafeAreaView>
+      )}
 
       {activeTab !== "map" && isAddNoticeVisible && (
         <AddPlaceholderNotice
@@ -139,7 +145,7 @@ function AppShell() {
           setAddNoticeVisible(false);
         }}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -427,9 +433,16 @@ function TrustBadge({ trust }: { trust: Poi["trust"] }) {
 }
 
 const styles = StyleSheet.create({
+  root: {
+    backgroundColor: "#F6F4EE",
+    flex: 1
+  },
   safeArea: {
     flex: 1,
     backgroundColor: "#F6F4EE"
+  },
+  mapPage: {
+    flex: 1
   },
   shell: {
     flex: 1,
