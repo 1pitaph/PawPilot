@@ -1,27 +1,31 @@
 import {
+  AboutSection,
+  BentoTwoSection,
   ComparisonSection,
   FeatureBento,
-  FinalCTA,
+  FeedbacksSection,
   HeroSection,
   HomeFAQ,
-  PrivacyPreview,
-  ScenarioPreview,
-  SignalStrip,
-  TrustMetrics
+  LogoCloudSection,
+  PricingSection,
+  ProjectsShowcase,
+  TestimonialsSection
 } from "@/components/marketing-sections";
 
 export default function HomePage() {
   return (
     <main className="flex w-full flex-col">
       <HeroSection />
-      <SignalStrip />
+      <LogoCloudSection />
       <FeatureBento />
-      <ScenarioPreview />
+      <ProjectsShowcase />
+      <TestimonialsSection />
+      <BentoTwoSection />
       <ComparisonSection />
-      <TrustMetrics />
-      <PrivacyPreview />
+      <PricingSection />
+      <AboutSection />
+      <FeedbacksSection />
       <HomeFAQ />
-      <FinalCTA />
     </main>
   );
 }
