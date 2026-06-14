@@ -31,6 +31,13 @@ node_modules/
 !.yarn/sdks/
 !.yarn/versions/
 
+# React Native / Expo
+.expo/
+.expo-shared/
+ios/
+android/
+web-build/
+
 # Quarto and document build artifacts
 .quarto/
 _site/

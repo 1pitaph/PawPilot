@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "爪边",
+    "slug": "paw-nearby",
+    "scheme": "pawnearby",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pets.pawnearby"
+    },
+    "extra": {
+      "prdVersion": "第 15 版"
+    }
+  }
+}
