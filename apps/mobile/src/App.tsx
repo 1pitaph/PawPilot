@@ -170,22 +170,30 @@ function AppShell() {
     <View style={styles.root}>
       <StatusBar style="dark" />
 
-      {activeTab === "map" ? (
-        <View style={styles.mapPage}>
-          <MapScreen
-            activeRouteId={activeRoute.id}
-            bottomNavInset={mapBottomNavInset}
-            isAddingPoi={isAddingPoi}
-            onCancelAdding={() => setAddingPoi(false)}
-            onCreateCustomPoi={(poi) => {
-              setCustomPois((currentPois) => [...currentPois, poi]);
-            }}
-            pois={pois}
-            routes={demoRoutes}
-            topInset={insets.top}
-          />
-        </View>
-      ) : (
+      <View
+        pointerEvents={activeTab === "map" ? "auto" : "none"}
+        style={[
+          styles.mapLayer,
+          activeTab === "map"
+            ? styles.mapLayerVisible
+            : styles.mapLayerHidden
+        ]}
+      >
+        <MapScreen
+          activeRouteId={activeRoute.id}
+          bottomNavInset={mapBottomNavInset}
+          isAddingPoi={isAddingPoi}
+          onCancelAdding={() => setAddingPoi(false)}
+          onCreateCustomPoi={(poi) => {
+            setCustomPois((currentPois) => [...currentPois, poi]);
+          }}
+          pois={pois}
+          routes={demoRoutes}
+          topInset={insets.top}
+        />
+      </View>
+
+      {activeTab !== "map" && (
         <SafeAreaView edges={["top", "right", "left"]} style={styles.safeArea}>
           {activeTab === "today" && (
             <HomeScreen
@@ -929,10 +937,22 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     backgroundColor: "#F7E8D5",
-    flex: 1
+    flex: 1,
+    zIndex: 2
   },
-  mapPage: {
-    flex: 1
+  mapLayer: {
+    backgroundColor: "#D6E8E5",
+    bottom: 0,
+    left: 0,
+    position: "absolute",
+    right: 0,
+    top: 0
+  },
+  mapLayerHidden: {
+    zIndex: 0
+  },
+  mapLayerVisible: {
+    zIndex: 1
   },
   homeScroll: {
     backgroundColor: "#F8F8F4",
@@ -1463,6 +1483,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.11,
     shadowRadius: 22,
+    zIndex: 5,
     elevation: 12
   },
   bottomNavContent: {
@@ -1531,6 +1552,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.13,
     shadowRadius: 20,
+    zIndex: 4,
     elevation: 11
   },
   floatingNoticeTitle: {

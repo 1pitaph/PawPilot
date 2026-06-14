@@ -277,12 +277,16 @@ export function MapScreen({
           left: 22
         }}
         mapType="standard"
-        onLongPress={handleMapPress}
-        onPress={handleMapPress}
+        onLongPress={isAddingPoi ? handleMapPress : undefined}
+        onPress={isAddingPoi ? handleMapPress : undefined}
+        pitchEnabled
+        rotateEnabled
+        scrollEnabled
         showsCompass
         showsPointsOfInterests
         showsUserLocation={false}
         style={styles.map}
+        zoomEnabled
       >
         {activeRoute && (
           <Polyline
@@ -341,7 +345,10 @@ export function MapScreen({
       </MapView>
 
       <View pointerEvents="box-none" style={styles.overlay}>
-        <View style={[styles.topControls, { top: topInset + 10 }]}>
+        <View
+          pointerEvents="box-none"
+          style={[styles.topControls, { top: topInset + 10 }]}
+        >
           <View style={styles.searchPill}>
             <Search color="#4F5B54" size={18} strokeWidth={2.5} />
             <TextInput
@@ -508,7 +515,7 @@ function RecommendationCard({
   top: number;
 }) {
   return (
-    <View style={[styles.recommendationCard, { top }]}>
+    <View pointerEvents="box-none" style={[styles.recommendationCard, { top }]}>
       <View style={styles.recommendationHeader}>
         <View style={styles.routeIcon}>
           <ShieldCheck color="#FFFFFF" size={20} strokeWidth={2.5} />
