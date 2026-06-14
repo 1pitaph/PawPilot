@@ -83,6 +83,60 @@ export interface DepartureAdvice {
   alerts: string[];
 }
 
+export type PetDailyMood = "ready" | "warm" | "tired" | "cautious" | "needs_rest";
+
+export interface PetDailyStatus {
+  petId: string;
+  date: string;
+  updatedAt: string;
+  headline: string;
+  summary: string;
+  mood: PetDailyMood;
+  device: {
+    batteryPercent: number;
+    online: boolean;
+    caregiverInitial: string;
+    activityLabel: string;
+    activityMinutes: number;
+  };
+  activity: {
+    steps: number;
+    usualSteps: number;
+    completionRatio: number;
+    intensity: "偏少" | "刚好" | "偏多";
+    copy: string;
+  };
+  rest: {
+    totalMinutes: number;
+    napMinutes: number;
+    quality: "不足" | "正常" | "充足";
+    copy: string;
+  };
+  nearbyRhythm: {
+    percentile: number;
+    scope: "同片区同体型匿名对照";
+    label: string;
+    copy: string;
+  };
+  outdoorReadiness: {
+    score: number;
+    level: "稳" | "谨慎" | "不建议";
+    reasons: string[];
+    recommendedRouteId?: string;
+    fallbackRouteId?: string;
+  };
+  alerts: Array<{
+    type: "heat" | "dog_density" | "traffic" | "poi_uncertain" | "rest";
+    title: string;
+    body: string;
+  }>;
+  quickActions: Array<{
+    id: string;
+    label: string;
+    target: "start_walk" | "open_map" | "log_status" | "add_poi" | "ask_agent";
+  }>;
+}
+
 export type AvatarGenerationMode = "q_only" | "q_to_3d" | "rigged_3d";
 
 export type AvatarJobStatus =
@@ -288,6 +342,70 @@ export const demoWeather: WeatherSignal = {
   rainChance: 20,
   pavementRisk: "中",
   timeLabel: "今晚 19:30"
+};
+
+export const demoPetDailyStatus: PetDailyStatus = {
+  petId: "pet-momo",
+  date: "2026-06-14",
+  updatedAt: "19:10",
+  headline: "糯米今天有点热",
+  summary: "活动量到日常 76%，下午休息偏少；今晚优先阴影短线，别去北门草地。",
+  mood: "warm",
+  device: {
+    batteryPercent: 93,
+    online: true,
+    caregiverInitial: "M",
+    activityLabel: "正在轻松走",
+    activityMinutes: 34
+  },
+  activity: {
+    steps: 3420,
+    usualSteps: 4500,
+    completionRatio: 0.76,
+    intensity: "刚好",
+    copy: "不用补步，22 分钟熟路就够。"
+  },
+  rest: {
+    totalMinutes: 410,
+    napMinutes: 42,
+    quality: "不足",
+    copy: "午后休息少，遇狗多路线容易紧张。"
+  },
+  nearbyRhythm: {
+    percentile: 58,
+    scope: "同片区同体型匿名对照",
+    label: "附近节奏中等",
+    copy: "只是参考附近活动节奏，不做排名。"
+  },
+  outdoorReadiness: {
+    score: 82,
+    level: "稳",
+    reasons: ["体感 32C", "狗密度低", "阴影 86%", "路口简单"],
+    recommendedRouteId: "route-plane-tree",
+    fallbackRouteId: "route-grass-loop"
+  },
+  alerts: [
+    {
+      type: "heat",
+      title: "前 10 分钟观察喘气",
+      body: "地面热感为中，别临时拉长路线。"
+    },
+    {
+      type: "dog_density",
+      title: "北门草地今天不放首推",
+      body: "待复查且傍晚狗较多，反应犬先绕开。"
+    },
+    {
+      type: "poi_uncertain",
+      title: "巷口水碗可短暂停留",
+      body: "2 天前验证仍可用，建议停留不超过 5 分钟。"
+    }
+  ],
+  quickActions: [
+    { id: "start", label: "开始轻松走", target: "start_walk" },
+    { id: "map", label: "看阴影短线", target: "open_map" },
+    { id: "log", label: "记录状态", target: "log_status" }
+  ]
 };
 
 export const demoRoutes: RoutineRoute[] = [

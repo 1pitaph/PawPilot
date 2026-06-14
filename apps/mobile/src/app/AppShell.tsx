@@ -7,6 +7,7 @@ import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import {
   buildDepartureAdvice,
   demoPet,
+  demoPetDailyStatus,
   demoPois,
   demoRoutes,
   demoWeather,
@@ -31,7 +32,6 @@ import { PoisView } from "../screens/spots/PoisView";
 import { SecondaryPageShell } from "../screens/shared/SecondaryPageShell";
 import { BOTTOM_NAV_HEIGHT, BOTTOM_NAV_MIN_SAFE_PADDING } from "./constants";
 import { noticeCopy } from "./notices";
-import { getVerifiedPoiCount } from "./selectors";
 import type { AvatarPhotoSource, FeedbackState, HomeNoticeKind, TabKey } from "./types";
 import { styles } from "./AppShell.styles";
 
@@ -71,7 +71,6 @@ export function AppShell() {
   const activeRoute =
     demoRoutes.find((routeItem) => routeItem.id === selectedRouteId) ??
     advice.recommendedRoute;
-  const verifiedPoiCount = getVerifiedPoiCount(pois);
 
   function showNotice(kind: HomeNoticeKind) {
     setHomeNotice(kind);
@@ -273,20 +272,17 @@ export function AppShell() {
           {activeTab === "today" && (
             <HomeScreen
               activeRoute={activeRoute}
-              advice={advice}
-              routes={demoRoutes}
               bottomPadding={scrollBottomPadding}
               feedbackState={feedbackState}
               weatherLabel={`${demoWeather.feelsLikeC}C 体感`}
-              homeNotice={homeNotice}
               onAskPress={() => showNotice("ask")}
               onAssistantPress={() => showNotice("assistant")}
-              onDismissNotice={() => setHomeNotice(null)}
               onFeedback={submitFeedback}
               onOpenMap={openMap}
               onRouteSwap={handleRouteSwap}
               onStartAddPoi={startAddPoi}
-              verifiedPoiCount={verifiedPoiCount}
+              pet={demoPet}
+              status={demoPetDailyStatus}
             />
           )}
 
