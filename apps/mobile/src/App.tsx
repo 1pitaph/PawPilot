@@ -30,6 +30,8 @@ import {
   type RoutineRoute
 } from "@pets/shared";
 
+import { MapScreen } from "./MapScreen";
+
 type TabKey = "today" | "map";
 
 const BOTTOM_NAV_HEIGHT = 64;
@@ -46,6 +48,8 @@ export default function App() {
 function AppShell() {
   const [activeTab, setActiveTab] = useState<TabKey>("today");
   const [isAddNoticeVisible, setAddNoticeVisible] = useState(false);
+  const [isAddingPoi, setAddingPoi] = useState(false);
+  const [customPois, setCustomPois] = useState<Poi[]>([]);
   const insets = useSafeAreaInsets();
   const bottomSafePadding = Math.max(
     insets.bottom,
@@ -53,16 +57,19 @@ function AppShell() {
   );
   const scrollBottomPadding =
     BOTTOM_NAV_HEIGHT + bottomSafePadding + 24;
+  const mapBottomPadding = BOTTOM_NAV_HEIGHT + bottomSafePadding + 12;
+
+  const pois = useMemo(() => [...demoPois, ...customPois], [customPois]);
 
   const advice = useMemo(
     () =>
       buildDepartureAdvice({
         pet: demoPet,
         routes: demoRoutes,
-        pois: demoPois,
+        pois,
         weather: demoWeather
       }),
-    []
+    [pois]
   );
 
   return (
@@ -80,21 +87,34 @@ function AppShell() {
           </View>
         </View>
 
-        <ScrollView
-          contentContainerStyle={[
-            styles.content,
-            { paddingBottom: scrollBottomPadding }
-          ]}
-          showsVerticalScrollIndicator={false}
-        >
-          {activeTab === "today" && (
+        {activeTab === "today" && (
+          <ScrollView
+            contentContainerStyle={[
+              styles.content,
+              { paddingBottom: scrollBottomPadding }
+            ]}
+            showsVerticalScrollIndicator={false}
+          >
             <TodayView advice={advice} route={advice.recommendedRoute} />
-          )}
-          {activeTab === "map" && <PoisView pois={demoPois} />}
-        </ScrollView>
+          </ScrollView>
+        )}
+
+        {activeTab === "map" && (
+          <MapScreen
+            activeRouteId={advice.recommendedRoute.id}
+            bottomInset={mapBottomPadding}
+            isAddingPoi={isAddingPoi}
+            onCancelAdding={() => setAddingPoi(false)}
+            onCreateCustomPoi={(poi) => {
+              setCustomPois((currentPois) => [...currentPois, poi]);
+            }}
+            pois={pois}
+            routes={demoRoutes}
+          />
+        )}
       </View>
 
-      {isAddNoticeVisible && (
+      {activeTab !== "map" && isAddNoticeVisible && (
         <AddPlaceholderNotice
           bottom={BOTTOM_NAV_HEIGHT + bottomSafePadding + 14}
           onPress={() => setAddNoticeVisible(false)}
@@ -104,9 +124,18 @@ function AppShell() {
       <BottomNavBar
         activeTab={activeTab}
         bottomSafePadding={bottomSafePadding}
-        onAddPress={() => setAddNoticeVisible((isVisible) => !isVisible)}
+        onAddPress={() => {
+          if (activeTab === "map") {
+            setAddingPoi((isAdding) => !isAdding);
+            setAddNoticeVisible(false);
+            return;
+          }
+
+          setAddNoticeVisible((isVisible) => !isVisible);
+        }}
         onTabPress={(tab) => {
           setActiveTab(tab);
+          setAddingPoi(false);
           setAddNoticeVisible(false);
         }}
       />

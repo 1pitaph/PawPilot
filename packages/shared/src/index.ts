@@ -1,5 +1,19 @@
 export type DogDensity = "低" | "中" | "高";
-export type PoiTrust = "verified" | "needs-recheck";
+export type PoiTrust = "verified" | "needs-recheck" | "claim";
+export type PoiCategory =
+  | "water"
+  | "cafe"
+  | "grass"
+  | "clinic"
+  | "pet-store"
+  | "risk"
+  | "custom";
+export type PoiSource = "apple" | "ugc" | "custom";
+
+export interface GeoCoordinate {
+  latitude: number;
+  longitude: number;
+}
 
 export interface PetProfile {
   id: string;
@@ -19,6 +33,7 @@ export interface RoutineRoute {
   id: string;
   name: string;
   description: string;
+  path: GeoCoordinate[];
   distanceKm: number;
   minutes: number;
   shade: number;
@@ -26,13 +41,17 @@ export interface RoutineRoute {
   dogDensity: DogDensity;
   roadComplexity: "简单" | "中等" | "复杂";
   tags: string[];
+  linkedPoiIds: string[];
 }
 
 export interface Poi {
   id: string;
   name: string;
+  category: PoiCategory;
+  coordinate: GeoCoordinate;
   rule: string;
   trust: PoiTrust;
+  source: PoiSource;
   tags: string[];
   lastVerifiedDays: number;
 }
@@ -64,6 +83,21 @@ export interface DepartureAdvice {
   alerts: string[];
 }
 
+export const demoMapCenter: GeoCoordinate = {
+  latitude: 31.2307,
+  longitude: 121.4742
+};
+
+export const poiCategoryLabels: Record<PoiCategory, string> = {
+  water: "水源",
+  cafe: "咖啡",
+  grass: "草地",
+  clinic: "医院",
+  "pet-store": "宠物店",
+  risk: "风险",
+  custom: "自定义"
+};
+
 export const demoPet: PetProfile = {
   id: "pet-momo",
   name: "糯米",
@@ -91,37 +125,62 @@ export const demoRoutes: RoutineRoute[] = [
     id: "route-plane-tree",
     name: "梧桐阴影线",
     description: "熟悉、阴影多、路口少，适合怕热和怕车的小型犬。",
+    path: [
+      { latitude: 31.2307, longitude: 121.4742 },
+      { latitude: 31.2313, longitude: 121.4736 },
+      { latitude: 31.2321, longitude: 121.4741 },
+      { latitude: 31.2324, longitude: 121.4751 },
+      { latitude: 31.2315, longitude: 121.4757 },
+      { latitude: 31.2307, longitude: 121.4742 }
+    ],
     distanceKm: 1.4,
     minutes: 22,
     shade: 86,
     fitScore: 88,
     dogDensity: "低",
     roadComplexity: "简单",
-    tags: ["阴影多", "低狗密度", "可快速回家"]
+    tags: ["阴影多", "低狗密度", "可快速回家"],
+    linkedPoiIds: ["poi-water-bowl", "poi-cafe"]
   },
   {
     id: "route-grass-loop",
     name: "社区草地环线",
     description: "有草地和水碗，但傍晚狗较多，反应犬需要降级使用。",
+    path: [
+      { latitude: 31.2307, longitude: 121.4742 },
+      { latitude: 31.2299, longitude: 121.4733 },
+      { latitude: 31.2291, longitude: 121.4743 },
+      { latitude: 31.2296, longitude: 121.4758 },
+      { latitude: 31.2308, longitude: 121.4754 }
+    ],
     distanceKm: 1.9,
     minutes: 31,
     shade: 62,
     fitScore: 70,
     dogDensity: "中",
     roadComplexity: "中等",
-    tags: ["有草地", "水源", "傍晚需观察"]
+    tags: ["有草地", "水源", "傍晚需观察"],
+    linkedPoiIds: ["poi-grass", "poi-water-bowl"]
   },
   {
     id: "route-market",
     name: "街角咖啡目标线",
     description: "可以顺路到宠物友好咖啡店，但会经过两处电动车多的路口。",
+    path: [
+      { latitude: 31.2307, longitude: 121.4742 },
+      { latitude: 31.2311, longitude: 121.4755 },
+      { latitude: 31.2318, longitude: 121.4764 },
+      { latitude: 31.2328, longitude: 121.4761 },
+      { latitude: 31.2332, longitude: 121.4749 }
+    ],
     distanceKm: 2.2,
     minutes: 36,
     shade: 48,
     fitScore: 58,
     dogDensity: "中",
     roadComplexity: "复杂",
-    tags: ["可到 POI", "车流较多", "不适合高温"]
+    tags: ["可到 POI", "车流较多", "不适合高温"],
+    linkedPoiIds: ["poi-cafe", "poi-pet-store", "poi-scooter-crossing"]
   }
 ];
 
@@ -129,26 +188,57 @@ export const demoPois: Poi[] = [
   {
     id: "poi-water-bowl",
     name: "巷口水碗",
+    category: "water",
+    coordinate: { latitude: 31.2316, longitude: 121.4747 },
     rule: "用户 2 天前确认仍可用，建议停留不超过 5 分钟。",
     trust: "verified",
+    source: "ugc",
     tags: ["水源", "门口停留", "最近验证"],
     lastVerifiedDays: 2
   },
   {
     id: "poi-cafe",
     name: "一树咖啡露台",
+    category: "cafe",
+    coordinate: { latitude: 31.2329, longitude: 121.4752 },
     rule: "仅露台可带宠，小型犬友好；雨天和高温时体验不稳定。",
     trust: "verified",
+    source: "ugc",
     tags: ["仅露台", "小型犬", "有阴影"],
     lastVerifiedDays: 6
   },
   {
     id: "poi-grass",
     name: "北门草地",
+    category: "grass",
+    coordinate: { latitude: 31.2293, longitude: 121.4751 },
     rule: "社区反馈傍晚狗多，反应犬建议绕开或改早晚低峰。",
     trust: "needs-recheck",
+    source: "ugc",
     tags: ["草地", "狗多", "待复查"],
     lastVerifiedDays: 18
+  },
+  {
+    id: "poi-pet-store",
+    name: "顺路宠物补给站",
+    category: "pet-store",
+    coordinate: { latitude: 31.2321, longitude: 121.4763 },
+    rule: "Apple 地图候选，爪边尚未验证宠物进入规则。",
+    trust: "claim",
+    source: "apple",
+    tags: ["Apple POI", "待验证", "宠物店"],
+    lastVerifiedDays: 99
+  },
+  {
+    id: "poi-scooter-crossing",
+    name: "电动车高压路口",
+    category: "risk",
+    coordinate: { latitude: 31.2312, longitude: 121.4756 },
+    rule: "社区 1 天前标记晚高峰电动车多，怕车犬建议绕行。",
+    trust: "verified",
+    source: "ugc",
+    tags: ["风险点", "电动车多", "晚高峰"],
+    lastVerifiedDays: 1
   }
 ];
 
