@@ -1,6 +1,23 @@
-# Nook
+<p align="center">
+  <img src="docs/assets/nook-icon.png" alt="Nook app icon" width="128" height="128">
+</p>
 
-Nook 是一个安静的聊天式收集入口，用来快速保存想法、链接、图片、语音、文件和零散资料。它先把信息收进来，再让用户慢慢整理、摘要和归档。
+<h1 align="center">Nook</h1>
+
+<p align="center">
+  安静的聊天式收集入口，用来快速保存想法、链接、图片、语音、文件和零散资料。
+</p>
+
+<p align="center">
+  <a href="#项目状态">项目状态</a> ·
+  <a href="#已实现原型">已实现原型</a> ·
+  <a href="#运行-nook-ios">运行 Nook iOS</a> ·
+  <a href="#nook-ios-源码入口">源码入口</a> ·
+  <a href="#相关历史资料">历史资料</a> ·
+  <a href="#贡献说明">贡献说明</a>
+</p>
+
+Nook 先把信息收进来，再让用户慢慢整理、摘要和归档。
 
 当前仓库里的 Nook 是 `apps/nook-ios` 下的 iOS SwiftUI 原型，重点验证「空白画布 + 底部输入栏 + 轻量收集动作」的移动端体验。本项目与 Barnes & Noble NOOK 阅读器、Nook Earn App 等公开同名产品无关联。
 
